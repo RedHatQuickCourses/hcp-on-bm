@@ -1,6 +1,6 @@
 site:
-  title: FIXME Course Title
-  start_page: REPLACEREPONAME::index.adoc
+  title: Hosted Control Planes on a Single BareMetal
+  start_page: hcp-on-bm::index.adoc
 
 content:
   sources:
