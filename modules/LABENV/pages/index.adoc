@@ -1,5 +1,7 @@
 = Lab Environment
 
+WARNING: REVIEW OR DELETE
+
 == Instructions to Launch Your Lab on the Red Hat Demo Platform (RHDP)
 
 . **Log in** to the xref:#RHDP-Portal-Links[RHDP portal]

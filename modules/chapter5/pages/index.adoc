@@ -1,0 +1,5 @@
+= Create Hosted Cluster
+
+* Configure Host Inventory
+
+[ INCOMPLETE ]

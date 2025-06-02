@@ -1,7 +1,29 @@
-= Chapter 1
+= Provision AWS Blank Environment 
 
-In this section, we cover... FIXME
+* Login to demo.redhat.com using sso
 
+* Within the catalog of demo.redhat.com, search for *AWS Blank Open Environment* and click on it.
++
+image::s1-fig-1.jpg[]
 
-- Add or remove section entries in the `antora.yaml` file as needed.
-- Ensure you create or delete the corresponding directory for the chapter accordingly.
+* Click on Order
+
+* Select Practice/Enablement in the Activity Section
++
+image::s1-fig-2.jpg[]
+
+* Select “Learning about the product” in the Purpose section.
+
+* Select “I confirm that I understand the above warnings”
+
+* Then click “Order”
++
+image::s1-fig-3.jpg[]
+
+* Wait till the status is Running
+
+* Click on the link shown at Web Console Access
+
+* Login to the web console using the user name and password given at “Web Console Credentials”. The account number will be automatically populated at the AWS console login screen.
++
+image::s1-fig-4.jpg[]

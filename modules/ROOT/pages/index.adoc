@@ -1,6 +1,8 @@
 = An Example Quick Course
 :navtitle: Home
 
+WARNING: GET COURSE METADATA FROM AUTHORS
+
 == Introduction
 
 Course Title: Course title FIXME

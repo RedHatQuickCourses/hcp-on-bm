@@ -1,7 +1,70 @@
-= Chapter 2
+= Deploy BareMetal Node
 
-In this section, we cover... FIXME
+* On the AWS Web console, switch to your preferred region, preferably the one closest to you. If confused, use us-east-1
++
+image::s2-fig-1.jpg[]
 
+* From within the AWS console, search for VPC in the search bar and select VPC
++
+image::s2-fig-2.jpg[]
 
-- Add or remove section entries in the `antora.yaml` file as needed.
-- Ensure you create or delete the corresponding directory for the chapter accordingly.
+* Click on “Create VPC”
++
+image::s2-fig-3.jpg[]
+
+* Verify that everything is created successfully and there are no errors.
++
+image::s2-fig-4.jpg[]
+
+* In the search window, type “EC2” and click on EC2.
++
+image::s2-fig-5.jpg[]
+
+* Click on “Launch Instance” on the next page.
++
+image::s2-fig-6.jpg[]
+
+* Give a name for the EC2 Instance.
+
+* Select “Red Hat” under “Application and OS Images (Amazon Machine Image)”
+
+* Select “c5.metal” under “Instance Type”
++
+image::s2-fig-7.jpg[]
+
+* In the KeyPair section, click on “Create new KeyPair”
++
+image::s2-fig-8.jpg[]
+
+* Give a Name and Click “Create Key Pair”
++
+image::s2-fig-9.jpg[]
+
+* Save the auto Downloaded keypair in your local system with a permission of 600.
++
+[source,subs="verbatim,quotes"]
+--
+chmod 600 <path to the keypair>
+--
+
+* Click “Edit” next to “Network Settings”
+
+* Select “Enable” in “Auto-assign public IP”
+
+* Select “My IP” for “Source type” for ssh under Inbound Security Group Rules
+
+* Click “Add Security Group Rule”
+
+* Specify “Port Range” to “5999”
+
+* Select “My IP” for “Source type” for the second security group rule also.
++
+image::s2-fig-10.jpg[]
+
+* Under “Configure Storage”, change the size of the disk to 750GiB
++
+image::s2-fig-11.jpg[]
+
+* Then Click on “Launch Instance” from the Summary page on the right side.
++
+image::s2-fig-12.jpg[]
