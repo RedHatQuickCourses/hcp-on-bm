@@ -1,29 +1,29 @@
 = Provision AWS Blank Environment 
 
-* Login to demo.redhat.com using sso
+1. Login to https://demo.redhat.com[Red Hat Demo] using SSO.
 
-* Within the catalog of demo.redhat.com, search for *AWS Blank Open Environment* and click on it.
+2. Within the catalog of demo.redhat.com, search for *AWS Blank Open Environment* and click on it.
 +
 image::s1-fig-1.jpg[]
 
-* Click on Order
+3. Click on Order.
 
-* Select Practice/Enablement in the Activity Section
+* Select Practice/Enablement in the Activity Section.
 +
 image::s1-fig-2.jpg[]
 
-* Select “Learning about the product” in the Purpose section.
+4. Select “Learning about the product” in the Purpose section.
 
-* Select “I confirm that I understand the above warnings”
+5. Select “I confirm that I understand the above warnings”.
 
-* Then click “Order”
+6. Then click “Order”.
 +
 image::s1-fig-3.jpg[]
 
-* Wait till the status is Running
+7. Wait till the status is Running.
 
-* Click on the link shown at Web Console Access
+8. Click on the link shown at Web Console Access.
 
-* Login to the web console using the user name and password given at “Web Console Credentials”. The account number will be automatically populated at the AWS console login screen.
+9. Login to the web console using the user name and password given at “Web Console Credentials”. The account number will be automatically populated at the AWS console login screen.
 +
 image::s1-fig-4.jpg[]

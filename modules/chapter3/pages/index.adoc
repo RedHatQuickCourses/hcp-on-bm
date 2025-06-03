@@ -1,96 +1,99 @@
 = Prepare the BareMetal Node
 
-* Familiarize yourself with the HCP on BM architecture.
+1. Familiarize yourself with the HCP on BM architecture.
 +
 image::s3-fig-1.png[]
++
+NOTE: Is there an SVG (or google slides) version of that diagram?
 
-* Once the instance is up and running, ssh to the node using the private key downloaded earlier. 
+2. Once the instance is up and running, ssh to the node using the private key downloaded earlier. 
 +
 image::s3-fig-2.jpg[]
 
-* Public IP of the instance can be obtained from the AWS console after clicking on the instance.
+3. The public IP of the instance can be obtained from the AWS console after clicking on the instance.
 +
 [source,subs="verbatim,quotes"]
 --
-ssh -i <path to the private key>  ec2-user@<public ip>
+$ ssh -i _<path to the private key>_  ec2-user@_<public ip>_
 --
 
-* Install Ansible Core and other supporting packages.
+4. Install Ansible Core and other supporting packages.
 +
 [source,subs="verbatim,quotes"]
 --
-sudo -i
-yum install ansible-core -y
-ansible-galaxy collection install community.libvirt
-ansible-galaxy collection install community.crypto
+$ sudo -i
+# yum install ansible-core -y
+# ansible-galaxy collection install community.libvirt
+# ansible-galaxy collection install community.crypto
 --
 
-* Download latest rhel-9.5-x86_64-kvm.qcow2 from access.redhat.com/downloads and copy to the baremetal node.
+5. Download latest `rhel-9.5-x86_64-kvm.qcow2` cloud image from the https://access.redhat.com/downloads[customer portal] and copy to the baremetal node.
 
-* Clone the git repository and move the RHEL Image to the correct directory.
+6. Clone the git repository and move the RHEL Image to the correct directory.
 +
 [source,subs="verbatim,quotes"]
 --
-git clone https://github.com/v2pkthakur/hcp-on-bm.git
-cp rhel-9.5-x86_64-kvm.qcow2 hcp-on-bm/roles/setup-bm-host/files/
+$ git clone https://github.com/v2pkthakur/hcp-on-bm.git
+$ cp rhel-9.5-x86_64-kvm.qcow2 hcp-on-bm/roles/setup-bm-host/files/
 --
++
+NOTE: Clone or fork the repository as part of the Quick Courses organization?
 
-* Explore the inventory and variables and update where required.
-For example, if you got a newer version of RHEL9 Qcow instead of RHEL9.5, please update rhel9_kvm_image.
+7. Explore the inventory and variables and update where required.
++
+For example, if you got a newer version of RHEL9 Qcow instead of RHEL9.5, please update the `rhel9_kvm_image` variable.
 +
 [source,subs="verbatim,quotes"]
 --
-vim vars.yaml
+$ vi vars.yaml
 ...
 rhel9_kvm_image: rhel-9.6-x86_64-kvm.qcow2
 ... 
 --
 
-* Setup Graphical user interface and VNC access.
+8. Setup Graphical user interface and VNC access.
 +
 [source,subs="verbatim,quotes"]
 --
-yum groupinstall "Server with GUI"
-useradd vncuser
-su - vncuser
-vpcpasswd   # set password
+$ yum groupinstall "Server with GUI"
+$ useradd vncuser
+$ su - vncuser
+$ vpcpasswd   # set password
 Would you like to enter a view-only password (y/n)? n
 exit
 --
 
-* Connect to the public ip of the baremetal node on port 5999 using vncviewer to get GUI. This will be required to access the Openshift Console later.
+9. Connect to the public ip of the baremetal node on port 5999 using `vncviewer` to get its graphical console. This will be required to access the Openshift console later.
 
-* Login to console.redhat.com and get Org Id which can be obtained by clicking your name on top right.
+10. Login on the https://console.redhat.com[Red Hat Hybrid Cloud Console] and get your organization ID, which can be obtained by clicking your name on top right.
 +
 image::s3-fig-3.jpg[]
 
-* Create an activation key from the console by following the link and note down the name of the activation key. https://console.redhat.com/insights/connector/activation-keys
+11. Create an activation key from the cloud console by entering its https://console.redhat.com/insights/connector/activation-keys[Insights pages] and note down the name of the activation key.
 +
 Use the details from the screenshot to fill the activation key details. Make sure that you name it appropriately.
 +
 image::s3-fig-4.jpg[]
 
-* From the Console, copy/download and save the pull secret by visiting https://console.redhat.com/openshift/install/pull-secret
-+
-Keep the pull secret available for later use.
+12. Copy or download your OpenShift pull secret from the cloud console by entering its https://console.redhat.com/openshift/install/pull-secret[OpenShift pages] and keep the pull secret available for later use.
 +
 image::s3-fig-5.jpg[]
 
-* Configure ansible-vault to store Org ID, activation keys and PullSecret.
+13. Configure `ansible-vault` to store your organization ID, activation keys, and OpenShift pull secret.
 +
 [source,subs="verbatim,quotes"]
 --
-ansible-vault create vault.yaml
+$ ansible-vault create vault.yaml
 New Vault password:
 Confirm New Vault password:
-org_id: XXXX
-activation_key: YYYYY
-pull_secret: 'ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ'
+org_id: _XXXX_
+activation_key: _YYYYY_
+pull_secret: '_ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ_'
 --
 
-* Set up the Baremetal Host by running the ansible playbook.
+14. Set up the baremetal node by running the ansible playbook.
 +
 [source,subs="verbatim,quotes"]
 --
-ansible-playbook -i inventory/hosts setup_bm_host.yaml --ask-vault-pass
+$ ansible-playbook -i inventory/hosts setup_bm_host.yaml --ask-vault-pass
 --
