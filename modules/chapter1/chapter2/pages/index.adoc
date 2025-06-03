@@ -1,0 +1,82 @@
+= Deploy BareMetal Node
+
+1. On the AWS Web console, switch to your preferred region, preferably the one closest to you. If unsure, use `us-east-1`.
++
+image::s2-fig-1.jpg[]
+
+2. From within the AWS console, search for VPC in the search bar and select VPC.
++
+image::s2-fig-2.jpg[]
+
+3. Click on “Create VPC”.
++
+image::s2-fig-2b.jpg[]
+
+.. Select “VPC and more”
+
+.. Give a name
+
+.. Select “1” under “Number of Availability Zones (AZs)”
+
+.. Select “0” under “Number of Private Subnets”
+
+.. Then click on “Create VPC”
++
+image::s2-fig-3.jpg[]
+
+4. Verify that the VPC and associated resources are created successfully and there are no errors.
++
+image::s2-fig-4.jpg[]
+
+5. In the search window, type “EC2” and click on EC2.
++
+image::s2-fig-5.jpg[]
+
+.. Click on “Launch Instance” on the next page.
++
+image::s2-fig-6.jpg[]
+
+.. Give a name for the EC2 Instance.
+
+.. Select “Red Hat” under “Application and OS Images (Amazon Machine Image)”
+
+.. Select “c5.metal” under “Instance Type”
++
+image::s2-fig-7.jpg[]
+
+6. In the KeyPair section, click on “Create new KeyPair”
++
+image::s2-fig-8.jpg[]
+
+.. Give a Name and Click “Create Key Pair”
++
+image::s2-fig-9.jpg[]
+
+.. Save the auto Downloaded keypair in your local system with a permission of 600.
++
+[source,subs="verbatim,quotes"]
+--
+$ chmod 600 _<path to the keypair>_
+--
+
+7. Click “Edit” next to “Network Settings”
+
+.. Select “Enable” in “Auto-assign public IP”
+
+.. Select “My IP” for “Source type” for ssh under Inbound Security Group Rules
+
+.. Click “Add Security Group Rule”
+
+.. Specify “Port Range” to “5999”
+
+.. Select “My IP” for “Source type” for the second security group rule also.
++
+image::s2-fig-10.jpg[]
+
+8. Under “Configure Storage”, change the size of the disk to 750GiB
++
+image::s2-fig-11.jpg[]
+
+9. Then click on “Launch Instance” from the Summary page on the right side.
++
+image::s2-fig-12.jpg[]

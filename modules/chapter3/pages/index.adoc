@@ -1,99 +1,50 @@
-= Prepare the BareMetal Node
+= Setup the Hub/ACM Cluster
 
-1. Familiarize yourself with the HCP on BM architecture.
-+
-image::s3-fig-1.png[]
-+
-NOTE: Is there an SVG (or google slides) version of that diagram?
-
-2. Once the instance is up and running, ssh to the node using the private key downloaded earlier. 
-+
-image::s3-fig-2.jpg[]
-
-3. The public IP of the instance can be obtained from the AWS console after clicking on the instance.
+1. Run the ansible playbook to set up the hub cluster and ACM.
 +
 [source,subs="verbatim,quotes"]
 --
-$ ssh -i _<path to the private key>_  ec2-user@_<public ip>_
+$ yum install tmux
+$ ansible-playbook -i inventory/hosts setup_hub_cluster.yaml --ask-vault-pass
 --
 
-4. Install Ansible Core and other supporting packages.
+2. Update `/etc/resolv.conf` to set the helper vm as the primary DNS server. Keep the AWS dns server as a secondary option.
 +
 [source,subs="verbatim,quotes"]
 --
-$ sudo -i
-# yum install ansible-core -y
-# ansible-galaxy collection install community.libvirt
-# ansible-galaxy collection install community.crypto
+$ vi /etc/resolv.conf
+nameserver 192.168.122.21
+nameserver 10.0.0.2
 --
 
-5. Download latest `rhel-9.5-x86_64-kvm.qcow2` cloud image from the https://access.redhat.com/downloads[customer portal] and copy to the baremetal node.
-
-6. Clone the git repository and move the RHEL Image to the correct directory.
+3. Copy the kubeconfig and export it and validate the hub cluster is healthy.
 +
 [source,subs="verbatim,quotes"]
 --
-$ git clone https://github.com/v2pkthakur/hcp-on-bm.git
-$ cp rhel-9.5-x86_64-kvm.qcow2 hcp-on-bm/roles/setup-bm-host/files/
+$ cp /var/lib/libvirt/images/hub_install/auth/kubeconfig .
+$ export KUBECONFIG=kubeconfig
+$ oc get co
+$ oc get nodes
 --
-+
-NOTE: Clone or fork the repository as part of the Quick Courses organization?
 
-7. Explore the inventory and variables and update where required.
-+
-For example, if you got a newer version of RHEL9 Qcow instead of RHEL9.5, please update the `rhel9_kvm_image` variable.
+4. Get the console URL.
 +
 [source,subs="verbatim,quotes"]
 --
-$ vi vars.yaml
-...
-rhel9_kvm_image: rhel-9.6-x86_64-kvm.qcow2
-... 
+$ oc get route -A | grep console
 --
 
-8. Setup Graphical user interface and VNC access.
+5. Get the kubeadmin password
 +
 [source,subs="verbatim,quotes"]
 --
-$ yum groupinstall "Server with GUI"
-$ useradd vncuser
-$ su - vncuser
-$ vpcpasswd   # set password
-Would you like to enter a view-only password (y/n)? n
-exit
+$ cat /var/lib/libvirt/images/hub_install/auth/kubeadmin-password
 --
 
-9. Connect to the public ip of the baremetal node on port 5999 using `vncviewer` to get its graphical console. This will be required to access the Openshift console later.
+6. On the VNC console Launch a web browser and login to the OpenShift console using the kubeadmin user and password.
 
-10. Login on the https://console.redhat.com[Red Hat Hybrid Cloud Console] and get your organization ID, which can be obtained by clicking your name on top right.
+7. Validate that MetalLB, LVM Storage, and ACM operators are installed and configured.
 +
-image::s3-fig-3.jpg[]
+image::s4-fig-1.jpg[]
 
-11. Create an activation key from the cloud console by entering its https://console.redhat.com/insights/connector/activation-keys[Insights pages] and note down the name of the activation key.
-+
-Use the details from the screenshot to fill the activation key details. Make sure that you name it appropriately.
-+
-image::s3-fig-4.jpg[]
-
-12. Copy or download your OpenShift pull secret from the cloud console by entering its https://console.redhat.com/openshift/install/pull-secret[OpenShift pages] and keep the pull secret available for later use.
-+
-image::s3-fig-5.jpg[]
-
-13. Configure `ansible-vault` to store your organization ID, activation keys, and OpenShift pull secret.
-+
-[source,subs="verbatim,quotes"]
---
-$ ansible-vault create vault.yaml
-New Vault password:
-Confirm New Vault password:
-org_id: _XXXX_
-activation_key: _YYYYY_
-pull_secret: '_ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ_'
---
-
-14. Set up the baremetal node by running the ansible playbook.
-+
-[source,subs="verbatim,quotes"]
---
-$ ansible-playbook -i inventory/hosts setup_bm_host.yaml --ask-vault-pass
---
+8. Within the MetalLB operator validate that MetalLB, L2Advertisement and IPAddressPool resources are created.
