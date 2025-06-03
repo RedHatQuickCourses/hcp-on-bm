@@ -1,5 +1,16 @@
 = Create Hosted Cluster
 
-* Configure Host Inventory
+1. Configure Host Inventory
 
-[ INCOMPLETE ]
+2. Create infrastructure environments.
+
+3. Add nodes to the inventory depending on any or all of the following methods.
+** Discovery ISO
+** PXE
+** BMC via form or yaml
+
+4. Watch the below video to continue with the rest of the course.
+** https://drive.google.com/file/d/1_MCFnl85-3O_BykxZNvc3vEEO_59wy1Q/view?usp=sharing
+
+5. For video with audio, please watch and follow the video below from 20:00 for the next lab steps. 
+** https://drive.google.com/file/d/1x8WS_DQjKyOW_o3T7_WM9xXAe4rLgMWt/view?usp=sharing

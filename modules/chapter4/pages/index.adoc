@@ -1,5 +1,51 @@
 = Setup the Hub/ACM Cluster
 
-* Run the ansible playbook to set up the hub cluster and ACM.
+1. Run the ansible playbook to set up the hub cluster and ACM.
++
+[source,subs="verbatim,quotes"]
+--
+yum install tmux
+tmux
+ansible-playbook -i inventory/hosts setup_hub_cluster.yaml --ask-vault-pass
+--
 
-[ INCOMPLETE ]
+2. Update `/etc/resolv.conf` to set the helper vm as the primary DNS server. Keep the AWS dns server as a secondary option.
++
+[source,subs="verbatim,quotes"]
+--
+vi /etc/resolv.conf
+nameserver 192.168.122.21
+nameserver 10.0.0.2
+--
+
+3. Copy the kubeconfig and export it and validate the hub cluster is healthy
++
+[source,subs="verbatim,quotes"]
+--
+cp /var/lib/libvirt/images/hub_install/auth/kubeconfig .
+export KUBECONFIG=kubeconfig
+oc get co
+oc get nodes
+--
+
+4. Get the console URL
++
+[source,subs="verbatim,quotes"]
+--
+oc get route -A | grep console
+--
+
+5. Get the kubeadmin password
++
+[source,subs="verbatim,quotes"]
+--
+cat /var/lib/libvirt/images/hub_install/auth/kubeadmin-password
+--
+
+6. On the VNC console Launch firefox or install Chrome if that preferred and login to the console using the kubeadmin user and password
+
+7. Validate the MetalLB, LVMStorage and ACM operators are installed and configured.
++
+image::s4-fig-1.jpg[]
+
+8. Within the MetalLB operator validate that MetalLB, L2Advertisement and IPAddressPool resources are created.
