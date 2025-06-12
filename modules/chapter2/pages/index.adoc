@@ -22,12 +22,16 @@ $ ssh -i _<path to the private key>_  ec2-user@_<public ip>_
 [source,subs="verbatim,quotes"]
 --
 $ sudo -i
-# yum install ansible-core -y
+# dnf install ansible-core -y
 # ansible-galaxy collection install community.libvirt
 # ansible-galaxy collection install community.crypto
 --
 
-5. Download latest `rhel-9.5-x86_64-kvm.qcow2` cloud image from the https://access.redhat.com/downloads[customer portal] and copy to the baremetal node.
+5. Download latest `rhel-9.5-x86_64-kvm.qcow2` cloud image (*Red Hat Enterprise Linux 9.5 KVM Guest Image*) from the https://access.redhat.com/downloads[customer portal] and copy to the baremetal node.
++
+WARNING: Make learners aware of that BEFORE starting. Not good pausing here while it downloads, 10min or more for me.
++
+[ Cannot find a way of getting the download URL to use with curl directly on the EC2 instance. ]
 
 6. Clone the git repository and move the RHEL Image to the correct directory.
 +
@@ -55,13 +59,29 @@ rhel9_kvm_image: rhel-9.6-x86_64-kvm.qcow2
 +
 [source,subs="verbatim,quotes"]
 --
-$ yum groupinstall "Server with GUI"
-$ useradd vncuser
-$ su - vncuser
+# dnf groupinstall "Server with GUI"
+# useradd vncuser
+# su - vncuser
 $ vpcpasswd   # set password
 Would you like to enter a view-only password (y/n)? n
-exit
+$ exit
 --
++
+WARNING: "vpcpasswd" should be "vncpasswd", right? But it's not in the package group. yum offers to install "tigervnc-server-minimal", is that right?
+
+.. Alternatively, install and configure a TigetVNC Server
++
+[source,subs="verbatim,quotes"]
+--
+# dnf groupinstall "Server with GUI"
+# dnf install tigervnc-server
+# vi /etc/tigervnc/vncserver.users
+:99=vncuser 
+# systemctl enable vncserver@:99 --now
+--
+
+.. Alternatively, install waypipe and use it instead of a VNC viewer
+
 
 9. Connect to the public ip of the baremetal node on port 5999 using `vncviewer` to get its graphical console. This will be required to access the Openshift console later.
 

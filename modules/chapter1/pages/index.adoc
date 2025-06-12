@@ -11,7 +11,10 @@ image::s2-fig-2.jpg[]
 3. Click on “Create VPC”.
 +
 image::s2-fig-2b.jpg[]
-
++
+Fill in the form as follows:
++
+image::s2-fig-2c.jpg[]
 .. Select “VPC and more”
 
 .. Give a name
@@ -19,6 +22,12 @@ image::s2-fig-2b.jpg[]
 .. Select “1” under “Number of Availability Zones (AZs)”
 
 .. Select “0” under “Number of Private Subnets”
+
+.. Select "In 1 AZ" under "NAT Gateways ($)"
++
+WARNING: Its is in the screen shot but doesn't work. AWS error: *NAT Gateway needs a private subnet to configure outbound traffic*
++
+[ Assuming the instructions are correct, and shouldn't change this value, leave at its default of "None" ]
 
 .. Then click on “Create VPC”
 +
@@ -39,6 +48,8 @@ image::s2-fig-6.jpg[]
 .. Give a name for the EC2 Instance.
 
 .. Select “Red Hat” under “Application and OS Images (Amazon Machine Image)”
++
+WARNING: Leave it at the default RHEL10 or change to RHEL9? Will do the later, as per the screen shot.
 
 .. Select “c5.metal” under “Instance Type”
 +
@@ -80,3 +91,7 @@ image::s2-fig-11.jpg[]
 9. Then click on “Launch Instance” from the Summary page on the right side.
 +
 image::s2-fig-12.jpg[]
++
+WARNING: AWS error: We currently do not have sufficient c5.metal capacity in the Availability Zone you requested (us-east-2a). Our system will be working on provisioning additional capacity. You can currently get c5.metal capacity by not specifying an Availability Zone in your request or choosing us-east-2b, us-east-2c
++
+[ Is there a way of checking capacity BEFORE starting? Restarted on us-east-1 and it worked, default was us-east-2 ]

@@ -5,7 +5,7 @@ WARNING: GET COURSE METADATA FROM AUTHORS
 
 == Introduction
 
-Course Title: Course title FIXME
+Course Title: Hosted Control Planes on a Single BareMetal Node
 
 Description:
 Course description FIXME

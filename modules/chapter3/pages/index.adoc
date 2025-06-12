@@ -1,30 +1,33 @@
 = Setup the Hub/ACM Cluster
 
-1. Run the ansible playbook to set up the hub cluster and ACM.
+1. Update `/etc/resolv.conf` to set the helper vm as the primary DNS server. Keep the AWS dns server as a secondary option.
 +
 [source,subs="verbatim,quotes"]
 --
-$ yum install tmux
-$ ansible-playbook -i inventory/hosts setup_hub_cluster.yaml --ask-vault-pass
---
-
-2. Update `/etc/resolv.conf` to set the helper vm as the primary DNS server. Keep the AWS dns server as a secondary option.
-+
-[source,subs="verbatim,quotes"]
---
-$ vi /etc/resolv.conf
+# vi /etc/resolv.conf
 nameserver 192.168.122.21
 nameserver 10.0.0.2
 --
+
+2. Run the ansible playbook to set up the hub cluster and ACM.
++
+[source,subs="verbatim,quotes"]
+--
+# yum install tmux
+# ansible-playbook -i inventory/hosts setup_hub_cluster.yaml --ask-vault-pass
+--
++
+WARNING: My SSH session was terminated (by inactivity?) during execution of the playbook. I don't know if it finished or not. I had to destroy and undefine hub_bootstrap to retry.
++
+[ 42min "real" time on the second attempt, which finished OK (no failed tasks) ]
 
 3. Copy the kubeconfig and export it and validate the hub cluster is healthy.
 +
 [source,subs="verbatim,quotes"]
 --
-$ cp /var/lib/libvirt/images/hub_install/auth/kubeconfig .
-$ export KUBECONFIG=kubeconfig
-$ oc get co
-$ oc get nodes
+# cp /var/lib/libvirt/images/hub_install/auth/kubeconfig .
+# export KUBECONFIG=kubeconfig
+# oc get co
 --
 
 4. Get the console URL.
@@ -33,6 +36,15 @@ $ oc get nodes
 --
 $ oc get route -A | grep console
 --
++
+Alternatively [faster!]:
++
+[source,subs="verbatim,quotes"]
+--
+$ oc whoami --show-console
+--
++
+[ Responses from the Kube API seems to be very slow, on cli and web console]
 
 5. Get the kubeadmin password
 +
@@ -48,3 +60,5 @@ $ cat /var/lib/libvirt/images/hub_install/auth/kubeadmin-password
 image::s4-fig-1.jpg[]
 
 8. Within the MetalLB operator validate that MetalLB, L2Advertisement and IPAddressPool resources are created.
++
+[ ALL good so far... stopped all VMs and the AWS env. Let's see if tomorrow everything restarts fine, or if I'll have to start over. ]
