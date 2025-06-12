@@ -17,7 +17,7 @@ nameserver 10.0.0.2
 # ansible-playbook -i inventory/hosts setup_hub_cluster.yaml --ask-vault-pass
 --
 +
-WARNING: My SSH session was terminated (by inactivity?) during execution of the playbook. I don't know if it finished or not. I had to destroy and undefine hub_bootstrap to retry.
+WARNING: My SSH session was terminated (by inactivity?) during execution of the playbook. I don't know if it finished or not. I had to destroy and undefine hub_bootstrap to retry. Keep alive would have helped.
 +
 [ 42min "real" time on the second attempt, which finished OK (no failed tasks) ]
 

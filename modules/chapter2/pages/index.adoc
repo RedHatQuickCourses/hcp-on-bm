@@ -16,6 +16,8 @@ image::s3-fig-2.jpg[]
 --
 $ ssh -i _<path to the private key>_  ec2-user@_<public ip>_
 --
++
+NOTE: Warn about using keep alive so the connection doesn't terminate during long-running ansible playboos, killing the runner
 
 4. Install Ansible Core and other supporting packages.
 +
