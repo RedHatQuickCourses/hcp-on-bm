@@ -1,22 +1,130 @@
 = Create Hosted Cluster
 
-1. Configure Host Inventory.
+[ From google docs ]
 
-2. Create infrastructure environments.
+- Configure Host Inventory.
 
-3. Add nodes to the inventory depending on any or all of the following methods:
+- Create infrastructure environments.
+
+- Add nodes to the inventory depending on any or all of the following methods:
 ** Discovery ISO
 ** PXE
 ** BMC via form or yaml
 
-4. Watch the video to continue with the rest of the course. +
+- Watch the video to continue with the rest of the course. +
 https://drive.google.com/file/d/1_MCFnl85-3O_BykxZNvc3vEEO_59wy1Q/view?usp=sharing
 +
 WARNING: Edit, if needed, and Publish the video on the Red Hat Media center.
 
-5. For video with audio, please watch and follow the video below from 20:00 for the next lab steps. + 
+- For video with audio, please watch and follow the video below from 20:00 for the next lab steps. + 
 https://drive.google.com/file/d/1x8WS_DQjKyOW_o3T7_WM9xXAe4rLgMWt/view?usp=sharing
 +
 WARNING: Edit, if needed, and Publish the video on the Red Hat Media center.
 
 NOTE: It seems we only need one of the two videos above, and the second one may have content useful for the previous chapters. If so, split the video.
+
+[ Segments of the second video ]
+
+0:00::
+Introduction to Hosted Control Planes (HCP) and typical deployment architectures.
+
+9:43::
+Planning PoC/Tests, Justification for using a single physical machine, lab architecture.
+
+12:10::
+Prepare the bare metal node.
+
+16:34::
+Provision the hub cluster.
+
+20:06::
+Recap of previous steps
+
+?:??::
+Configure host inventory in ACM
+
+23:11::
+Create infrastruture environments in ACM
+
+24:26::
+Add nodes overview
+
+25:17::
+Add a note using [what?] Discovery ISO
+
+?:??::
+
+
++
+May need pieces of the embedded video, because it was fast-forwarded (is that the same as the first video?)
++
+NOTE: Looks like the definiton of image storage was incorrect at 21:55 -- it's not (or not just) the CoreOS images to boot nodes, but the internal registry of each hosted cluster, right?
+
+[ From testing and following the videos ]
+
+1. Configure the host inventory in ACM.
+
+.. In the *All Clusters* view of the OpenShift web console, enter *Automation > Host Inventory* and click *Configure host inventory settings" at the top right.
+
+.. Accept the default values and click *Configure*.
+
+.. Wait a bit, the page takes some moments to refresh and show that the configuration process has started.
++
+[ I got warnings that it's taking too long and I should troubleshoot... but everything kube is slow for me on that demo env, and I do not see evidence of issues in the pod. ]
+
+.. Make sure you got a working host inventory before proceeding to the next step. The page should display a green message: "Host inventory configured successfully."
+
+.. If you prefer to monitor from CLI instead of from web console
++
+[source,subs="verbatim,quotes"]
+--
+# oc get deployment -n multicluster-engine assisted-service
+# oc get pod -n multicluster-engine -l app=assisted-service
+--
++
+WARNING: I got an "OK" from the console which quickly turned back into the "taking too long" and the pods entered CrashLoopBackOff. I see liveness and readiness probes failing... will it autoheal? Or should I delete the pod?
++
+[ Second "OK"... is that one really good? Many minutes of wait, didn't time it. ]
+
+2. Create an infrastructure environments in ACM.
+
+.. On the *Host inventory* page, click *Create infrastructure environment*
+
+.. Fill in the form as follows:
+
+... Name: 
+..  Location: 
+... What else?
+... Paste the contents of your OpenShift installation pull secret into the *Pull secret* field.
+... Paste your public SSH key a *SSH public key* field. [ Use ~/.ssh/lab_rsa.pub from the root user on the bare metal host? ]
+
+.. Click *Create*
+
+3. Add a node using the discovery ISO
+
+.. On the Host inventory page, enter the infrastructure environment you just created. You may already be there, from the previous step.
+
+.. Click on *Add hosts* and select *With Discovery ISO* to start downloading an ISO disk image. When the download is complete, copy the file to `/var/lib/libvirt/images/`.
+
+.. Start the Virtual Machine Manager (`virt-manager`) and create a new VM with at least 8GiB memory , 2vCPUS, and 100GB of disk, booting from the ISO image you downloaded in the previous step. It should use the default network and all other defaults.
++
+WARNING: craft a virt-install command?
++
+NOTE: The video mentions a playbook for VM creation but doesn't name it.
+
+.. *Got errors booting the VM!* it cannot resolve the DNS name of the assisted-image-service. See screenshot at ~/Pictures/Screenshots/error-node-from-iso.png.
++
+Could this be related to my DNS issues at start (that changes to /etc/resolv.conf weren't persistent?) and that I started the libvirt VMs before fixing it?
++
+Tried restarting all VMs, let's see if it helps... having errors from the console and authentication operators. Maybe it just needs more time to settle in?
++
+Yeah, it takes a long time until the cluster stabilizes (according to`oc adm wait-for-stable-cluster`) and even more for the `assisted-image-service-0` pod from the `multicluster-engine` project to be ready, so I can download a new discovery ISO.
++
+But I got the same DNS resolver issue on the new VM. :-(
++
+Only idea I have for now is rebooting the EC2 instance, or destroy everything and restart from scratch.
++
+And now RHDP cannot restart my env, as of Fri, 17:31.
+
+.. After the VM installation finishes and it reboots, 
+

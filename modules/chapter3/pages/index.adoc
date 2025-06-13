@@ -8,6 +8,8 @@
 nameserver 192.168.122.21
 nameserver 10.0.0.2
 --
++
+WARNING: That change is NOT persistent, it's lost if you stop and restart you demo env. :-(
 
 2. Run the ansible playbook to set up the hub cluster and ACM.
 +
@@ -18,6 +20,8 @@ nameserver 10.0.0.2
 --
 +
 WARNING: My SSH session was terminated (by inactivity?) during execution of the playbook. I don't know if it finished or not. I had to destroy and undefine hub_bootstrap to retry. Keep alive would have helped.
++
+WARNING: Tmux was NOT installed in previous steps. It's useful to work around SSH disconnection, but you need to know how to attach to previous tmux sessions.
 +
 [ 42min "real" time on the second attempt, which finished OK (no failed tasks) ]
 
