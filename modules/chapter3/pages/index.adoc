@@ -1,6 +1,6 @@
 = Setup the Hub/ACM Cluster
 
-1. Update `/etc/resolv.conf` to set the helper vm as the primary DNS server. Keep the AWS dns server as a secondary option.
+1. Update `/etc/resolv.conf` to set the helper vm as the primary DNS server. Keep the AWS DNS server as a secondary option.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -11,26 +11,107 @@ nameserver 10.0.0.2
 +
 WARNING: That change is NOT persistent, it's lost if you stop and restart you demo env. :-(
 
-2. Run the ansible playbook to set up the hub cluster and ACM.
+2. Run the Ansible playbook to set up the hub cluster and ACM.
+
+.. The playbook may take over 50 min to complete. If your SSH client may disconnect due to inactivity, it's recommended that you start a tmux session, to prevent your shell from being terminated and taking the Ansible runner with it.
 +
 [source,subs="verbatim,quotes"]
 --
-# yum install tmux
+# tmux
+--
+
+.. Run the playbook.
++
+[source,subs="verbatim,quotes"]
+--
 # ansible-playbook -i inventory/hosts setup_hub_cluster.yaml --ask-vault-pass
 --
+
+.. If your playbook fails close to its end, you may have a healthy cluster and follow its soure code to complete tasks manually, for example:
 +
-WARNING: My SSH session was terminated (by inactivity?) during execution of the playbook. I don't know if it finished or not. I had to destroy and undefine hub_bootstrap to retry. Keep alive would have helped.
+[source,subs="verbatim"]
+--
+...
+TASK [setup-hub-acm : Lets wait for 300 seconds for Operators to be ACTIVE] **********************************************************************************
+ok: [localhost]                                                                                                                                               
+                                                                                                                                                              
+TASK [setup-hub-acm : Setup MultiClusterHub Resource] ********************************************************************************************************
+fatal: [localhost]: FAILED! => {"changed": true, "cmd": "oc apply -f \"/root/hcp-on-bm/roles/setup-hub-acm/files/acm/04-multicluster-hub.yaml\"\n", "delta": "
+0:00:30.167446", "end": "2025-06-16 14:55:20.295256", "msg": "non-zero return code", "rc": 1, "start": "2025-06-16 14:54:50.127810", "stderr": "E0616 14:55:20
+.289510   73369 memcache.go:265] \"Unhandled Error\" err=\"couldn't get current server API group list: Get \\\"https://api.hub.mylab.com:6443/api?timeout=32s\
+\\": dial tcp 192.168.122.39:6443: i/o timeout\"\nerror: unable to recognize \"/root/hcp-on-bm/roles/setup-hub-acm/files/acm/04-multicluster-hub.yaml\": Get \
+"https://api.hub.mylab.com:6443/api?timeout=32s\": dial tcp 192.168.122.39:6443: i/o timeout", "stderr_lines": ["E0616 14:55:20.289510   73369 memcache.go:265
+] \"Unhandled Error\" err=\"couldn't get current server API group list: Get \\\"https://api.hub.mylab.com:6443/api?timeout=32s\\\": dial tcp 192.168.122.39:64
+43: i/o timeout\"", "error: unable to recognize \"/root/hcp-on-bm/roles/setup-hub-acm/files/acm/04-multicluster-hub.yaml\": Get \"https://api.hub.mylab.com:64
+43/api?timeout=32s\": dial tcp 192.168.122.39:6443: i/o timeout"], "stdout": "", "stdout_lines": []}
+
+PLAY RECAP ***************************************************************************************************************************************************
+localhost                  : ok=38   changed=26   unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+--
 +
-WARNING: Tmux was NOT installed in previous steps. It's useful to work around SSH disconnection, but you need to know how to attach to previous tmux sessions.
+Connect to the cluster and assess it is healthy. If it is, review the failed tasks and following tasks.
 +
-[ 42min "real" time on the second attempt, which finished OK (no failed tasks) ]
+[source,subs="verbatim,quotes"]
+--
+# less roles/setup-hub-acm/tasks/main.yml
+--
++
+Perform the pending tasks manually.
++
+[source,subs="verbatim,quotes"]
+--
+# oc create -f roles/setup-hub-acm/files/acm/04-multicluster-hub.yaml
+# oc create -f roles/setup-hub-acm/files/lvm-storage/04-lvm-cluster.yaml
+# oc create -f roles/setup-hub-acm/files/metal-lb/04-metalLB.yaml
+# oc create -f roles/setup-hub-acm/files/metal-lb/05-ip-pool.yaml
+# oc create -f roles/setup-hub-acm/files/metal-lb/06-L2Advertisement.yaml
+--
+
+.. If your playbook fails and you are unsure about the effort to complete tasks manually, you may may destroy your libvirt VMs and restart. For example:
++
+[source,subs="verbatim"]
+--
+...
+TASK [setup-hub-cluster : Approve all pendign CSR for Worker nodes] ******************************************************************************************
+changed: [localhost]
+
+TASK [setup-hub-cluster : Waiting for cluster Bootstrap to finish] *******************************************************************************************
+
+fatal: [localhost]: FAILED! => {"changed": true, "cmd": "openshift-install --dir=/var/lib/libvirt/images/hub_install  wait-for bootstrap-complete --log-level=info\n", "delta": "0:20:00.092716", "end": "2025-06-17 18:51:56.411394", "msg": "non-zero return code", "rc": 5, "start": "2025-06-17 18:31:56.318678", "stderr": "level=info msg=Waiting up to 20m0s (until 6:51PM UTC) for the Kubernetes API at https://api.hub.mylab.com:6443...\nlevel=error msg=Attempted to gather ClusterOperator status after wait failure: listing ClusterOperator objects: Get \"https://api.hub.mylab.com:6443/apis/config.openshift.io/v1/clusteroperators\": dial tcp: lookup api.hub.mylab.com on 10.0.0.2:53: no such host\nlevel=info msg=Use the following commands to gather logs from the cluster\nlevel=info msg=openshift-install gather bootstrap --help\nlevel=error msg=Bootstrap failed to complete: Get \"https://api.hub.mylab.com:6443/version\": dial tcp: lookup api.hub.mylab.com on 10.0.0.2:53: no such host\nlevel=error msg=Failed waiting for Kubernetes API. This error usually happens when there is a problem on the bootstrap host that prevents creating a temporary control plane.", "stderr_lines": ["level=info msg=Waiting up to 20m0s (until 6:51PM UTC) for the Kubernetes API at https://api.hub.mylab.com:6443...", "level=error msg=Attempted to gather ClusterOperator status after wait failure: listing ClusterOperator objects: Get \"https://api.hub.mylab.com:6443/apis/config.openshift.io/v1/clusteroperators\": dial tcp: lookup api.hub.mylab.com on 10.0.0.2:53: no such host", "level=info msg=Use the following commands to gather logs from the cluster", "level=info msg=openshift-install gather bootstrap --help", "level=error msg=Bootstrap failed to complete: Get \"https://api.hub.mylab.com:6443/version\": dial tcp: lookup api.hub.mylab.com on 10.0.0.2:53: no such host", "level=error msg=Failed waiting for Kubernetes API. This error usually happens when there is a problem on the bootstrap host that prevents creating a temporary control plane."], "stdout": "", "stdout_lines": []}
+
+PLAY RECAP ***************************************************************************************************************************************************
+localhost                  : ok=30   changed=20   unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+--
++
+Run the clean up playbook.
++
+[source,subs="verbatim,quotes"]
+--
+# ansible-playbook -i inventory/hosts cleanup_hub.yaml
+--
++
+Try again creating the hub cluster.
++
+NOTE: Most times, there would be no need to destroying your AWS open environment and recreating it from scratch.
++
+There are two clean-up playbooks:
++
+`cleanup-hub.yaml`::
+Destroys only the VMs that belong to the hub cluster.
++
+`cleanup.yaml`::
+Destroys all VMs, including the helper VM. If you use this one, you must return to the previos lab to run the playbook which configures the bare metal host and its helper VM.
 
 3. Copy the kubeconfig and export it and validate the hub cluster is healthy.
 +
 [source,subs="verbatim,quotes"]
 --
-# cp /var/lib/libvirt/images/hub_install/auth/kubeconfig .
-# export KUBECONFIG=kubeconfig
+# cp /var/lib/libvirt/images/hub_install/auth/kubeconfig ~
+# chmod a-w ~/kubeconfig
+# export KUBECONFIG=~/kubeconfig
+# oc adm wait-for-stable-cluster
+[ terminate with Ctrl+C when it reports stable for a few sec ]
+# oc get node
 # oc get co
 --
 
@@ -38,23 +119,14 @@ WARNING: Tmux was NOT installed in previous steps. It's useful to work around SS
 +
 [source,subs="verbatim,quotes"]
 --
-$ oc get route -A | grep console
---
-+
-Alternatively [faster!]:
-+
-[source,subs="verbatim,quotes"]
---
 $ oc whoami --show-console
 --
-+
-[ Responses from the Kube API seems to be very slow, on cli and web console]
 
 5. Get the kubeadmin password
 +
 [source,subs="verbatim,quotes"]
 --
-$ cat /var/lib/libvirt/images/hub_install/auth/kubeadmin-password
+$ cat /var/lib/libvirt/images/hub_install/auth/kubeadmin-password ; echo
 --
 
 6. On the VNC console Launch a web browser and login to the OpenShift console using the kubeadmin user and password.
@@ -63,6 +135,8 @@ $ cat /var/lib/libvirt/images/hub_install/auth/kubeadmin-password
 +
 image::s4-fig-1.jpg[]
 
-8. Within the MetalLB operator validate that MetalLB, L2Advertisement and IPAddressPool resources are created.
+8. Validate the LVMCluster is running.
 +
-[ ALL good so far... stopped all VMs and the AWS env. Let's see if tomorrow everything restarts fine, or if I'll have to start over. ]
+image::s4-fig-2.jpg[]
+
+9. Within the MetalLB operator validate that MetalLB, L2Advertisement and IPAddressPool resources are created.

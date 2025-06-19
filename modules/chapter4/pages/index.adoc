@@ -40,7 +40,7 @@ Provision the hub cluster.
 20:06::
 Recap of previous steps
 
-?:??::
+21:03::
 Configure host inventory in ACM
 
 23:11::
@@ -50,10 +50,37 @@ Create infrastruture environments in ACM
 Add nodes overview
 
 25:17::
-Add a note using [what?] Discovery ISO
+Add a note using a Discovery ISO
 
-?:??::
+27:30::
+Add a node using PXE
 
+31:07::
+Add a node using BMC
+
+36:12::
+Add a node using BMC and a YAML file
+
+37:05::
+Create a hosted cluster using a load balancer for API access
+
+41:24::
+Explore the hosted cluster control plane resources.
+
+42:45::
+Access a hosted cluster.
+
+43:25::
+Expore the Konnectity services.
+
+45:07::
+Deploy a test application on the hosted cluster.
+
+45:45::
+End of demo. Closing words.
+
+??:??::
+lorem ipsum
 
 +
 May need pieces of the embedded video, because it was fast-forwarded (is that the same as the first video?)
@@ -64,17 +91,17 @@ NOTE: Looks like the definiton of image storage was incorrect at 21:55 -- it's n
 
 1. Configure the host inventory in ACM.
 
-.. In the *All Clusters* view of the OpenShift web console, enter *Automation > Host Inventory* and click *Configure host inventory settings" at the top right.
+.. In the *All Clusters* view of the OpenShift web console, enter *Infrastructure > Host Inventory* and click *Configure host inventory settings* at the top right.
 
 .. Accept the default values and click *Configure*.
 
 .. Wait a bit, the page takes some moments to refresh and show that the configuration process has started.
 +
-[ I got warnings that it's taking too long and I should troubleshoot... but everything kube is slow for me on that demo env, and I do not see evidence of issues in the pod. ]
+IMPORTANT: You may get warnings that it's taking too long and you might need to troubleshoot. They should be safe to ignore. It may take over 20 min to complete.
 
 .. Make sure you got a working host inventory before proceeding to the next step. The page should display a green message: "Host inventory configured successfully."
 
-.. If you prefer to monitor from CLI instead of from web console
+.. If you prefer to monitor configuration of the host inventory from the CLI instead of from the web console.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -82,9 +109,7 @@ NOTE: Looks like the definiton of image storage was incorrect at 21:55 -- it's n
 # oc get pod -n multicluster-engine -l app=assisted-service
 --
 +
-WARNING: I got an "OK" from the console which quickly turned back into the "taking too long" and the pods entered CrashLoopBackOff. I see liveness and readiness probes failing... will it autoheal? Or should I delete the pod?
-+
-[ Second "OK"... is that one really good? Many minutes of wait, didn't time it. ]
+You may see that the Assisted Service pod restart a few times until it can initialize itself successfully.
 
 2. Create an infrastructure environments in ACM.
 
@@ -100,31 +125,280 @@ WARNING: I got an "OK" from the console which quickly turned back into the "taki
 
 .. Click *Create*
 
-3. Add a node using the discovery ISO
+3. Add a host using the discovery ISO
 
 .. On the Host inventory page, enter the infrastructure environment you just created. You may already be there, from the previous step.
 
 .. Click on *Add hosts* and select *With Discovery ISO* to start downloading an ISO disk image. When the download is complete, copy the file to `/var/lib/libvirt/images/`.
-
-.. Start the Virtual Machine Manager (`virt-manager`) and create a new VM with at least 8GiB memory , 2vCPUS, and 100GB of disk, booting from the ISO image you downloaded in the previous step. It should use the default network and all other defaults.
 +
-WARNING: craft a virt-install command?
+Add `--no-check-certificate` to your `wget` command.
+
+.. Get the MAC addresses configured in Libvirt's default network for the `c1worker1` host. 
++
+[source,subs="verbatim,quotes"]
+--
+# virsh net-dumpxml default | grep c1worker1
+      <host mac='52:54:00:e2:54:41' name='c1worker1.hub.mylab.com' ip='192.168.122.41'/>
+--
++
+WARNING: If you do not use one of the MAC address set in Libvirt, your VM will fail to get an IP address and other required network settings like DNS name server addresses, and will fail to boot and connect to the Assisted Installer services on the Hub cluster. *This is NOT in the video!*
+
+.. Start the Virtual Machine Manager (`virt-manager`) and create a new VM named `c1worker1`, with at least 8GiB memory, 2vCPUS, and 100GB of disk, booting from the ISO image you downloaded in the previous step. Be sure you check *Customize configuration before install* on Step 5 of 5.
++
+WARNING: craft a virt-install command? See hcp-on-bm/setup_hosted_cluster.yaml
 +
 NOTE: The video mentions a playbook for VM creation but doesn't name it.
++
+NOTE: The video states 2 vCPU but slides #15 and #35 state 4vCPU.
 
-.. *Got errors booting the VM!* it cannot resolve the DNS name of the assisted-image-service. See screenshot at ~/Pictures/Screenshots/error-node-from-iso.png.
-+
-Could this be related to my DNS issues at start (that changes to /etc/resolv.conf weren't persistent?) and that I started the libvirt VMs before fixing it?
-+
-Tried restarting all VMs, let's see if it helps... having errors from the console and authentication operators. Maybe it just needs more time to settle in?
-+
-Yeah, it takes a long time until the cluster stabilizes (according to`oc adm wait-for-stable-cluster`) and even more for the `assisted-image-service-0` pod from the `multicluster-engine` project to be ready, so I can download a new discovery ISO.
-+
-But I got the same DNS resolver issue on the new VM. :-(
-+
-Only idea I have for now is rebooting the EC2 instance, or destroy everything and restart from scratch.
-+
-And now RHDP cannot restart my env, as of Fri, 17:31.
+.. Select the NIC of the new VM and set its MAC address to the one you got from a previous step, and click *Begin Installation*.
 
-.. After the VM installation finishes and it reboots, 
+.. After the VM installation finishes and it reboots, it should appear on the Host inventory of the Hub cluster. Click *Approve host* twice to make the host available for joining hosted clusters. The host status should change to "Available".
+
+.. You could add more hosts using the same discovery ISO, and give each node a different MAC address from the pool preconfigured in Libvirt's default network, but we will experiment with other methods for adding hosts to the inventory of your infrastructure environment.
+
+4. Add a host using PXE.
+
+.. You should be in the list of hosts of your infrastructure environment. Click *Add hosts* and select *With iPXE* to get a script which provides the `initrd` and `kernel` commands required to network boot a host from the Assisted Installer service.
++
+NOTE: If you use the "Command to download the iPXE script file" you must add the `--no-check-certificate` option to your `wget` command.
+
+.. Copy the URLs of the initd and kernel, from the iPXE script, and download them. If using `wget` you would create commands _similar_ to the following:
++
+[source,subs="verbatim,quotes"]
+--
+# wget -O initrd.img 'https://assisted-image-service-multicluster-engine.apps.hub.mylab.com/images/34ced53f-84b3-47ec-ae1f-8f6809f47e6c/pxe-initrd?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiIzNGNlZDUzZi04NGIzLTQ3ZWMtYWUxZi04ZjY4MDlmNDdlNmMifQ.3ZJF_HL3OsGjImxOwcmXCzVs_ITQzZN2bhPDpNLTaHcxv7OiUMHM7cxmfOZ_KZ8QQu7vj_-Ng00OXBgUhWAieQ&arch=x86_64&version=4.18' --no-check-certificate
+# wget -O vmlinuz 'https://assisted-image-service-multicluster-engine.apps.hub.mylab.com/boot-artifacts/kernel?arch=x86_64&version=4.18' --no-check-certificate
+# wget -O rootfs.img 'https://assisted-image-service-multicluster-engine.apps.hub.mylab.com/boot-artifacts/rootfs?arch=x86_64&version=4.18' --no-check-certificate
+--
+
+.. Copy the inird, kernel, and rootfs to the helper VM and open an SSH connection to it.
++
+[source,subs="verbatim,quotes"]
+--
+# scp -i ~/.ssh/lab_rsa initrd.img vmlinuz rootfs.img 192.168.122.21:~
+# ssh -i ~/.ssh/lab_rsa 192.168.122.21
+--
+
+.. On the helper VM, copy the inird and kernel files to the TFTP server images directory, and copy the rootfs file to the BOOTP server directory. 
++
+[source,subs="verbatim,quotes"]
+--
+# cp initrd.img vmlinuz  /var/lib/tftpboot/images/
+# cp rootfs.img /var/www/html/bootp/
+--
+
+.. Inspect the PXE configuration on the helper VM. It was already configured to use those files by the playbook from a previous activity.
++
+[source,subs="verbatim,quotes"]
+--
+# cat /var/lib/tftpboot/pxelinux.cfg/default
+default vesamenu.c32
+prompt 0
+timeout 60
+
+display boot.msg
+
+label linux
+  menu label CoreOS Hosted Cluster PXE
+  menu default
+  initrd images/initrd.img
+  kernel images/vmlinuz coreos.live.rootfs_url=http://192.168.122.21:8080/bootp/rootfs.img random.trust_cpu=on rd.luks.options=discard ignition.firstboot ignition.platform.id=metal console=tty1 console=ttyS1,115200n8 coreos.inst.persistent-kargs="console=tty1 console=ttyS1,115200n8"
+--
+
+.. You can now close your SSH connection to the helper VM.
+
+.. Inspect the Libvirt default network settings to verify that it configures the helper VM as the BOOTP server for the network.
++
+[source,subs="verbatim,quotes"]
+--
+# virsh net-dumpxml default | grep bootp
+      <bootp file='pxelinux.0' server='192.168.122.21'/>
+--
+
+.. Get the MAC addresses configured in Libvirt's default network for the `c1worker2` host.
++
+[source,subs="verbatim,quotes"]
+--
+# virsh net-dumpxml default | grep c1worker2
+      <host mac='52:54:00:e2:54:42' name='c1worker1.hub.mylab.com' ip='192.168.122.41'/>
+--
+
+.. Back to the Virtual Machine Manager (`virt-manager`) and create a new VM named `c1worker2`, selecting *Manual install*. Configure the VM with at least 8GiB memory, 2vCPUS, and 100GB of disk. Be sure you check *Customize configuration before install* on Step 5 of 5.
++
+WARNING: craft a virt-install command? See hcp-on-bm/setup_hosted_cluster.yaml
++
+NOTE: The video mentions another playbook for VM creation but doesn't name it.
+
+.. Select the NIC of the new VM and set its MAC address to the one you got from a previous step.
+
+.. Select *Boot Options* and check the NIC as a boot device, so the VM performs PXE boot, and click *Begin Installation*.
+
+.. After the VM installation finishes and it reboots, it should appear on the Host inventory of the Hub cluster. Click *Approve host* twice to make the host available for joining hosted clusters. The host status should change to "Available".
+
+5. [SKIP] Add a host using BMC.
+
+.. The BMC service was already on the bare metal host by the first playbook. [ true? ]
++
+WARNING: I'm not sure the vnet## devices on the bm host are the virtual BMC interfaces, and I do not have the vbmc command in the bm host, though the playbook does 'pip install virtualbmc'.
++
+According to https://pypi.org/project/virtualbmc/ I should use the ipmitool command, it doesn't mention a vmbc command like in the video.
++
+According to https://www.informaticar.net/how-to-install-virtualbmc-on-red-hat/ there are a number of manual steps to perform after that pip command -- and I see nothing in the playbooks.
+
+.. Add the local binaries to the command path, so you can run the binaries from virtualbmc
++
+[source,subs="verbatim,quotes"]
+--
+# export PATH=$PATH:/usr/local/bin
+--
+
+.. Looks like there's missing setup to configure and start the BMC server. :-(
++
+[source,subs="verbatim,quotes"]
+--
+# vbmc list
+2025-06-18 20:24:10,103 122161 ERROR VirtualBMC [-] Failed to connect to the vbmcd server on port 50891, error: Server response timed out
+Failed to connect to the vbmcd server on port 50891, error: Server response timed out
+--
+
+6. [SKIP] Add a host using BMC and an YAML file.
++
+WARNING: Not actually testing, just recording notes, because I cannot complete the previous step.
+
+7. Create a hosted cluster using a load balancer for API access.
+
+.. Find a domain name to use as the name of your cluster. The helper VM is preconfigured with two domains for use by hosted cluster, which you can find by searching for forwader domains.
++
+[source,subs="verbatim,quotes"]
+--
+# virsh net-dumpxml default | grep forwarder
+    <forwarder domain='hub.mylab.com' addr='192.168.122.21'/>
+    <forwarder domain='hcp-cluster1.mylab.com' addr='192.168.122.21'/>
+    <forwarder domain='hcp-cluster2.mylab.com' addr='192.168.122.21'/>
+    <forwarder domain='122.168.192.in-addr.arpa' addr='192.168.122.21'/>
+--
+
+.. On the ACM web console (the *All Clusters* perspective of the OpenShift web console), navigate to *Infrastructure > Clusters* and click *Create Cluster*.
+
+.. Fill in the *Cluster Details* page of the Create cluster assistant as follows:
+
+... Choose *Host inventory* for the infrastructure and them *Hosted* for the control plane type.
+
+... Type `hcp-cluster1` as the name of the cluster. Remember that it must be a name aligned with your DNS settings.
+
+... Type `mylab.com` as the base domain name of the cluster. Again, this must be aligned with your DNS settings.
+
+... Select a 4.16 version of OpenShift for your hosted cluster.
+
+... Paste a valid OpenShift pull secret.
+
+... Leave "Infrastructure provide credential" and "Cluster set" empty.
+
+... Click *Next*
+
+.. Fill in the *Node pools* page of the Create cluster assistant as follows:
+
+... Type `2` as the number of hosts of your hosted cluster.
+
+... Leave all other fiedls on their default values.
+
+... Click *Next*
+
+.. Fill in the *Networking* page of the Create cluster assistant as follows:
+
+... Select *Load Balancer* as the API publishing strategy. It uses the MetalLB deployment on the hub cluster to provide load balancers for API and ingress/route access to the hosted cluster.
+
+... Paste the contents of the `~/.ssh/lab_rsa.pub` SSH key.
+
+... Click *Next*
+
+.. Fill in the *Review* page of the Create cluster assistant as follows:
+
+... Set the *YAML* toogle to *On*
+
+... Find the `service: APIServer` field and edit as follows:
++
+[source,subs="verbatim,quotes"]
+--
+...
+  services:
+  - service: APIServer
+    servicePublishingStrategy:
+      type: LoadBalancer
+      LoadBalancer:
+        hostname: api.hcp-cluster1.mylab.com
+  - service: OAuthServer
+...
+--
+
+.. click *Create*.
++
+WARNING: got error: secret ssh-key (didn't copy the name) alterady exists. Did I click "create" twice?
+
+8. If your web console does not switch automatically to the `hcp-cluster1` details page, find it at *Infrastructure > Clusters* and monitor, on the *Overview* tab, the progress of deploying its hosted control plane services and its node pool.
+
+.. You can also monitor from the CLI, checking the services on the namespace named after the hosted cluster name twice.
++
+[source,subs="verbatim,quotes"]
+--
+# oc get service -n hcp-cluster1-hcp-cluster1
+--
++
+You may also notice resources such as PVCs for the etcd database and routes for authentication and other services.
++
+WARNING: find the resource that represents the hosted cluster, to get its "ready" status from the CLI.
+
+.. Be patient, it may take over 20 min to finish hosted cluster creation. During that time, control plane services may display a degraded status.
++
+NOTE: After a while, I still have some conditions:
++
+... ExternalDNSReachable: External DNS is not configured
++
+... Degraded: openshift-route-controller-manager deployment has 1 unavailable replicas
++
+But the overview declares the cluster as Ready, and it seems all works fine.
+
+9. Access the hosted cluster.
+
+.. On the overview tab of details page for the `hcp-cluster1` cluster, scroll down to find the *Details* panel. Note its status field. if it is ready, click the Console URL link to open a new browser tab with the web console of the hosted cluster. Notice, bellow the Console URL link, the *Reveal credentials* icon that provides the kubeadmin password for the hosted cluster.
+
+.. Navigate to *Compute > Nodes* and see that the cluster has two nodes: `c1worer1` and `c1worker2`, which you provisioned before. Other than the fact there are no master nodes, it looks like any other OpenShift cluster.
+
+.. On the *Details* panel of overview tab of details page for the `hcp-cluster1` cluster, you can also find the API URL for the CLI.
+
+... Remember we set the kubeconfig file for the hosted cluster as read-only, to prevent accidental corruption, so create a new kubeconfig file for the hosted cluster.
++
+[source,subs="verbatim,quotes"]
+--
+# export KUBECONFIG=~/kubeconfig-hcp-cluster1
+# oc login --insecure-skip-tls-verify -u kubeadmin https://192.168.122.60:6443
+# oc get nodes
+# oc get co
+--
+
+... Alternatively, you can download a kubeconfig file by clicking *Download kubeconfig* on the details page of your hosted cluster. That kubeconfig uses a client certificate, similar to the installation kubeconfig of OpenShift clusters created by the `openshift-installer` tool.
+
+... You can set the KUBECONFIG environment variable to different files, depending on the cluster you want to connect. This may be simpler than using `oc config` commands to maintain and switch between different contexts.
+
+.. Using your preferred method (web console or CLI) inspect the `kube-system` namespace to see the konnectivity-agent and kube-api-server-proxy pods that connect cluster nodes to their hosted contorl plane. 
+
+10. From now on, you can use the hosted cluster as a regular OpenShift cluster: deploy applications, install operators, configure authentication, and perform other day-2 tasks.
+
+.. Create a new project and deploy a "hello, world" application on the hosted cluster.
++
+[source,subs="verbatim,quotes"]
+--
+# oc new-project test
+# oc new-app --name hello --image docker.io/openshift/hello-openshift
+# oc expose svc hello
+--
+
+.. Wait until the hello pods are ready and running.
++
+[source,subs="verbatim,quotes"]
+--
+# oc get svc,pod
+# curl hello-test.apps.hcp-cluster1.mylab.com
+--
 

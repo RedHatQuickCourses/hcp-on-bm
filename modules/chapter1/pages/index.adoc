@@ -23,11 +23,9 @@ image::s2-fig-2c.jpg[]
 
 .. Select “0” under “Number of Private Subnets”
 
-.. Select "In 1 AZ" under "NAT Gateways ($)"
+.. Select "None" under "NAT Gateways ($)"
 +
 WARNING: Its is in the screen shot but doesn't work. AWS error: *NAT Gateway needs a private subnet to configure outbound traffic*
-+
-[ Assuming the instructions are correct, and shouldn't change this value, leave at its default of "None" ]
 
 .. Then click on “Create VPC”
 +
