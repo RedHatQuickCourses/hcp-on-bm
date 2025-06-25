@@ -1,29 +1,59 @@
-= An Example Quick Course
+= Introduction
 :navtitle: Home
 
-WARNING: GET COURSE METADATA FROM AUTHORS
+This training provides a comprehensive guide to deploying Hosted Control Planes (HCP) on a single bare-metal node, leveraging KVM for virtualization.
+You will learn to set up a proof of concept environment to explore HCP capabilities, with help of provided Ansible playbooks.
 
-== Introduction
+== Learning Objectives
 
-Course Title: Hosted Control Planes on a Single BareMetal Node
+By the end of this training, you will be able to:
 
-Description:
-Course description FIXME
+* Understand the architecture and benefits of Hosted Control Planes (HCP).
+* Prepare a bare-metal node on AWS for HCP deployment.
+* Set remote access to graphical applications in the bare-metal node.
+* Execute Ansible playbooks to set up the bare-metal host with a helper VM and a virtual network.
+* Execute Ansible playbooks to set up the ACM hub cluster and required operators.
+* Verify the installation and configuration of MetalLB, LVMStorage, and ACM operators.
+//* Install and configure Virtual BMC (optional).
+* Configure an infrastructure environment for the hosted cluster.
+* Add nodes to the inventory using various discovery methods.
+* Create a hosted cluster using discovered nodes.
 
-Duration: FIXME hours
+== Audience
 
-== Objectives
-
-On completing this course, you should be able to:
-
-* Observable, measurable objective...
-* Observable, measurable objective...
-* Observable, measurable objective...
+This training is intended for Information Technology professionals, including system administrators, cloud engineers, and architects, who are interested in deploying and managing OpenShift Hosted Control Planes on bare-metal infrastructure.
 
 == Prerequisites
 
-This course assumes that you have the following prior experience:
+To successfully complete this training, you should have:
 
-* Course or experience...
-* Course or experience...
-* Course or experience...
+* An Red Hat employee or partnet account for demo.redhat.com.
+* Basic understanding of AWS.
+* Familiarity with command Red Hat Enterprise Linux (RHEL) and Red Hat OpenShift.
+* Basic understanding of AWS clouds.
+* Basic understanding of KVM virtualization.
+* Basic knowledge of Ansible automation.
+
+== Virtual Lab Environment for Hands-on Activities
+
+The hands-on activities in this training utilizes a single AWS bare-metal instance (EC2 `c5.metal`) acting as the foundational physical machine.
+
+On this instance, multiple virtual machines will be deployed using KVM to simulate a collection of bare-metal servers, providing a realistic environment for deploying and configuring OpenShift Hosted Control Planes.
+
+This setup allows for the creation of an OpenShift Hub Cluster with master and worker nodes, and also an OpenShift Hosted Cluster with worker nodes, all virtualized on the single AWS bare-metal instance. 
+
+Helper services, including PXE, DNS, and HAProxy, will also be deployed on a helper VM within this environment. Ansible Core will be used for automation, originating from the RHEL9 bare-metal instance.
+
+The overall network for these virtual machines will operate on a default Libvirt network, with DHCP configuring devices based on predefined MAC addresses.
+
+It should be possible to adapt the instructions here, and use the provided Ansible playbooks, to replicate the same environment in an actual physical machine, if you have access to one that provides sufficient capacity, at least XXX CPUs, YYY RAM, and ZZZ disk space.
+
+== Authors
+
+* Ami Desai, Senior Cloud Consultant (India)
+* Praveen Thakur, Tech Sales Architect (Australia)
+* Sadique Puthen, Tech Sales Architect (Singapore)
+
+== Editor
+
+* Fernando Lozano, Principal Content Architect
