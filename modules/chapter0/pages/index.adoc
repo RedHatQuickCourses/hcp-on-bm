@@ -1,0 +1,92 @@
+= Introduction to OpenShift HCP and the PoC Environment
+
+////
+Video segments:
+https://drive.google.com/file/d/1x8WS_DQjKyOW_o3T7_WM9xXAe4rLgMWt/view?usp=sharing
+
+0:00::
+Introduction to Hosted Control Planes (HCP) and typical deployment architectures.
+
+9:43::
+Planning PoC/Tests, Justification for using a single physical machine, lab architecture.
+
+12:10::
+////
+
+This section introduces the essential concepts and terminology of OpenShift Hosted Control (HCP) and describes the proof-of-concept (PoC) environment that you will deploy in the activities of this course.
+
+== What are Hosted Control Planes?
+
+Hosted Control Planes is a cloud-native architecture where the OpenShift control plane is decoupled from its data plane. The control planes of multiple openshift clusters run as pods on a single Openshift cluster.
+
+HCP uses the upstream project Hypershift and the MultiCluster Engine (MCE) operator. HCP can be co-hosted on an ACM hub cluster or on a dedicated Openshift cluster.
+
+HCP increases return on investment by using common hardware to run multiple control planes and allowing a higher server density. Without HCP, hardware resources are underutilized on master nodes, especially when you do not wish to share those nodes with user workloads.
+
+We will see “How” Hosted control planes can increase ROI. In this example, there are 4 openshift clusters. One Mgmt cluster and 3 application clusters.
+
+image::fig-1.svg[title="Multiple OpenShift clusters, without HCP"]
+
+All four clusters are having 3 dedicated master nodes and few infra and workers nodes. In this case, without HCP, total 40 nodes are required to serve 4 openshift clusters.
+
+Now, we suggest to use hosted control planes feature here. Where, all 3 clusters control planes are running as pods in the management cluster. Infra and worker nodes remains same Here, in Management cluster, we are having 3 CP + 3 Infra nodes same as earlier. But, in application clusters, the 3 CP  nodes in each cluster are not required. So, in total, 31 nodes are sufficient to have 4 OCP clusters, whereas without HCP, 40 nodes were required.
+
+image::fig-2.svg[title="Multiple OpenShift clusters, using HCP"]
+
+Let’s deep dive into a sample HCP architecture. In HCP, the cluster on which control planes will run is called the host cluster. In this architecture, the host cluster is same as the openshift management cluster which runs the ACM hub. The ACM, MCE, and Hypershift operators run on the host clusters, which is a standard OpenShift cluster with three 3 schedulable masters and 3 infra nodes.
+
+image::fig-3.png[title="HCP architecture with single host/hub clusters"]
+
+In continuation to the previous example, there are 3 application clusters are used, each one on its own namespaces on the host cluster. HCP pods, api-server, auth-server, etcd, olm and other control plane pods run in each of these namespaces. On the data plane side, the first cluster has AWS EC2 instances as workers; the second cluster has baremetal nodes running on their data-center as worker nodes; and the third cluster has OpenShift Virtualization VMs, hosted by the ACM hub cluster, as worker nodes.
+
+Another architecture for HCP has a dedicated ACM hub cluster and other managed clusters acting as host clusters.
+
+image::fig-4.png[title="HCP architecture with single hub cluster and multiple host clusters"]
+
+This architecture offers greater scalability because the number of hosted clusters is not limited by the capacity of the ACM hub cluster. The hub cluster manages both host clusters and hosted clusters. On each host cluster, there is a separate instance of the MCE, which is not self managed, but it is managed by the ACM hub. The ACM hub also manages the data planes of each hosted cluster, which again can reside on different kinds of infrastrutre, from IaaS cloud instances to physical servers.
+
+== Why Hosted Control Planes ?
+
+The following are a few use cases where Hosted Control Planes is a good fit:
+
+Hybrid cloud adoption::
+Deploy applications across multiple cloud providers or hybrid cloud environments.
+
+Edge and IoT applications::
+Edge computing and IoT applications that require a lightweight, flexible platform to manage distributed systems
+
+OCP as a managed service::
+Increase ROI by running multiple control planes on pods instead of dedicated nodes.
++
+Offer OpenShift as a managed service to customers where customers do not need to manage the control plane.
+
+Startups or fast growing orgs::
+HCP clusters data plane can be created using Openshift Virtualization.
++
+Cluster creation and adding more clusters is faster and cheaper with HCP and OpenShift Virtualization VMs.
+
+== Planing PoCs and Testing Hosted Control Planes
+
+Most customers are planning to use bare metal servers, but they may not have enough physical servers available for a proof-of-concept (PoC), or may not be able to provide such servers in a timely manner.
+
+You see, a text-book deployment of HCP requires 6 servers for the hub/host cluster alone (3 masters + 3 infra nodes) and additional servers for worker nodes of hosted clusters. Even if you attempt using a complact cluster (3 schedulable masters and no infra nodes) you still require a minimum of five servers for creating a single hosted cluster with two nodes.
+
+To work around availability of servers, and still perfom a succesfull PoC, you can use RHEL virtualization, based on KVM and libvirt, to emulate multiple bare metal servers on a single physical server, or on a smaller number of servers that would be required to provide dedicated servers for a hub/host cluster + dedicated servers for worker nodes/data plane nodes.
+
+image::fig-5.png[title="PoC environment for HCP using a single server and libvirt VMs"]
+
+By following the activities in this course, you will first use a set of provided Ansible playbooks to:
+
+* Configure the bare metal host and a helper services VM, to provide DHCP, BOOTP, and load balancer services.
+* Configure a set of six libvirt VMs as a hub and host cluster.
+
+Then you will use the OpenShift web console to:
+
+* Configure an ACM infrastructure environment and add VMs as physical hosts to that environment.
+* Create a hosted cluster using those VMs as worker nodes.
+
+And you will use the OpenShift CLI to access the new hosted cluster, in addition to its own web console.
+
+You will also experiment with different ways of provisioning your physical hosts and adding them to an infrastructure environment, including optional virtual BMC services to demonstrate the usage of managed server hardware as part of your HCP deployments.
+
+
