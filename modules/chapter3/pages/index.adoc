@@ -1,4 +1,4 @@
-= Setup the Hub/ACM Cluster
+= Setup the Hub Cluster
 
 ////
 Video segments:
@@ -13,7 +13,7 @@ Recap of previous steps
 21:03::
 ////
 
-This lab describes how to provision a hub cluster with ACM and other required operators, by using provided Ansible playbooks and the OpenShift web console.
+This lab shows how to provision a hub cluster with ACM and other required operators, by using provided Ansible playbooks and the OpenShift web console.
 
 1. Update `/etc/resolv.conf` to set the helper vm as the primary DNS server. Keep the AWS DNS server as a secondary option.
 +

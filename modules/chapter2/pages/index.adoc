@@ -10,7 +10,7 @@ Prepare the bare metal node.
 16:34::
 ////
 
-This lab describes how configure the bare metal host with virtual networking and a helper services VM, by using an Ansible playbook provided on a git repository. It also configures the bare metal host for graphical access, so you can run a web browser and virt-manager on the following labs.
+This lab shows how configure the bare metal host with virtual networking and a helper services VM, by using an Ansible playbook provided on a git repository. It also configures the bare metal host for graphical access, so you can run a web browser and virt-manager on the following labs.
 
 1. Review the architecture of the HCP on bare metal proof-of-concept architecture.
 +

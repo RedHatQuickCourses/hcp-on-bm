@@ -23,7 +23,7 @@ Deploy a test application on the hosted cluster.
 End of demo. Closing words.
 ////
 
-This lab describes how to create and access a hosted cluster using worker nodes available from an ACM infrastrcuture environment.
+This lab shows how to create and access a hosted cluster using worker nodes available from an ACM infrastrcuture environment.
 
 1. Create a hosted cluster using a load balancer for API access.
 
@@ -120,7 +120,7 @@ You may also notice resources such as PVCs for the etcd database and routes for 
 //+
 //But the overview declares the cluster as Ready, and it seems all works fine.
 
-3. Access the hosted cluster using a web browser.
+7. Access the hosted cluster using a web browser.
 
 .. On the overview tab of details page for the `hcp-cluster1` cluster, scroll down to find the *Details* panel. Note its status field. if it is ready, click the Console URL link to open a new browser tab with the web console of the hosted cluster.
 
@@ -128,7 +128,7 @@ You may also notice resources such as PVCs for the etcd database and routes for 
 
 .. On the console of the hosted cluster, navigate to *Compute > Nodes* and see that the cluster has two nodes: `c1worker1` and `c1worker2`, which you provisioned before. Other than the fact there are no master nodes, it looks like any other OpenShift cluster.
 
-4. Access the hosted cluster using the CLI.
+8. Access the hosted cluster using the CLI.
 
 .. On the console of the hub clister, see the *Details* panel of overview tab of details page for the `hcp-cluster1` cluster, you can find the API URL for the CLI.
 
@@ -146,9 +146,9 @@ You may also notice resources such as PVCs for the etcd database and routes for 
 
 .. You can set the KUBECONFIG environment variable to different files, depending on the cluster you want to connect. This may be simpler than using `oc config` commands to maintain and switch between different contexts.
 
-5. Using your preferred method (web console or CLI) inspect the `kube-system` namespace to see the konnectivity-agent and kube-api-server-proxy pods that connect cluster nodes to their hosted control plane on the hub cluster. 
+9. Using your preferred method (web console or CLI) inspect the `kube-system` namespace to see the konnectivity-agent and kube-api-server-proxy pods that connect cluster nodes to their hosted control plane on the hub cluster. 
 
-6. From now on, you can use the hosted cluster as a regular OpenShift cluster: deploy applications, install operators, configure authentication, and perform other day-2 tasks.
+10. From now on, you can use the hosted cluster as a regular OpenShift cluster: deploy applications, install operators, configure authentication, and perform other day-2 tasks.
 
 .. Create a new project and deploy a "hello, world" application on the hosted cluster.
 +
@@ -164,6 +164,12 @@ You may also notice resources such as PVCs for the etcd database and routes for 
 [source,subs="verbatim,quotes"]
 --
 # oc get svc,pod
+--
+
+.. Access the hello, world app using the ingress controller from the hosted cluster.
++
+[source,subs="verbatim,quotes"]
+--
 # curl hello-test.apps.hcp-cluster1.mylab.com
 --
 

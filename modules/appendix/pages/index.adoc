@@ -4,7 +4,7 @@
 No Video segments:
 ////
 
-This lab describes how to configure the bare metal host to provide a virtual Baseboard Management Controller (vBMC), which enables managing libvirt VMs as if they were bare metal machines with IPMI controllers or similar management hardware.
+This lab shows how to configure the bare metal host to provide a virtual Baseboard Management Controller (vBMC), which enables managing libvirt VMs as if they were bare metal machines with IPMI controllers or similar management hardware.
 
 1. Install vBMC, if not already installed by the playbooks from the previous lab.
 +

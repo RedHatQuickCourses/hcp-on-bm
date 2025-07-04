@@ -4,7 +4,7 @@
 No video segments:
 ////
 
-This lab describes how to prepare an AWS environment, using the AWS console, containing a single bare metal instance that you will later access using SSH and also VNC.
+This lab shows how to prepare an AWS environment, using the AWS console, containing a single bare metal instance that you will later access using SSH and also VNC.
 
 1. On the AWS Web console, switch to your preferred region, preferably the one closest to you. If unsure, use `us-east-1`.
 +

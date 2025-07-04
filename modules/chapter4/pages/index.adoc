@@ -28,7 +28,7 @@ Add a node using BMC and a YAML file
 37:05::
 ////
 
-This lab describes how to configure an infrastructure environment, using ACM, and add bare metal hosts to it, using either a Discovery ISO or PXE boot.
+This lab shows how to configure an infrastructure environment, using ACM, and add bare metal hosts to it, using either a Discovery ISO or PXE boot.
 
 
 ////
