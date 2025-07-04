@@ -117,7 +117,7 @@ Destroys only the VMs that belong to the hub cluster.
 `cleanup.yaml`::
 Destroys all VMs, including the helper VM. If you use this one, you must return to the previos lab to run the playbook which configures the bare metal host and its helper VM.
 
-3. Copy the kubeconfig and export it and validate the hub cluster is healthy.
+3. Create a read-only copy of the kubeconfig file of the hub cluster, and use it to validate the hub cluster is healthy.
 +
 [source,subs="verbatim,quotes"]
 --

@@ -97,3 +97,38 @@ ip addr add 192.168.122.71/32 dev virbr0
 --
 
 9. You may have to manually reboot the BMC managed node after correcting the boot order to boot from disk manually.
+
+////
+
+
+5. [SKIP] Add a host using BMC.
+
+.. The BMC service was already on the bare metal host by the first playbook. [ true? ]
++
+WARNING: I'm not sure the vnet## devices on the bm host are the virtual BMC interfaces, and I do not have the vbmc command in the bm host, though the playbook does 'pip install virtualbmc'.
++
+According to https://pypi.org/project/virtualbmc/ I should use the ipmitool command, it doesn't mention a vmbc command like in the video.
++
+According to https://www.informaticar.net/how-to-install-virtualbmc-on-red-hat/ there are a number of manual steps to perform after that pip command -- and I see nothing in the playbooks.
+
+.. Add the local binaries to the command path, so you can run the binaries from virtualbmc
++
+[source,subs="verbatim,quotes"]
+--
+# export PATH=$PATH:/usr/local/bin
+--
+
+.. Looks like there's missing setup to configure and start the BMC server. :-(
++
+[source,subs="verbatim,quotes"]
+--
+# vbmc list
+2025-06-18 20:24:10,103 122161 ERROR VirtualBMC [-] Failed to connect to the vbmcd server on port 50891, error: Server response timed out
+Failed to connect to the vbmcd server on port 50891, error: Server response timed out
+--
+
+6. [SKIP] Add a host using BMC and an YAML file.
++
+WARNING: Not actually testing, just recording notes, because I cannot complete the previous step.
+
+////
