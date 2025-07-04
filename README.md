@@ -19,4 +19,6 @@ Figures required small changes from the [original RH1 presentation deck](https:/
 
 NOTE: the source materials are available only to Red Hat employees.
 
+The playbooks required to configure the bare metal node, helper VMs, and deploy the hub cluster, are [forked](https://github.com/RedHatQuickCourses/hcp-on-bm-playbooks) to ensure reproducibility of this course labs and allow for evolution of the original content.
+
 The introduction used a bit of AI to generate a summary of course objectives, topics, and prerequisites -- all properly reviewed and tweaked by a human.
