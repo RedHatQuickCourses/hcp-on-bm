@@ -1,0 +1,99 @@
+= Optional: Configure Virtual BMC Services on the Bare Metal Host
+
+////
+No Video segments:
+////
+
+This lab describes how to configure the bare metal host to provide a virtual Baseboard Management Controller (vBMC), which enables managing libvirt VMs as if they were bare metal machines with IPMI controllers or similar management hardware.
+
+1. Install vBMC, if not already installed by the playbooks from the previous lab.
++
+[source,subs="verbatim,quotes"]
+--
+# pip install virtualbmc
+--
+
+2. Create a Systemctl service unit.
++
+[source,subs="verbatim,quotes"]
+--
+# vi /etc/systemd/system/vbmcd.service
+--
+
+3. Copy and paste the following to the new unit.
++
+[source,subs="verbatim,quotes"]
+--
+[Install]
+WantedBy = multi-user.target
+
+[Service]
+BlockIOAccounting = True
+CPUAccounting = True
+ExecReload = /bin/kill -HUP $MAINPID
+ExecStart = /usr/local/bin/vbmcd --foreground
+Group = root
+MemoryAccounting = True
+PrivateDevices = False
+PrivateNetwork = False
+PrivateTmp = False
+PrivateUsers = False
+Restart = on-failure
+RestartSec = 2
+Slice = vbmc.slice
+TasksAccounting = True
+TimeoutSec = 120
+Type = simple
+User = root
+
+[Unit]
+After = libvirtd.service
+After = syslog.target
+After = network.target
+Description = vbmc service
+--
+
+4. Enable the service unit.
++
+[source,subs="verbatim,quotes"]
+--
+systemctl daemon-reload
+systemctl enable vbmcd.service
+systemctl start vbmcd.service
+systemctl status vbmcd.service
+--
+
+5. Add an ip address for vBMC to listen. It requires a unique IP address for each VM.
++
+[source,subs="verbatim,quotes"]
+--
+ip addr add 192.168.122.71/32 dev virbr0
+--
+
+6. Associate the IP address with an _existing_ VM, for example a third host named `c1worker3`
++
+[source,subs="verbatim,quotes"]
+--
+# /usr/local/bin/vbmc add c1worker3 --address 192.168.122.71 --username admin --password redhat
+--
+
+7. Start the vbmc for that VM.
++
+[source,subs="verbatim,quotes"]
+--
+# vbmc start c1worker3
+--
+
+8. Make sure that service is running for that vm. 
++
+[source,subs="verbatim,quotes"]
+--
+# vbmc list
++-------------+---------+----------------+------+
+| Domain name | Status  | Address        | Port |
++-------------+---------+----------------+------+
+| c1worker3   | running | 192.168.122.71 |  623 |
++-------------+---------+----------------+------+
+--
+
+9. You may have to manually reboot the BMC managed node after correcting the boot order to boot from disk manually.
