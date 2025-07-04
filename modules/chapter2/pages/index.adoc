@@ -1,18 +1,29 @@
 = Prepare the BareMetal Node
 
-1. Familiarize yourself with the HCP on BM architecture.
+////
+Video segments:
+https://drive.google.com/file/d/1x8WS_DQjKyOW_o3T7_WM9xXAe4rLgMWt/view?usp=sharing
+
+16:34::
+Provision the hub cluster.
+
+20:06::
+Recap of previous steps
+
+21:03::
+////
+
+This lab describes how configure the bare metal host with virtual networking and a helper services VM, by using an Ansible playbook provided on a git repository. It also configures the bare metal host for graphical access, so you can run a web browser and virt-manager on the following labs.
+
+1. Review the architecture of the HCP on bare metal proof-of-concept architecture.
 +
 image::s3-fig-1.png[]
 +
-NOTE: Is there an SVG (or google slides) version of that diagram?
+For now, you will configure just the libvirt network and the helper services VM.
 +
-WARNING: write a summary of what's in there:
-- DHCP services provided by libvirt on the host
-- DNS zone for the mylab.com domain on the helper VM
-- TFTP (PXE) services on the helper VM
-- HAProxy LB services on the helper VM
+NOTE: There is only one helper VM, which runs both DNS, HAProxy, and BOOTP daemons.
 
-2. Once the instance is up and running, ssh to the node using the private key downloaded earlier. 
+2. Once the instance is up and running, ssh to the node using the private key downloaded in the previous lab. 
 +
 image::s3-fig-2.jpg[]
 
@@ -23,7 +34,7 @@ image::s3-fig-2.jpg[]
 $ ssh -i _<path to the private key>_  ec2-user@_<public ip>_
 --
 +
-NOTE: Warn about using keep alive so the connection doesn't terminate during long-running ansible playbooks, killing the runner.
+NOTE: If your SSH client supports it, enable keep alive so the connection doesn't terminate during long-running Ansible playbooks, killing the Ansible runner and leeting your host only partially configured.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -42,7 +53,17 @@ $ sudo -i
 # ansible-galaxy collection install community.crypto
 --
 
-5. Setup VNC access, if you prefer it over waypipe.
+5. Configure remote graphicall access, using one of the two alternatives:
+
+.. If your worktation runs Fedora Linux or any other Linux distribution with Wayland, you can use `waypipe` in front of the `ssh` command that connects to your EC2 instance, and start a web browser from the shell.
++
+[source,subs="verbatim,quotes"]
+--
+$ waypipe ssh -o "ServerAliveInterval 30" -o "ServerAliveCountMax 120" -i _<path to the private key>_ ec2-user@_<public ip>_
+$ firefox &
+--
+
+.. If your workstation does not run Wayland, you can setup VNC access.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -56,36 +77,28 @@ Would you like to enter a view-only password (y/n)? n
 $ exit
 --
 
-6. Connect to the public ip of the baremetal node on port 5999 using `vncviewer` to get its graphical console. This will be required to access the Openshift console later.
+.. Connect to the public ip of the baremetal node on port 5999 using `vncviewer` to get its graphical console and open a web browser.
 
-.. Alternatively, you can use `waypipe` in front of your `ssh` command, instead of a VNC viewer, and start a Firefox from the shell.
+.. The following instructions will ask you to access the Red Hat customer portal and Red Hat Hybrid Cloud Console. You can do it directly from the bare metal instance, using the graphicall access you just configured, or access those sites from your workstation and them copy files to the EC2 instance.
+
+6. Download latest `rhel-9.5-x86_64-kvm.qcow2` cloud image (*Red Hat Enterprise Linux 9.5 KVM Guest Image*) from the https://access.redhat.com/downloads[customer portal] and copy to the baremetal node.
++
+NOTE: The instructions are expected to work with different versions of RHEL but were tested with RHEL 9.5.
+
+7. Clone the git repository and move the RHEL Image to the correct directory.
 +
 [source,subs="verbatim,quotes"]
 --
-$ waypipe ssh -o "ServerAliveInterval 30" -o "ServerAliveCountMax 120" -i _<path to the private key>_ ec2-user@_<public ip>_
-$ firefox &
---
-
-7. Download latest `rhel-9.5-x86_64-kvm.qcow2` cloud image (*Red Hat Enterprise Linux 9.5 KVM Guest Image*) from the https://access.redhat.com/downloads[customer portal] and copy to the baremetal node.
-+
-WARNING: Make learners aware of that BEFORE starting. Not good pausing here while it downloads, 10min or more for me.
-+
-[ Cannot find a way of getting the download URL to use with curl directly on the EC2 instance. ]
-
-8. Clone the git repository and move the RHEL Image to the correct directory.
-+
-[source,subs="verbatim,quotes"]
---
-# git clone https://github.com/v2pkthakur/hcp-on-bm.git
-# cd hcp-on-bm
+# git clone https://github.com/RedHatQuickCourses/hcp-on-bm-playbooks.git
+# cd hcp-on-bm-playbooks
 # cp ~vncuser/Downloads/rhel-9.6-x86_64-kvm.qcow2 roles/setup-bm-host/files/
 --
 +
-NOTE: Clone or fork the repository as part of the Quick Courses organization?
+NOTE: We use a fork of the https://github.com/v2pkthakur/hcp-on-bm.git[original repository^] to ensure the reproducibility of the instructions here. The original repository may include contributitions and improvements, made after creation of this course, which may interest you.
 
-9. Explore the inventory and variables and update where required.
+8. Explore the inventory and variables and update where required.
 +
-For example, if you got a newer version of RHEL9 Qcow instead of RHEL9.5, please update the `rhel9_kvm_image` variable.
+For example, if you got a newer version of RHEL9 cloud image instead of RHEL9.5, please update the `rhel9_kvm_image` variable.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -95,21 +108,21 @@ rhel9_kvm_image: rhel-9.6-x86_64-kvm.qcow2
 ... 
 --
 
-10. Login on the https://console.redhat.com[Red Hat Hybrid Cloud Console] and get your organization ID, which can be obtained by clicking your name on top right.
+9. Login on the https://console.redhat.com[Red Hat Hybrid Cloud Console] and get your organization ID, which can be obtained by clicking your name on top right.
 +
 image::s3-fig-3.jpg[]
 
-11. Create an activation key from the cloud console by entering its https://console.redhat.com/insights/connector/activation-keys[Insights pages] and note down the name of the activation key.
+10. Create an activation key from the cloud console by entering its https://console.redhat.com/insights/connector/activation-keys[Insights pages] and note down the name of the activation key.
 +
 Use the details from the screenshot to fill the activation key details. Make sure that you name it appropriately.
 +
 image::s3-fig-4.jpg[]
 
-12. Copy your OpenShift pull secret from the cloud console by entering its https://console.redhat.com/openshift/install/pull-secret[OpenShift pages].
+11. Copy your OpenShift pull secret from the cloud console by entering its https://console.redhat.com/openshift/install/pull-secret[OpenShift install page].
 +
 image::s3-fig-5.jpg[]
 
-13. Configure `ansible-vault` to store your organization ID, activation keys, and OpenShift pull secret.
+12. Configure `ansible-vault` to store your organization ID, activation keys, and OpenShift pull secret.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -121,14 +134,14 @@ activation_key: _YYYYY_
 pull_secret: '_ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ_'
 --
 
-14. Set up the baremetal node by running the ansible playbook.
+13. Set up the baremetal node by running the ansible playbook.
 +
 [source,subs="verbatim,quotes"]
 --
 $ ansible-playbook -i inventory/hosts setup_bm_host.yaml --ask-vault-pass
 --
 
-15. Review key configuration settings that will affect our hosted clusters in the final activity.
+14. Review key configuration settings that will affect our hosted clusters in the final activity.
 
 .. You should have a single libvirt VM named `helper`.
 +
@@ -140,7 +153,7 @@ $ ansible-playbook -i inventory/hosts setup_bm_host.yaml --ask-vault-pass
  1    helper   running
 --
 
-.. The libvirt default network provides fixed IP addresses, based on MAC addresses, for  six hosts, each three in a different hosted cluster. You can add more if you need.
+.. Review the libvirt default network settings. It provides fixed IP addresses, based on MAC addresses, for six hosts, anticipating two different hosted clusters with three nodes each. You can add more if you need.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -190,7 +203,7 @@ $ ansible-playbook -i inventory/hosts setup_bm_host.yaml --ask-vault-pass
 
 .. It also provide for three load balancer IPs, one for the hub cluster, and two for hosted clusters. If you need more, you also need to change the HAProxy settings on the helper VM.
 
-.. Finally, it configures Libvirt's DNS server to forward queries for the domains of the hub and two hosted clusters. [ Break the previous listing and add callouts? ]
+.. Finally, it configures Libvirt's DNS server to forward queries for the domains of the hub and two hosted clusters.
 
 .. Open a SSH session to the helper VM and inspect open network ports. Notice the `haproxy` and `named` daemons running, and also that Systemd will an TFTP server when there's UDP traffic to it.
 +
@@ -202,7 +215,7 @@ $ ansible-playbook -i inventory/hosts setup_bm_host.yaml --ask-vault-pass
 # exit
 --
 
-16. Allow access to `virt-manager` from your GUI user.
+15. Allow access to `virt-manager` from your GUI user.
 
 .. Add either the `ec2-user` user (if using `waypipe`) of the `vncuser` user (if using a VNC viewer) to the `libvirt` group.
 +

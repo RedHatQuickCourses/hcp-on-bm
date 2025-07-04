@@ -29,7 +29,7 @@ This training is intended for Information Technology (IT) professionals, includi
 
 To successfully complete this training, you should have:
 
-* An Red Hat employee or partner account with access to demo.redhat.com.
+* An Red Hat employee or partner account with access to demo.redhat.com, the Red Hat customer portal, and the Red Hat Hybrid Cloud Console.
 * Familiarity with administration of Red Hat Enterprise Linux (RHEL) and Red Hat OpenShift.
 * Basic understanding of AWS.
 * Basic understanding of KVM virtualization.
@@ -47,7 +47,7 @@ Helper services, including BOOTP, DNS, and HAProxy, will also be deployed on a h
 
 The overall network for these virtual machines will operate on the default libvirt network, with DHCP set up to configuring devices based on predefined MAC addresses.
 
-It should be possible to adapt the instructions here, and reuse the provided Ansible playbooks as they are, to replicate a similar environment in a physical machine, if you have access to one that provides sufficient capacity: at least XXX CPUs, YYY RAM, and ZZZ disk space.
+It should be possible to adapt the instructions here, and reuse the provided Ansible playbooks as they are, to replicate a similar environment in a physical machine, if you have access to one that provides sufficient capacity: at least 64 CPU cores, 128 GB RAM, and 750 GB of disk space.
 
 == Authors
 

@@ -1,5 +1,17 @@
 = Deploy BareMetal Node
 
+////
+Video segments:
+https://drive.google.com/file/d/1x8WS_DQjKyOW_o3T7_WM9xXAe4rLgMWt/view?usp=sharing
+
+12:10::
+Prepare the bare metal node.
+
+16:34::
+////
+
+This lab describes how to prepare an AWS environment, using the AWS console, containing a single bare metal instance that you will later access using SSH and also VNC.
+
 1. On the AWS Web console, switch to your preferred region, preferably the one closest to you. If unsure, use `us-east-1`.
 +
 image::s2-fig-1.jpg[]
@@ -25,7 +37,7 @@ image::s2-fig-2c.jpg[]
 
 .. Select "None" under "NAT Gateways ($)"
 +
-WARNING: Its is in the screen shot but doesn't work. AWS error: *NAT Gateway needs a private subnet to configure outbound traffic*
+WARNING: It won't work exactly as is in the screen shot, but throw an error: *NAT Gateway needs a private subnet to configure outbound traffic*. There is no need for a NAT gateway because the instance has a public IP address.
 
 .. Then click on “Create VPC”
 +
@@ -47,7 +59,7 @@ image::s2-fig-6.jpg[]
 
 .. Select “Red Hat” under “Application and OS Images (Amazon Machine Image)”
 +
-WARNING: Leave it at the default RHEL10 or change to RHEL9? Will do the later, as per the screen shot.
+WARNING: It is expected to work using the default RHEL10 AMI, but all testes were performed by selecting a RHEL9 AMI.
 
 .. Select “c5.metal” under “Instance Type”
 +
@@ -57,18 +69,20 @@ image::s2-fig-7.jpg[]
 +
 image::s2-fig-8.jpg[]
 
-.. Give a Name and Click “Create Key Pair”
+.. Give a Name and click “Create Key Pair”
 +
 image::s2-fig-9.jpg[]
 
-.. Save the auto Downloaded keypair in your local system with a permission of 600.
+.. Save the automatically downloaded keypair in your local system with a permission of 600.
 +
 [source,subs="verbatim,quotes"]
 --
 $ chmod 600 _<path to the keypair>_
 --
 
-7. Click “Edit” next to “Network Settings”
+7. Click “Edit” next to “Network Settings” and fill in the panel as follows:
++
+image::s2-fig-10.jpg[]
 
 .. Select “Enable” in “Auto-assign public IP”
 
@@ -79,8 +93,6 @@ $ chmod 600 _<path to the keypair>_
 .. Specify “Port Range” to “5999”
 
 .. Select “My IP” for “Source type” for the second security group rule also.
-+
-image::s2-fig-10.jpg[]
 
 8. Under “Configure Storage”, change the size of the disk to 750GiB
 +
@@ -90,6 +102,6 @@ image::s2-fig-11.jpg[]
 +
 image::s2-fig-12.jpg[]
 +
-WARNING: AWS error: We currently do not have sufficient c5.metal capacity in the Availability Zone you requested (us-east-2a). Our system will be working on provisioning additional capacity. You can currently get c5.metal capacity by not specifying an Availability Zone in your request or choosing us-east-2b, us-east-2c
-+
-[ Is there a way of checking capacity BEFORE starting? Restarted on us-east-1 and it worked, default was us-east-2 ]
+WARNING: If you get an AWS error stating there is no sufficient c5.metal capacity, try on a different availability zone.
+
+10. Wait a few monents until your AWS instance is up and running, before continuing with the next lab.
