@@ -4,13 +4,10 @@
 Video segments:
 https://drive.google.com/file/d/1x8WS_DQjKyOW_o3T7_WM9xXAe4rLgMWt/view?usp=sharing
 
+12:10::
+Prepare the bare metal node.
+
 16:34::
-Provision the hub cluster.
-
-20:06::
-Recap of previous steps
-
-21:03::
 ////
 
 This lab describes how configure the bare metal host with virtual networking and a helper services VM, by using an Ansible playbook provided on a git repository. It also configures the bare metal host for graphical access, so you can run a web browser and virt-manager on the following labs.

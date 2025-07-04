@@ -1,13 +1,7 @@
 = Deploy BareMetal Node
 
 ////
-Video segments:
-https://drive.google.com/file/d/1x8WS_DQjKyOW_o3T7_WM9xXAe4rLgMWt/view?usp=sharing
-
-12:10::
-Prepare the bare metal node.
-
-16:34::
+No video segments:
 ////
 
 This lab describes how to prepare an AWS environment, using the AWS console, containing a single bare metal instance that you will later access using SSH and also VNC.
