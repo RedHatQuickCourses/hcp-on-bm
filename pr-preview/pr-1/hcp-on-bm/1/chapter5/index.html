@@ -61,14 +61,14 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../chapter1/index.html">Deploy BareMetal Node</a>
+    <a class="nav-link" href="../chapter1/index.html">Deploy the Bare Metal Node</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../chapter2/index.html">Prepare the BareMetal Node</a>
+    <a class="nav-link" href="../chapter2/index.html">Prepare the Bare Metal Node</a>
   </li>
 </ul>
   </li>
@@ -140,7 +140,7 @@
 <article class="doc">
 <h1 class="page">Create and Access a Hosted Cluster</h1>
 <div class="paragraph">
-<p>This lab shows how to create and access a hosted cluster using worker nodes available from an ACM infrastrcuture environment.</p>
+<p>This lab shows how to create and access a hosted cluster using worker nodes available from an ACM infrastructure environment.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -149,7 +149,7 @@
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Find a domain name to use as the name of your cluster. The helper VM is preconfigured with two domains for use by hosted cluster, which you can find by searching for forwader domains.</p>
+<p>Find a domain name to use as the name of your cluster. The helper VM is preconfigured with two domains for use by hosted cluster, which you can find by searching for forwarder domains.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># virsh net-dumpxml default | grep forwarder
@@ -214,7 +214,7 @@ It is expected to work with later versions of OpenShift, but this lab was tested
 <p>Type <code>2</code> as the number of hosts of your hosted cluster.</p>
 </li>
 <li>
-<p>Leave all other fiedls on their default values.</p>
+<p>Leave all other fields on their default values.</p>
 </li>
 <li>
 <p>Click <strong>Next</strong></p>
@@ -243,10 +243,10 @@ It is expected to work with later versions of OpenShift, but this lab was tested
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Set the <strong>YAML</strong> toogle to <strong>On</strong></p>
+<p>Set the <strong>YAML</strong> toggle to <strong>On</strong></p>
 </li>
 <li>
-<p>Find the <code>service: APIServer</code> field and edit as follows:</p>
+<p>Find the <code>service: APIServer</code> field and edit as follows, to specify the host name of its load balancer.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">...
@@ -272,7 +272,7 @@ It is expected to work with later versions of OpenShift, but this lab was tested
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>You can also monitor from the CLI, checking the services on the namespace named after the hosted cluster name twice.</p>
+<p>You can also monitor from the CLI, checking the services on the namespace named after the hosted cluster name.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># oc get service -n hcp-cluster1-hcp-cluster1</code></pre>
@@ -309,10 +309,10 @@ It is expected to work with later versions of OpenShift, but this lab was tested
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>On the console of the hub clister, see the <strong>Details</strong> panel of overview tab of details page for the <code>hcp-cluster1</code> cluster, you can find the API URL for the CLI.</p>
+<p>On the console of the hub cluster, see the <strong>Details</strong> panel of overview tab of details page for the <code>hcp-cluster1</code> cluster, you can find the API URL for the CLI.</p>
 </li>
 <li>
-<p>Remember that the kubeconfig file for the hub cluster was set as read-only, to prevent accidental corruption, so create a new kubeconfig file for the hosted cluster.</p>
+<p>Remember that the kubeconfig file for the hub cluster was set read-only, to prevent accidental corruption, so create a new kubeconfig file for the hosted cluster.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># export KUBECONFIG=~/kubeconfig-hcp-cluster1
@@ -332,7 +332,7 @@ It is expected to work with later versions of OpenShift, but this lab was tested
 </div>
 </li>
 <li>
-<p>Using your preferred method (web console or CLI) inspect the <code>kube-system</code> namespace to see the konnectivity-agent and kube-api-server-proxy pods that connect cluster nodes to their hosted control plane on the hub cluster.</p>
+<p>Using your preferred method (web console or CLI) inspect the <code>kube-system</code> namespace to see the <code>konnectivity-agent</code> and <code>kube-api-server-proxy</code> pods that connect hosted cluster nodes to their control plane on the hub cluster.</p>
 </li>
 <li>
 <p>From now on, you can use the hosted cluster as a regular OpenShift cluster: deploy applications, install operators, configure authentication, and perform other day-2 tasks.</p>

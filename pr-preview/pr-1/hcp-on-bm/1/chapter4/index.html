@@ -61,14 +61,14 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../chapter1/index.html">Deploy BareMetal Node</a>
+    <a class="nav-link" href="../chapter1/index.html">Deploy the Bare Metal Node</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../chapter2/index.html">Prepare the BareMetal Node</a>
+    <a class="nav-link" href="../chapter2/index.html">Prepare the Bare Metal Node</a>
   </li>
 </ul>
   </li>
@@ -188,7 +188,7 @@ You may get warnings that it&#8217;s taking too long and you might need to troub
 </div>
 </li>
 <li>
-<p>Create an infrastructure environments in ACM.</p>
+<p>Create an infrastructure environment in ACM.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -201,7 +201,7 @@ You may get warnings that it&#8217;s taking too long and you might need to troub
 <p>Paste the contents of your OpenShift installation pull secret into the <strong>Pull secret</strong> field.</p>
 </li>
 <li>
-<p>Paste your public SSH key a <strong>SSH public key</strong> field. Use the <code>~/.ssh/lab_rsa.pub</code> file created by the bare metal configuration playbooks.</p>
+<p>Paste your public SSH key a <strong>SSH public key</strong> field. Use the <code>~/.ssh/lab_rsa.pub</code> file created by the bare metal host configuration playbook.</p>
 </li>
 <li>
 <p>Click <strong>Create</strong></p>
@@ -260,7 +260,7 @@ If you do not use one of the MAC address set in libvirt, your VM will fail to ge
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Start the Virtual Machine Manager (<code>virt-manager</code>) and create a new VM named <code>c1worker1</code>, with at least 8 GiB memory, 2 vCPUS, and 100 GB of disk, booting from the ISO image you downloaded in the previous step.</p>
+<p>Start the Virtual Machine Manager (<code>virt-manager</code>) utility and create a new VM named <code>c1worker1</code>, with at least 8 GiB memory, 2 vCPUS, and 100 GB of disk, booting from the ISO image you downloaded in the previous step.</p>
 </li>
 <li>
 <p>Be sure you check <strong>Customize configuration before install</strong> on Step 5 of 5.</p>
@@ -276,7 +276,7 @@ If you do not use one of the MAC address set in libvirt, your VM will fail to ge
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>After the VM installation finishes and it reboots, it should appear on the Host inventory of the Hub cluster.</p>
+<p>After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.</p>
 </li>
 <li>
 <p>Click <strong>Approve host</strong> twice to make the host available for joining hosted clusters. The host status should change to "Available".</p>
@@ -292,7 +292,7 @@ If you do not use one of the MAC address set in libvirt, your VM will fail to ge
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>You should be in the list of hosts of your infrastructure environment. Click <strong>Add hosts</strong> and select <strong>With iPXE</strong> to get a script which provides the <code>initrd</code> and <code>kernel</code> commands required to network boot a host from the Assisted Installer service.</p>
+<p>You should be in the list of hosts of your infrastructure environment. Click <strong>Add hosts</strong> and select <strong>With iPXE</strong> to get a script which provides the initial RAM disk and kernel commands required to network boot a host from the Assisted Installer service.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -307,7 +307,7 @@ If you use the "Command to download the iPXE script file" you must add the <code
 </div>
 </li>
 <li>
-<p>Copy the URLs of the initd and kernel, from the iPXE script, and download them. If using <code>wget</code> you would create commands <em>similar</em> to the following:</p>
+<p>Copy the URLs of the initial RAM disk (<code>initrd.img</code>), kernel (<code>vmlinuz</code>), and root file system (<code>rootfs.img</code>) files, from the iPXE script, and download them. If using <code>wget</code> you would create commands <em>similar</em> to the following:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># wget -O initrd.img 'https://assisted-image-service-multicluster-engine.apps.hub.mylab.com/images/34ced53f-84b3-47ec-ae1f-8f6809f47e6c/pxe-initrd?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiIzNGNlZDUzZi04NGIzLTQ3ZWMtYWUxZi04ZjY4MDlmNDdlNmMifQ.3ZJF_HL3OsGjImxOwcmXCzVs_ITQzZN2bhPDpNLTaHcxv7OiUMHM7cxmfOZ_KZ8QQu7vj_-Ng00OXBgUhWAieQ&amp;arch=x86_64&amp;version=4.18' --no-check-certificate
@@ -324,7 +324,7 @@ If you use the "Command to download the iPXE script file" you must add the <code
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Copy the inird, kernel, and rootfs to the helper VM and open an SSH connection to it.</p>
+<p>Copy the initial RAM disk, kernel, and root file system files to the helper VM and open an SSH connection to it.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># scp -i ~/.ssh/lab_rsa initrd.img vmlinuz rootfs.img 192.168.122.21:~
@@ -333,7 +333,7 @@ If you use the "Command to download the iPXE script file" you must add the <code
 </div>
 </li>
 <li>
-<p>On the helper VM, copy the inird and kernel files to the TFTP server images directory, and copy the rootfs file to the BOOTP server directory.</p>
+<p>On the helper VM, copy the initial RAM disk and kernel files to the TFTP server images directory, and copy the root file system  file to the BOOTP server directory.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># cp initrd.img vmlinuz  /var/lib/tftpboot/images/
@@ -342,7 +342,7 @@ If you use the "Command to download the iPXE script file" you must add the <code
 </div>
 </li>
 <li>
-<p>Inspect the PXE configuration on the helper VM. It was already configured to use those files by the playbook from a previous activity.</p>
+<p>Inspect the PXE configuration on the helper VM. It was already configured to server those files by the playbook from a previous activity.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># cat /var/lib/tftpboot/pxelinux.cfg/default
@@ -389,7 +389,7 @@ label linux
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Using the Virtual Machine Manager (<code>virt-manager</code>), create a new VM named <code>c1worker2</code>, selecting <strong>Manual install</strong>. Configure the VM with at least 8GiB memory, 2vCPUS, and 100GB of disk. Be sure you check <strong>Customize configuration before install</strong> on Step 5 of 5.</p>
+<p>Using the Virtual Machine Manager (<code>virt-manager</code>) utility, create a new VM named <code>c1worker2</code>, selecting <strong>Manual install</strong>. Configure the VM with at least 8GiB memory, 2vCPUS, and 100GB of disk. Be sure you check <strong>Customize configuration before install</strong> on Step 5 of 5.</p>
 </li>
 <li>
 <p>Select the NIC of the new VM and set its MAC address to the one you got from a previous step.</p>
@@ -405,7 +405,7 @@ label linux
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>After the VM installation finishes and it reboots, it should appear on the Host inventory of the Hub cluster.</p>
+<p>After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.</p>
 </li>
 <li>
 <p>Click <strong>Approve host</strong> twice to make the host available for joining hosted clusters.</p>
@@ -419,7 +419,7 @@ label linux
 <li>
 <p><strong>Optional:</strong> Add hosts using BMC.</p>
 <div class="paragraph">
-<p>You can review the optional instructions at the end of this course to configure virtual BMC services and then add a third hosts using BMC, emulating a physical machine with IPMI or similar management hardware.</p>
+<p>If you wish, you can review the optional instructions at the end of this course to configure virtual BMC services and then add a third hosts using BMC, by emulating a physical machine with IPMI or similar management hardware.</p>
 </div>
 </li>
 </ol>

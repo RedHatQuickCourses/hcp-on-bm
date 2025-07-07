@@ -61,14 +61,14 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../chapter1/index.html">Deploy BareMetal Node</a>
+    <a class="nav-link" href="../chapter1/index.html">Deploy the Bare Metal Node</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../chapter2/index.html">Prepare the BareMetal Node</a>
+    <a class="nav-link" href="../chapter2/index.html">Prepare the Bare Metal Node</a>
   </li>
 </ul>
   </li>
@@ -187,7 +187,7 @@ That change is NOT persistent, it&#8217;s lost if you stop and restart your demo
 </div>
 </li>
 <li>
-<p>If your playbook fails close to its end, you may have a healthy cluster and it is not hard to follow the playbook&#8217;s source code to its complete tasks manually, for example:</p>
+<p>If your playbook fails close to its end, you may have a healthy cluster and manually follow the playbook&#8217;s source code to complete its complete tasks manually, for example:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">...
@@ -209,7 +209,7 @@ localhost                  : ok=38   changed=26   unreachable=0    failed=1    s
 </div>
 </div>
 <div class="paragraph">
-<p>Connect to the cluster and assess it is healthy. If it is, review the failed tasks and following tasks.</p>
+<p>Connect to the cluster and assess it is healthy. If it is, review the tasks that are pending after the failed task.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -230,7 +230,7 @@ localhost                  : ok=38   changed=26   unreachable=0    failed=1    s
 </div>
 </li>
 <li>
-<p>If your playbook fails and you are unsure about the effort to complete tasks manually, you may may destroy your libvirt VMs and restart, for example:</p>
+<p>If your playbook fails and you are unsure about the viability of completing tasks manually, you may may destroy your libvirt VMs and restart, for example:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">...
@@ -279,7 +279,7 @@ Most times, there would be no need to destroying your AWS open environment and r
 </dd>
 <dt class="hdlist1"><code>cleanup.yaml</code></dt>
 <dd>
-<p>Destroys all VMs, including the helper VM. If you use this one, you must return to the previos lab to run the playbook which configures the bare metal host and its helper VM.</p>
+<p>Destroys all VMs, including the helper VM. If you use this one, you must return to the previous lab to run the playbook which configures the bare metal host and its helper VM.</p>
 </dd>
 </dl>
 </div>
@@ -288,7 +288,7 @@ Most times, there would be no need to destroying your AWS open environment and r
 </div>
 </li>
 <li>
-<p>Create a read-only copy of the kubeconfig file of the hub cluster, and use it to validate the hub cluster is healthy.</p>
+<p>Create a read-only copy of the kubeconfig file of the hub cluster, and use it to validate that the hub cluster is healthy.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># cp /var/lib/libvirt/images/hub_install/auth/kubeconfig ~
@@ -329,7 +329,7 @@ Most times, there would be no need to destroying your AWS open environment and r
 </div>
 </li>
 <li>
-<p>Validate the LVMCluster is running.</p>
+<p>Validate the LVM Cluster is running.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/s4-fig-2.jpg" alt="s4 fig 2">
@@ -342,7 +342,7 @@ Most times, there would be no need to destroying your AWS open environment and r
 </ol>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="../chapter2/index.html">Prepare the BareMetal Node</a></span>
+  <span class="prev"><a href="../chapter2/index.html">Prepare the Bare Metal Node</a></span>
   <span class="next"><a href="../chapter4/index.html">Add Managed Hosts</a></span>
 </nav>
 </article>

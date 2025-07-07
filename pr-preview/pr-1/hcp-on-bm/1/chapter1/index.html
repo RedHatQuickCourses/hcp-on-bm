@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Deploy BareMetal Node :: Hosted Control Planes on a Single BareMetal Node</title>
+    <title>Deploy the Bare Metal Node :: Hosted Control Planes on a Single BareMetal Node</title>
     <link rel="prev" href="../chapter0/index.html">
     <link rel="next" href="../chapter2/index.html">
     <meta name="generator" content="Antora 3.1.3">
@@ -61,14 +61,14 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item is-current-page" data-depth="1">
-    <a class="nav-link" href="index.html">Deploy BareMetal Node</a>
+    <a class="nav-link" href="index.html">Deploy the Bare Metal Node</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../chapter2/index.html">Prepare the BareMetal Node</a>
+    <a class="nav-link" href="../chapter2/index.html">Prepare the Bare Metal Node</a>
   </li>
 </ul>
   </li>
@@ -129,7 +129,7 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">Hosted Control Planes on a Single BareMetal Node</a></li>
-    <li><a href="index.html">Deploy BareMetal Node</a></li>
+    <li><a href="index.html">Deploy the Bare Metal Node</a></li>
   </ul>
 </nav>
 </div>
@@ -138,9 +138,9 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Deploy BareMetal Node</h1>
+<h1 class="page">Deploy the Bare Metal Node</h1>
 <div class="paragraph">
-<p>This lab shows how to prepare an AWS environment, using the AWS console, containing a single bare metal instance that you will later access using SSH and also VNC.</p>
+<p>This lab shows how to prepare an AWS environment, using the AWS console, with a single bare metal instance that you will later access using SSH and also a remote desktop technology (either waypipe or VNC).</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -153,7 +153,7 @@
 </div>
 </li>
 <li>
-<p>From within the AWS console, search for VPC in the search bar and select VPC.</p>
+<p>From within the AWS console, search for <code>VPC</code> in the search bar and select <strong>VPC</strong>.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/s2-fig-2.jpg" alt="s2 fig 2">
@@ -161,7 +161,7 @@
 </div>
 </li>
 <li>
-<p>Click on “Create VPC”.</p>
+<p>Click on <strong>Create VPC</strong>.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/s2-fig-2b.jpg" alt="s2 fig 2b">
@@ -178,19 +178,19 @@
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Select “VPC and more”</p>
+<p>Select <strong>VPC and more</strong></p>
 </li>
 <li>
 <p>Give a name</p>
 </li>
 <li>
-<p>Select “1” under “Number of Availability Zones (AZs)”</p>
+<p>Select <strong>1</strong> under <strong>Number of Availability Zones (AZs)</strong></p>
 </li>
 <li>
-<p>Select “0” under “Number of Private Subnets”</p>
+<p>Select <strong>0</strong> under <strong>Number of Private Subnets</strong></p>
 </li>
 <li>
-<p>Then click on “Create VPC”</p>
+<p>Then click on <strong>Create VPC</strong></p>
 </li>
 </ol>
 </div>
@@ -204,7 +204,7 @@
 </div>
 </li>
 <li>
-<p>In the search window, type “EC2” and click on EC2.</p>
+<p>In the search window, type <code>EC2</code> and click on <strong>EC2</strong>.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/s2-fig-5.jpg" alt="s2 fig 5">
@@ -213,7 +213,7 @@
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Click on “Launch Instance” on the next page.</p>
+<p>Click on <strong>Launch Instance</strong> on the next page.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/s2-fig-6.jpg" alt="s2 fig 6">
@@ -224,7 +224,7 @@
 <p>Give a name for the EC2 Instance.</p>
 </li>
 <li>
-<p>Select “Red Hat” under “Application and OS Images (Amazon Machine Image)”</p>
+<p>Select <strong>Red Hat</strong> under <strong>Application and OS Images (Amazon Machine Image)</strong></p>
 <div class="admonitionblock warning">
 <table>
 <tr>
@@ -239,7 +239,7 @@ It is expected to work using the default RHEL10 AMI, but all testes were perform
 </div>
 </li>
 <li>
-<p>Select “c5.metal” under “Instance Type”</p>
+<p>Select <code>c5.metal</code> under <strong>Instance Type</strong></p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/s2-fig-7.jpg" alt="s2 fig 7">
@@ -250,7 +250,7 @@ It is expected to work using the default RHEL10 AMI, but all testes were perform
 </div>
 </li>
 <li>
-<p>In the KeyPair section, click on “Create new KeyPair”</p>
+<p>In the key pair section, click on <strong>Create new key pair</strong></p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/s2-fig-8.jpg" alt="s2 fig 8">
@@ -259,7 +259,7 @@ It is expected to work using the default RHEL10 AMI, but all testes were perform
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Give a Name and click “Create Key Pair”</p>
+<p>Give it a name and click on <strong>Create key pair</strong></p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/s2-fig-9.jpg" alt="s2 fig 9">
@@ -267,10 +267,10 @@ It is expected to work using the default RHEL10 AMI, but all testes were perform
 </div>
 </li>
 <li>
-<p>Save the automatically downloaded keypair in your local system with a permission of 600.</p>
+<p>Save the automatically downloaded key pair in your local system with access permissions to the owner only.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">$ chmod 600 <em>&lt;path to the keypair&gt;</em></code></pre>
+<pre class="highlightjs highlight"><code class="language-none hljs">$ chmod 600 <em>&lt;path to the key pair&gt;</em></code></pre>
 </div>
 </div>
 </li>
@@ -278,7 +278,7 @@ It is expected to work using the default RHEL10 AMI, but all testes were perform
 </div>
 </li>
 <li>
-<p>Click “Edit” next to “Network Settings” and fill in the panel as follows:</p>
+<p>Click <strong>Edit</strong> next to <strong>Network Settings</strong> and fill in the panel as follows:</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/s2-fig-10.jpg" alt="s2 fig 10">
@@ -287,25 +287,25 @@ It is expected to work using the default RHEL10 AMI, but all testes were perform
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Select “Enable” in “Auto-assign public IP”</p>
+<p>Select <strong>Enable</strong> in <strong>Auto-assign public IP</strong></p>
 </li>
 <li>
-<p>Select “My IP” for “Source type” for ssh under Inbound Security Group Rules</p>
+<p>Select <strong>My IP</strong> for <strong>Source type</strong> for ssh under <strong>Inbound Security Group Rules</strong></p>
 </li>
 <li>
-<p>Click “Add Security Group Rule”</p>
+<p>Click <strong>Add security group rule</strong></p>
 </li>
 <li>
-<p>Specify “Port Range” to “5999”</p>
+<p>Set <strong>Port range</strong> to <code>5999</code></p>
 </li>
 <li>
-<p>Select “My IP” for “Source type” for the second security group rule also.</p>
+<p>Select <strong>My IP</strong> for <strong>Source type</strong> for the second security group rule also.</p>
 </li>
 </ol>
 </div>
 </li>
 <li>
-<p>Under “Configure Storage”, change the size of the disk to 750GiB</p>
+<p>Under <strong>Configure Storage</strong>, change the size of the disk to <code>750 GiB</code>.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/s2-fig-11.jpg" alt="s2 fig 11">
@@ -313,7 +313,7 @@ It is expected to work using the default RHEL10 AMI, but all testes were perform
 </div>
 </li>
 <li>
-<p>Then click on “Launch Instance” from the Summary page on the right side.</p>
+<p>Then click on <strong>Launch instance</strong> from the Summary page, on the right side.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/s2-fig-12.jpg" alt="s2 fig 12">
@@ -333,13 +333,13 @@ If you get an AWS error stating there is no sufficient c5.metal capacity, try on
 </div>
 </li>
 <li>
-<p>Wait a few monents until your AWS instance is up and running, before continuing with the next lab.</p>
+<p>Wait a few moments until your AWS instance is up and running, before continuing with the next lab.</p>
 </li>
 </ol>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="../chapter0/index.html">Introduction to OpenShift HCP and the PoC Environment</a></span>
-  <span class="next"><a href="../chapter2/index.html">Prepare the BareMetal Node</a></span>
+  <span class="next"><a href="../chapter2/index.html">Prepare the Bare Metal Node</a></span>
 </nav>
 </article>
   </div>

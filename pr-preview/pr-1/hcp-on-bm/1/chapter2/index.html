@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Prepare the BareMetal Node :: Hosted Control Planes on a Single BareMetal Node</title>
+    <title>Prepare the Bare Metal Node :: Hosted Control Planes on a Single BareMetal Node</title>
     <link rel="prev" href="../chapter1/index.html">
     <link rel="next" href="../chapter3/index.html">
     <meta name="generator" content="Antora 3.1.3">
@@ -61,14 +61,14 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../chapter1/index.html">Deploy BareMetal Node</a>
+    <a class="nav-link" href="../chapter1/index.html">Deploy the Bare Metal Node</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item is-current-page" data-depth="1">
-    <a class="nav-link" href="index.html">Prepare the BareMetal Node</a>
+    <a class="nav-link" href="index.html">Prepare the Bare Metal Node</a>
   </li>
 </ul>
   </li>
@@ -129,7 +129,7 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">Hosted Control Planes on a Single BareMetal Node</a></li>
-    <li><a href="index.html">Prepare the BareMetal Node</a></li>
+    <li><a href="index.html">Prepare the Bare Metal Node</a></li>
   </ul>
 </nav>
 </div>
@@ -138,14 +138,14 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Prepare the BareMetal Node</h1>
+<h1 class="page">Prepare the Bare Metal Node</h1>
 <div class="paragraph">
 <p>This lab shows how configure the bare metal host with virtual networking and a helper services VM, by using an Ansible playbook provided on a git repository. It also configures the bare metal host for graphical access, so you can run a web browser and virt-manager on the following labs.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Review the architecture of the HCP on bare metal proof-of-concept architecture.</p>
+<p>Review the architecture of the proof-of-concept for HCP on bare metal nodes .</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/s3-fig-1.png" alt="s3 fig 1">
@@ -161,14 +161,14 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-There is only one helper VM, which runs both DNS, HAProxy, and BOOTP daemons.
+There is only one helper VM, which runs all of the DNS, HAProxy, and BOOTP daemons.
 </td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p>Once the instance is up and running, ssh to the node using the private key downloaded in the previous lab.</p>
+<p>Once the instance is up and running, SSH to the node using the private key downloaded in the previous lab.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/s3-fig-2.jpg" alt="s3 fig 2">
@@ -189,7 +189,7 @@ There is only one helper VM, which runs both DNS, HAProxy, and BOOTP daemons.
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If your SSH client supports it, enable keep alive so the connection doesn&#8217;t terminate during long-running Ansible playbooks, killing the Ansible runner and leeting your host only partially configured.
+If your SSH client supports it, enable keep alive so the connection doesn&#8217;t terminate during long-running Ansible playbooks, killing the Ansible runner and letting your host only partially configured.
 </td>
 </tr>
 </table>
@@ -214,11 +214,11 @@ If your SSH client supports it, enable keep alive so the connection doesn&#8217;
 </div>
 </li>
 <li>
-<p>Configure remote graphicall access, using one of the two alternatives:</p>
+<p>Configure remote graphical access, using one of the two alternatives:</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>If your worktation runs Fedora Linux or any other Linux distribution with Wayland, you can use <code>waypipe</code> in front of the <code>ssh</code> command that connects to your EC2 instance, and start a web browser from the shell.</p>
+<p>If your workstation runs Fedora Linux or any other Linux distribution with Wayland, you can use the <code>waypipe</code> command in front of the <code>ssh</code> command that connects to your EC2 instance, and start a web browser or any other GUI application from the shell.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ waypipe ssh -o "ServerAliveInterval 30" -o "ServerAliveCountMax 120" -i <em>&lt;path to the private key&gt;</em> ec2-user@<em>&lt;public ip&gt;</em>
@@ -227,7 +227,19 @@ $ firefox &amp;</code></pre>
 </div>
 </li>
 <li>
-<p>If your workstation does not run Wayland, you can setup VNC access.</p>
+<p>If your workstation cannot not run Wayland, for example MacOS laptops, you can setup VNC access.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+We are NOT providing instructions for installing and configuring VNC viewers on desktop operating systems.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># dnf install -y tigervnc tigervnc-server
@@ -242,16 +254,16 @@ $ exit</code></pre>
 </div>
 </li>
 <li>
-<p>Connect to the public ip of the baremetal node on port 5999 using <code>vncviewer</code> to get its graphical console and open a web browser.</p>
+<p>Connect to the public ip of the bare metal node on port 5999, using a VNC viewer, to get its graphical console and open a web browser.</p>
 </li>
 <li>
-<p>The following instructions will ask you to access the Red Hat customer portal and Red Hat Hybrid Cloud Console. You can do it directly from the bare metal instance, using the graphicall access you just configured, or access those sites from your workstation and them copy files to the EC2 instance.</p>
+<p>The following instructions will ask you to access the Red Hat customer portal and Red Hat Hybrid Cloud Console. You can do it directly from the bare metal instance, using the graphical access you just configured, or access those sites from your workstation and them copy files to the EC2 instance.</p>
 </li>
 </ol>
 </div>
 </li>
 <li>
-<p>Download latest <code>rhel-9.5-x86_64-kvm.qcow2</code> cloud image (<strong>Red Hat Enterprise Linux 9.5 KVM Guest Image</strong>) from the <a href="https://access.redhat.com/downloads">customer portal</a> and copy to the baremetal node.</p>
+<p>Download latest <code>rhel-9.5-x86_64-kvm.qcow2</code> cloud image (<strong>Red Hat Enterprise Linux 9.5 KVM Guest Image</strong>) from the <a href="https://access.redhat.com/downloads">customer portal</a> and copy to the bare metal node.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -281,7 +293,7 @@ The instructions are expected to work with different versions of RHEL but were t
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-We use a fork of the <a href="https://github.com/v2pkthakur/hcp-on-bm.git" target="_blank" rel="noopener">original repository</a> to ensure the reproducibility of the instructions here. The original repository may include contributitions and improvements, made after creation of this course, which may interest you.
+We use a fork of the <a href="https://github.com/v2pkthakur/hcp-on-bm.git" target="_blank" rel="noopener">original repository</a> to ensure the reproducibility of the instructions here. The original repository may include contributions and improvements, made after creation of this course, which may interest you.
 </td>
 </tr>
 </table>
@@ -329,7 +341,7 @@ rhel9_kvm_image: rhel-9.6-x86_64-kvm.qcow2
 </div>
 </li>
 <li>
-<p>Configure <code>ansible-vault</code> to store your organization ID, activation keys, and OpenShift pull secret.</p>
+<p>Configure Ansible Vault to store your organization ID, activation keys, and OpenShift pull secret.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># ansible-vault create vault.yaml
@@ -342,7 +354,7 @@ pull_secret: '<em>ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ</em>'</code></pre>
 </div>
 </li>
 <li>
-<p>Set up the baremetal node by running the ansible playbook.</p>
+<p>Set up the bare metal node by running the Ansible playbook.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">$ ansible-playbook -i inventory/hosts setup_bm_host.yaml --ask-vault-pass</code></pre>
@@ -420,7 +432,7 @@ pull_secret: '<em>ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ</em>'</code></pre>
 <p>Finally, it configures Libvirt&#8217;s DNS server to forward queries for the domains of the hub and two hosted clusters.</p>
 </li>
 <li>
-<p>Open a SSH session to the helper VM and inspect open network ports. Notice the <code>haproxy</code> and <code>named</code> daemons running, and also that Systemd will an TFTP server when there&#8217;s UDP traffic to it.</p>
+<p>Open a SSH session to the helper VM and inspect open network ports. Notice the <code>haproxy</code> and <code>named</code> daemons running, and also that Systemd will start an TFTP server when there&#8217;s UDP traffic to it.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># ssh -i ~/.ssh/lab_rsa 192.168.122.21
@@ -434,16 +446,28 @@ pull_secret: '<em>ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ</em>'</code></pre>
 </div>
 </li>
 <li>
-<p>Allow access to <code>virt-manager</code> from your GUI user.</p>
+<p>Allow access to managing libvirt system VMs for your GUI user.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Add either the <code>ec2-user</code> user (if using <code>waypipe</code>) of the <code>vncuser</code> user (if using a VNC viewer) to the <code>libvirt</code> group.</p>
+<p>Add either the <code>ec2-user</code> user (if using waypipe) or the <code>vncuser</code> user (if using a VNC viewer) to the <code>libvirt</code> group.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># usermod -aG libvirt vncuser
 # usermod -aG libvirt ec2-user</code></pre>
 </div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+We recommend against enabling a VNC Viewer for the ec2-user, which is also allowed unrestricted Sudo, because the VNC protocol security is weaker than SSH.
+</td>
+</tr>
+</table>
 </div>
 </li>
 <li>
@@ -456,7 +480,7 @@ pull_secret: '<em>ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ</em>'</code></pre>
 </div>
 </li>
 <li>
-<p>If using <code>waypipe</code>, you must close and reconnect your SSH session.</p>
+<p>If using waypipe, you must close and reconnect your SSH session.</p>
 </li>
 <li>
 <p>In either case, check that the <code>libvirt</code> group is on the environment of your GUI user.</p>
@@ -473,7 +497,7 @@ uid=1000(ec2-user) gid=1000(ec2-user) groups=1000(ec2-user),4(adm),190(systemd-j
 </ol>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="../chapter1/index.html">Deploy BareMetal Node</a></span>
+  <span class="prev"><a href="../chapter1/index.html">Deploy the Bare Metal Node</a></span>
   <span class="next"><a href="../chapter3/index.html">Setup the Hub Cluster</a></span>
 </nav>
 </article>
