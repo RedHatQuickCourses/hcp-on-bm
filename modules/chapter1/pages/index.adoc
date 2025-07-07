@@ -29,13 +29,8 @@ image::s2-fig-2c.jpg[]
 
 .. Select “0” under “Number of Private Subnets”
 
-.. Select "None" under "NAT Gateways ($)"
-+
-WARNING: It won't work exactly as is in the screen shot, but throw an error: *NAT Gateway needs a private subnet to configure outbound traffic*. There is no need for a NAT gateway because the instance has a public IP address.
 
 .. Then click on “Create VPC”
-+
-image::s2-fig-3.jpg[]
 
 4. Verify that the VPC and associated resources are created successfully and there are no errors.
 +
