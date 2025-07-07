@@ -32,7 +32,7 @@ This lab shows how to configure an infrastructure environment, using ACM, and ad
 
 
 ////
-NOTE: Looks like the definiton of image storage was incorrect at 21:55 -- it's not (or not just) the CoreOS images to boot nodes, but the internal registry of each hosted cluster, right?
+NOTE: Looks like the definition of image storage was incorrect at 21:55 -- it's not (or not just) the CoreOS images to boot nodes, but the internal registry of each hosted cluster, right?
 ////
 
 1. Configure the host inventory in ACM.
@@ -57,7 +57,7 @@ IMPORTANT: You may get warnings that it's taking too long and you might need to 
 +
 You may see that the Assisted Service pod restart a few times until it can initialize itself successfully.
 
-2. Create an infrastructure environments in ACM.
+2. Create an infrastructure environment in ACM.
 
 .. On the *Host inventory* page, click *Create infrastructure environment*
 
@@ -65,7 +65,7 @@ You may see that the Assisted Service pod restart a few times until it can initi
 
 .. Paste the contents of your OpenShift installation pull secret into the *Pull secret* field.
 
-.. Paste your public SSH key a *SSH public key* field. Use the `~/.ssh/lab_rsa.pub` file created by the bare metal configuration playbooks.
+.. Paste your public SSH key a *SSH public key* field. Use the `~/.ssh/lab_rsa.pub` file created by the bare metal host configuration playbook.
 
 .. Click *Create*
 
@@ -89,7 +89,7 @@ WARNING: If you do not use one of the MAC address set in libvirt, your VM will f
 
 4. Boot a VM from the discovery ISO.
 
-.. Start the Virtual Machine Manager (`virt-manager`) and create a new VM named `c1worker1`, with at least 8 GiB memory, 2 vCPUS, and 100 GB of disk, booting from the ISO image you downloaded in the previous step.
+.. Start the Virtual Machine Manager (`virt-manager`) utility and create a new VM named `c1worker1`, with at least 8 GiB memory, 2 vCPUS, and 100 GB of disk, booting from the ISO image you downloaded in the previous step.
 
 .. Be sure you check *Customize configuration before install* on Step 5 of 5.
 +
@@ -99,7 +99,7 @@ WARNING: If you do not use one of the MAC address set in libvirt, your VM will f
 
 5. Approve the VM.
 
-.. After the VM installation finishes and it reboots, it should appear on the Host inventory of the Hub cluster.
+.. After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.
 
 .. Click *Approve host* twice to make the host available for joining hosted clusters. The host status should change to "Available".
 
@@ -107,11 +107,11 @@ WARNING: If you do not use one of the MAC address set in libvirt, your VM will f
 
 6. Prepare to add a host using PXE.
 
-.. You should be in the list of hosts of your infrastructure environment. Click *Add hosts* and select *With iPXE* to get a script which provides the `initrd` and `kernel` commands required to network boot a host from the Assisted Installer service.
+.. You should be in the list of hosts of your infrastructure environment. Click *Add hosts* and select *With iPXE* to get a script which provides the initial RAM disk and kernel commands required to network boot a host from the Assisted Installer service.
 +
 NOTE: If you use the "Command to download the iPXE script file" you must add the `--no-check-certificate` option to your `wget` command.
 
-.. Copy the URLs of the initd and kernel, from the iPXE script, and download them. If using `wget` you would create commands _similar_ to the following:
+.. Copy the URLs of the initial RAM disk (`initrd.img`), kernel (`vmlinuz`), and root file system (`rootfs.img`) files, from the iPXE script, and download them. If using `wget` you would create commands _similar_ to the following:
 +
 [source,subs="verbatim,quotes"]
 --
@@ -122,7 +122,7 @@ NOTE: If you use the "Command to download the iPXE script file" you must add the
 
 7. Configure a PXE server.
 
-.. Copy the inird, kernel, and rootfs to the helper VM and open an SSH connection to it.
+.. Copy the initial RAM disk, kernel, and root file system files to the helper VM and open an SSH connection to it.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -130,7 +130,7 @@ NOTE: If you use the "Command to download the iPXE script file" you must add the
 # ssh -i ~/.ssh/lab_rsa 192.168.122.21
 --
 
-.. On the helper VM, copy the inird and kernel files to the TFTP server images directory, and copy the rootfs file to the BOOTP server directory. 
+.. On the helper VM, copy the initial RAM disk and kernel files to the TFTP server images directory, and copy the root file system  file to the BOOTP server directory. 
 +
 [source,subs="verbatim,quotes"]
 --
@@ -138,7 +138,7 @@ NOTE: If you use the "Command to download the iPXE script file" you must add the
 # cp rootfs.img /var/www/html/bootp/
 --
 
-.. Inspect the PXE configuration on the helper VM. It was already configured to use those files by the playbook from a previous activity.
+.. Inspect the PXE configuration on the helper VM. It was already configured to server those files by the playbook from a previous activity.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -176,7 +176,7 @@ label linux
 
 8. Boot a VM using PXE.
 
-.. Using the Virtual Machine Manager (`virt-manager`), create a new VM named `c1worker2`, selecting *Manual install*. Configure the VM with at least 8GiB memory, 2vCPUS, and 100GB of disk. Be sure you check *Customize configuration before install* on Step 5 of 5.
+.. Using the Virtual Machine Manager (`virt-manager`) utility, create a new VM named `c1worker2`, selecting *Manual install*. Configure the VM with at least 8GiB memory, 2vCPUS, and 100GB of disk. Be sure you check *Customize configuration before install* on Step 5 of 5.
 +
 // WARNING: craft a virt-install command? See hcp-on-bm/setup_hosted_cluster.yaml
 
@@ -186,7 +186,7 @@ label linux
 
 9. Aprove the VM.
 
-.. After the VM installation finishes and it reboots, it should appear on the Host inventory of the Hub cluster.
+.. After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.
 
 .. Click *Approve host* twice to make the host available for joining hosted clusters.
 
@@ -194,4 +194,4 @@ label linux
 
 10. *Optional:* Add hosts using BMC.
 +
-You can review the optional instructions at the end of this course to configure virtual BMC services and then add a third hosts using BMC, emulating a physical machine with IPMI or similar management hardware.
+If you wish, you can review the optional instructions at the end of this course to configure virtual BMC services and then add a third hosts using BMC, by emulating a physical machine with IPMI or similar management hardware.

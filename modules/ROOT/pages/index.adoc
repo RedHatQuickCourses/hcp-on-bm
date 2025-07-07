@@ -14,7 +14,7 @@ By the end of this training, you will be able to:
 * Set remote access to graphical applications in the bare-metal host.
 * Execute Ansible playbooks to set up the bare-metal host with a helper VM and a virtual network.
 * Execute Ansible playbooks to set up the ACM hub cluster and required operators.
-* Verify the installation and configuration of MetalLB, LVMStorage, and ACM operators.
+* Verify the installation and configuration of MetalLB, LVM Storage, and ACM operators.
 //* Install and configure Virtual BMC (optional).
 * Configure an infrastructure environment for the hosted cluster.
 * Add nodes to the inventory using various discovery methods.

@@ -23,11 +23,11 @@ Deploy a test application on the hosted cluster.
 End of demo. Closing words.
 ////
 
-This lab shows how to create and access a hosted cluster using worker nodes available from an ACM infrastrcuture environment.
+This lab shows how to create and access a hosted cluster using worker nodes available from an ACM infrastructure environment.
 
 1. Create a hosted cluster using a load balancer for API access.
 
-.. Find a domain name to use as the name of your cluster. The helper VM is preconfigured with two domains for use by hosted cluster, which you can find by searching for forwader domains.
+.. Find a domain name to use as the name of your cluster. The helper VM is preconfigured with two domains for use by hosted cluster, which you can find by searching for forwarder domains.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -62,7 +62,7 @@ NOTE: It is expected to work with later versions of OpenShift, but this lab was 
 
 .. Type `2` as the number of hosts of your hosted cluster.
 
-.. Leave all other fiedls on their default values.
+.. Leave all other fields on their default values.
 
 .. Click *Next*
 
@@ -76,9 +76,9 @@ NOTE: It is expected to work with later versions of OpenShift, but this lab was 
 
 5. Fill in the *Review* page of the Create cluster assistant as follows:
 
-.. Set the *YAML* toogle to *On*
+.. Set the *YAML* toggle to *On*
 
-.. Find the `service: APIServer` field and edit as follows:
+.. Find the `service: APIServer` field and edit as follows, to specify the host name of its load balancer.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -95,11 +95,11 @@ NOTE: It is expected to work with later versions of OpenShift, but this lab was 
 
 .. click *Create*.
 +
-// WARNING: got error: secret ssh-key (didn't copy the name) alterady exists. Did I click "create" twice?
+// WARNING: got error: secret ssh-key (didn't copy the name) already exists. Did I click "create" twice?
 
 6. If your web console does not switch automatically to the `hcp-cluster1` details page, find it at *Infrastructure > Clusters* and monitor, on the *Overview* tab, the progress of deploying its hosted control plane services and its node pool.
 
-.. You can also monitor from the CLI, checking the services on the namespace named after the hosted cluster name twice.
+.. You can also monitor from the CLI, checking the services on the namespace named after the hosted cluster name.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -130,9 +130,9 @@ You may also notice resources such as PVCs for the etcd database and routes for 
 
 8. Access the hosted cluster using the CLI.
 
-.. On the console of the hub clister, see the *Details* panel of overview tab of details page for the `hcp-cluster1` cluster, you can find the API URL for the CLI.
+.. On the console of the hub cluster, see the *Details* panel of overview tab of details page for the `hcp-cluster1` cluster, you can find the API URL for the CLI.
 
-.. Remember that the kubeconfig file for the hub cluster was set as read-only, to prevent accidental corruption, so create a new kubeconfig file for the hosted cluster.
+.. Remember that the kubeconfig file for the hub cluster was set read-only, to prevent accidental corruption, so create a new kubeconfig file for the hosted cluster.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -146,7 +146,7 @@ You may also notice resources such as PVCs for the etcd database and routes for 
 
 .. You can set the KUBECONFIG environment variable to different files, depending on the cluster you want to connect. This may be simpler than using `oc config` commands to maintain and switch between different contexts.
 
-9. Using your preferred method (web console or CLI) inspect the `kube-system` namespace to see the konnectivity-agent and kube-api-server-proxy pods that connect cluster nodes to their hosted control plane on the hub cluster. 
+9. Using your preferred method (web console or CLI) inspect the `kube-system` namespace to see the `konnectivity-agent` and `kube-api-server-proxy` pods that connect hosted cluster nodes to their control plane on the hub cluster. 
 
 10. From now on, you can use the hosted cluster as a regular OpenShift cluster: deploy applications, install operators, configure authentication, and perform other day-2 tasks.
 

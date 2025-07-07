@@ -42,7 +42,7 @@ WARNING: That change is NOT persistent, it's lost if you stop and restart your d
 # ansible-playbook -i inventory/hosts setup_hub_cluster.yaml --ask-vault-pass
 --
 
-.. If your playbook fails close to its end, you may have a healthy cluster and it is not hard to follow the playbook's source code to its complete tasks manually, for example:
+.. If your playbook fails close to its end, you may have a healthy cluster and manually follow the playbook's source code to complete its complete tasks manually, for example:
 +
 [source,subs="verbatim"]
 --
@@ -64,7 +64,7 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=38   changed=26   unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
 --
 +
-Connect to the cluster and assess it is healthy. If it is, review the failed tasks and following tasks.
+Connect to the cluster and assess it is healthy. If it is, review the tasks that are pending after the failed task.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -82,7 +82,7 @@ Perform the pending tasks manually.
 # oc create -f roles/setup-hub-acm/files/metal-lb/06-L2Advertisement.yaml
 --
 
-.. If your playbook fails and you are unsure about the effort to complete tasks manually, you may may destroy your libvirt VMs and restart, for example:
+.. If your playbook fails and you are unsure about the viability of completing tasks manually, you may may destroy your libvirt VMs and restart, for example:
 +
 [source,subs="verbatim"]
 --
@@ -115,9 +115,9 @@ There are two clean-up playbooks:
 Destroys only the VMs that belong to the hub cluster.
 +
 `cleanup.yaml`::
-Destroys all VMs, including the helper VM. If you use this one, you must return to the previos lab to run the playbook which configures the bare metal host and its helper VM.
+Destroys all VMs, including the helper VM. If you use this one, you must return to the previous lab to run the playbook which configures the bare metal host and its helper VM.
 
-3. Create a read-only copy of the kubeconfig file of the hub cluster, and use it to validate the hub cluster is healthy.
+3. Create a read-only copy of the kubeconfig file of the hub cluster, and use it to validate that the hub cluster is healthy.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -150,7 +150,7 @@ $ cat /var/lib/libvirt/images/hub_install/auth/kubeadmin-password ; echo
 +
 image::s4-fig-1.jpg[]
 
-8. Validate the LVMCluster is running.
+8. Validate the LVM Cluster is running.
 +
 image::s4-fig-2.jpg[]
 

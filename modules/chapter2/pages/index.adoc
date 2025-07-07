@@ -1,4 +1,4 @@
-= Prepare the BareMetal Node
+= Prepare the Bare Metal Node
 
 ////
 Video segments:
@@ -12,15 +12,15 @@ Prepare the bare metal node.
 
 This lab shows how configure the bare metal host with virtual networking and a helper services VM, by using an Ansible playbook provided on a git repository. It also configures the bare metal host for graphical access, so you can run a web browser and virt-manager on the following labs.
 
-1. Review the architecture of the HCP on bare metal proof-of-concept architecture.
+1. Review the architecture of the proof-of-concept for HCP on bare metal nodes .
 +
 image::s3-fig-1.png[]
 +
 For now, you will configure just the libvirt network and the helper services VM.
 +
-NOTE: There is only one helper VM, which runs both DNS, HAProxy, and BOOTP daemons.
+NOTE: There is only one helper VM, which runs all of the DNS, HAProxy, and BOOTP daemons.
 
-2. Once the instance is up and running, ssh to the node using the private key downloaded in the previous lab. 
+2. Once the instance is up and running, SSH to the node using the private key downloaded in the previous lab. 
 +
 image::s3-fig-2.jpg[]
 
@@ -31,7 +31,7 @@ image::s3-fig-2.jpg[]
 $ ssh -i _<path to the private key>_  ec2-user@_<public ip>_
 --
 +
-NOTE: If your SSH client supports it, enable keep alive so the connection doesn't terminate during long-running Ansible playbooks, killing the Ansible runner and leeting your host only partially configured.
+NOTE: If your SSH client supports it, enable keep alive so the connection doesn't terminate during long-running Ansible playbooks, killing the Ansible runner and letting your host only partially configured.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -50,9 +50,9 @@ $ sudo -i
 # ansible-galaxy collection install community.crypto
 --
 
-5. Configure remote graphicall access, using one of the two alternatives:
+5. Configure remote graphical access, using one of the two alternatives:
 
-.. If your worktation runs Fedora Linux or any other Linux distribution with Wayland, you can use `waypipe` in front of the `ssh` command that connects to your EC2 instance, and start a web browser from the shell.
+.. If your workstation runs Fedora Linux or any other Linux distribution with Wayland, you can use the `waypipe` command in front of the `ssh` command that connects to your EC2 instance, and start a web browser or any other GUI application from the shell.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -60,7 +60,9 @@ $ waypipe ssh -o "ServerAliveInterval 30" -o "ServerAliveCountMax 120" -i _<path
 $ firefox &
 --
 
-.. If your workstation does not run Wayland, you can setup VNC access.
+.. If your workstation cannot not run Wayland, for example MacOS laptops, you can setup VNC access.
++
+NOTE: We are NOT providing instructions for installing and configuring VNC viewers on desktop operating systems.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -74,11 +76,11 @@ Would you like to enter a view-only password (y/n)? n
 $ exit
 --
 
-.. Connect to the public ip of the baremetal node on port 5999 using `vncviewer` to get its graphical console and open a web browser.
+.. Connect to the public ip of the bare metal node on port 5999, using a VNC viewer, to get its graphical console and open a web browser.
 
-.. The following instructions will ask you to access the Red Hat customer portal and Red Hat Hybrid Cloud Console. You can do it directly from the bare metal instance, using the graphicall access you just configured, or access those sites from your workstation and them copy files to the EC2 instance.
+.. The following instructions will ask you to access the Red Hat customer portal and Red Hat Hybrid Cloud Console. You can do it directly from the bare metal instance, using the graphical access you just configured, or access those sites from your workstation and them copy files to the EC2 instance.
 
-6. Download latest `rhel-9.5-x86_64-kvm.qcow2` cloud image (*Red Hat Enterprise Linux 9.5 KVM Guest Image*) from the https://access.redhat.com/downloads[customer portal] and copy to the baremetal node.
+6. Download latest `rhel-9.5-x86_64-kvm.qcow2` cloud image (*Red Hat Enterprise Linux 9.5 KVM Guest Image*) from the https://access.redhat.com/downloads[customer portal] and copy to the bare metal node.
 +
 NOTE: The instructions are expected to work with different versions of RHEL but were tested with RHEL 9.5.
 
@@ -91,7 +93,7 @@ NOTE: The instructions are expected to work with different versions of RHEL but 
 # cp ~vncuser/Downloads/rhel-9.6-x86_64-kvm.qcow2 roles/setup-bm-host/files/
 --
 +
-NOTE: We use a fork of the https://github.com/v2pkthakur/hcp-on-bm.git[original repository^] to ensure the reproducibility of the instructions here. The original repository may include contributitions and improvements, made after creation of this course, which may interest you.
+NOTE: We use a fork of the https://github.com/v2pkthakur/hcp-on-bm.git[original repository^] to ensure the reproducibility of the instructions here. The original repository may include contributions and improvements, made after creation of this course, which may interest you.
 
 8. Explore the inventory and variables and update where required.
 +
@@ -119,7 +121,7 @@ image::s3-fig-4.jpg[]
 +
 image::s3-fig-5.jpg[]
 
-12. Configure `ansible-vault` to store your organization ID, activation keys, and OpenShift pull secret.
+12. Configure Ansible Vault to store your organization ID, activation keys, and OpenShift pull secret.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -131,7 +133,7 @@ activation_key: _YYYYY_
 pull_secret: '_ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ_'
 --
 
-13. Set up the baremetal node by running the ansible playbook.
+13. Set up the bare metal node by running the Ansible playbook.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -202,7 +204,7 @@ $ ansible-playbook -i inventory/hosts setup_bm_host.yaml --ask-vault-pass
 
 .. Finally, it configures Libvirt's DNS server to forward queries for the domains of the hub and two hosted clusters.
 
-.. Open a SSH session to the helper VM and inspect open network ports. Notice the `haproxy` and `named` daemons running, and also that Systemd will an TFTP server when there's UDP traffic to it.
+.. Open a SSH session to the helper VM and inspect open network ports. Notice the `haproxy` and `named` daemons running, and also that Systemd will start an TFTP server when there's UDP traffic to it.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -212,15 +214,17 @@ $ ansible-playbook -i inventory/hosts setup_bm_host.yaml --ask-vault-pass
 # exit
 --
 
-15. Allow access to `virt-manager` from your GUI user.
+15. Allow access to managing libvirt system VMs for your GUI user.
 
-.. Add either the `ec2-user` user (if using `waypipe`) of the `vncuser` user (if using a VNC viewer) to the `libvirt` group.
+.. Add either the `ec2-user` user (if using waypipe) or the `vncuser` user (if using a VNC viewer) to the `libvirt` group.
 +
 [source,subs="verbatim,quotes"]
 --
 # usermod -aG libvirt vncuser
 # usermod -aG libvirt ec2-user
 --
++
+WARNING: We recommend against enabling a VNC Viewer for the ec2-user, which is also allowed unrestricted Sudo, because the VNC protocol security is weaker than SSH.
 
 .. If using a VNC viewer, you must stop and restart your VNC desktop.
 +
@@ -230,7 +234,7 @@ $ ansible-playbook -i inventory/hosts setup_bm_host.yaml --ask-vault-pass
 # systemctl start vncserver@:99
 --
 
-.. If using `waypipe`, you must close and reconnect your SSH session.
+.. If using waypipe, you must close and reconnect your SSH session.
 
 .. In either case, check that the `libvirt` group is on the environment of your GUI user.
 +
