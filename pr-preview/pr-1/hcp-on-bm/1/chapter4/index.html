@@ -395,13 +395,16 @@ label linux
 <p>Select the NIC of the new VM and set its MAC address to the one you got from a previous step.</p>
 </li>
 <li>
-<p>Select <strong>Boot Options</strong> and check the NIC as a boot device, so the VM performs PXE boot, and click <strong>Begin Installation</strong>.</p>
+<p>Select <strong>Boot Options</strong>, keep the disk as the first boot device and add the NIC as the second boot device in the order, , and click <strong>Begin Installation</strong>.</p>
+<div class="paragraph">
+<p>This way, the VM boots from the NIC when the disk is empty, and boots from disk once CoreOS is installed. If you start with the NIC as first boot options, must manually change the order later, after PXE boot, to boot from disk."</p>
+</div>
 </li>
 </ol>
 </div>
 </li>
 <li>
-<p>Aprove the VM.</p>
+<p>Approve the VM.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -419,7 +422,7 @@ label linux
 <li>
 <p><strong>Optional:</strong> Add hosts using BMC.</p>
 <div class="paragraph">
-<p>If you wish, you can review the optional instructions at the end of this course to configure virtual BMC services and then add a third hosts using BMC, by emulating a physical machine with IPMI or similar management hardware.</p>
+<p>If you wish, you can review the optional instructions at the end of this course to configure virtual BMC services and then add a third host using BMC, by emulating a physical machine with IPMI or similar management hardware.</p>
 </div>
 </li>
 </ol>
