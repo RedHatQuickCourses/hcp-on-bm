@@ -1,7 +1,17 @@
 = Optional: Configure Virtual BMC Services on the Bare Metal Host
 
 ////
-No Video segments:
+Video segments: add-hosts-bmc.mp4
+extracted from
+https://drive.google.com/file/d/1x8WS_DQjKyOW_o3T7_WM9xXAe4rLgMWt/view?usp=sharing
+
+31:07::
+Add a node using BMC
+
+36:12::
+Add a node using BMC and a YAML file
+
+37:05::
 ////
 
 This lab shows how to configure the bare metal host to provide a virtual Baseboard Management Controller (vBMC), which enables managing libvirt VMs as if they were bare metal machines with IPMI controllers or similar management hardware.

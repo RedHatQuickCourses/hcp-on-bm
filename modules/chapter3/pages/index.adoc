@@ -1,16 +1,17 @@
 = Setup the Hub Cluster
 
 ////
-Video segments:
+Video segments: hub-cluster.mp4
+extracted from
 https://drive.google.com/file/d/1x8WS_DQjKyOW_o3T7_WM9xXAe4rLgMWt/view?usp=sharing
 
-16:34::
+15:34::
 Provision the hub cluster.
 
 20:06::
 Recap of previous steps
 
-21:03::
+20:54::
 ////
 
 This lab shows how to provision a hub cluster with ACM and other required operators, by using provided Ansible playbooks and the OpenShift web console.

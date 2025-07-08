@@ -1,10 +1,11 @@
 = Add Managed Hosts
 
 ////
-Video segments:
+Video segments: add-hosts.mp4
+extracted from
 https://drive.google.com/file/d/1x8WS_DQjKyOW_o3T7_WM9xXAe4rLgMWt/view?usp=sharing
 
-21:03::
+20:54::
 Configure host inventory in ACM
 
 23:11::
@@ -20,12 +21,6 @@ Add a note using a Discovery ISO
 Add a node using PXE
 
 31:07::
-Add a node using BMC
-
-36:12::
-Add a node using BMC and a YAML file
-
-37:05::
 ////
 
 This lab shows how to configure an infrastructure environment, using ACM, and add bare metal hosts to it, using either a Discovery ISO or PXE boot.
