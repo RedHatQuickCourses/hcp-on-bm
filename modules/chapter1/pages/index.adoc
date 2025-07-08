@@ -6,6 +6,8 @@ No video segments.
 
 This lab shows how to prepare an AWS environment, using the AWS console, with a single bare metal instance that you will later access using SSH and also a remote desktop technology (either waypipe or VNC).
 
+_There is no video segment for this lab._
+
 1. On the AWS Web console, switch to your preferred region, preferably the one closest to you. If unsure, use `us-east-1`.
 +
 image::s2-fig-1.jpg[]
