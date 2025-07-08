@@ -177,9 +177,11 @@ label linux
 
 .. Select the NIC of the new VM and set its MAC address to the one you got from a previous step.
 
-.. Select *Boot Options* and check the NIC as a boot device, so the VM performs PXE boot, and click *Begin Installation*.
+.. Select *Boot Options*, keep the disk as the first boot device and add the NIC as the second boot device in the order, , and click *Begin Installation*.
++
+This way, the VM boots from the NIC when the disk is empty, and boots from disk once CoreOS is installed. If you start with the NIC as first boot options, must manually change the order later, after PXE boot, to boot from disk."
 
-9. Aprove the VM.
+9. Approve the VM.
 
 .. After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.
 
@@ -189,4 +191,4 @@ label linux
 
 10. *Optional:* Add hosts using BMC.
 +
-If you wish, you can review the optional instructions at the end of this course to configure virtual BMC services and then add a third hosts using BMC, by emulating a physical machine with IPMI or similar management hardware.
+If you wish, you can review the optional instructions at the end of this course to configure virtual BMC services and then add a third host using BMC, by emulating a physical machine with IPMI or similar management hardware.
