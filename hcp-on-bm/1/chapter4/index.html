@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Add Managed Hosts :: Hosted Control Planes on a Single BareMetal Node</title>
+    <link rel="prev" href="../chapter3/index.html">
+    <link rel="next" href="../chapter5/index.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Hosted Control Planes on a Single BareMetal Node</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/hcp-on-bm/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="hcp-on-bm" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Hosted Control Planes on a Single BareMetal Node</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter0/index.html">Introduction to OpenShift HCP and the PoC Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter1/index.html">Deploy the Bare Metal Node</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter2/index.html">Prepare the Bare Metal Node</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter3/index.html">Setup the Hub Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="index.html">Add Managed Hosts</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter5/index.html">Create and Access a Hosted Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/index.html">Optional: Configure Virtual BMC Services on the Bare Metal Host</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Hosted Control Planes on a Single BareMetal Node</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Hosted Control Planes on a Single BareMetal Node</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Hosted Control Planes on a Single BareMetal Node</a></li>
+    <li><a href="index.html">Add Managed Hosts</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Add Managed Hosts</h1>
+<div class="paragraph">
+<p>This lab shows how to configure an infrastructure environment, using ACM, and add bare metal hosts to it, using either a Discovery ISO or PXE boot.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Configure the host inventory in ACM.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>In the <strong>All Clusters</strong> view of the OpenShift web console, enter <strong>Infrastructure &gt; Host Inventory</strong> and click <strong>Configure host inventory settings</strong> at the top right.</p>
+</li>
+<li>
+<p>Accept the default values and click <strong>Configure</strong>.</p>
+</li>
+<li>
+<p>Wait a bit, the page takes some moments to refresh and show that the configuration process has started.</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+You may get warnings that it&#8217;s taking too long and you might need to troubleshoot. They should be safe to ignore. It may take over 20 min to complete.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Make sure you got a working host inventory before proceeding to the next step. The page should display a green message: "Host inventory configured successfully."</p>
+</li>
+<li>
+<p>If you prefer to monitor configuration of the host inventory from the CLI instead of from the web console.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get deployment -n multicluster-engine assisted-service
+# oc get pod -n multicluster-engine -l app=assisted-service</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You may see that the Assisted Service pod restart a few times until it can initialize itself successfully.</p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Create an infrastructure environment in ACM.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>On the <strong>Host inventory</strong> page, click <strong>Create infrastructure environment</strong></p>
+</li>
+<li>
+<p>Fill in the form with a name and a location.</p>
+</li>
+<li>
+<p>Paste the contents of your OpenShift installation pull secret into the <strong>Pull secret</strong> field.</p>
+</li>
+<li>
+<p>Paste your public SSH key a <strong>SSH public key</strong> field. Use the <code>~/.ssh/lab_rsa.pub</code> file created by the bare metal host configuration playbook.</p>
+</li>
+<li>
+<p>Click <strong>Create</strong></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Prepare to add a host using a discovery ISO</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>On the Host inventory page, enter the infrastructure environment you just created. You may already be there, from the previous step.</p>
+</li>
+<li>
+<p>Click on <strong>Add hosts</strong> and select <strong>With Discovery ISO</strong> to start downloading an ISO disk image. When the download is complete, copy the file to <code>/var/lib/libvirt/images/</code>.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you copy the <code>wget</code> command from the web console, add <code>--no-check-certificate</code> option to it.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Get the MAC addresses configured in libvirt&#8217;s default network for the <code>c1worker1</code> host.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># virsh net-dumpxml default | grep c1worker1
+      &lt;host mac='52:54:00:e2:54:41' name='c1worker1.hub.mylab.com' ip='192.168.122.41'/&gt;</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+If you do not use one of the MAC address set in libvirt, your VM will fail to get an IP address and other required network settings like DNS name server addresses, and will fail to boot and connect to the Assisted Installer services on the hub cluster.
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Boot a VM from the discovery ISO.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Start the Virtual Machine Manager (<code>virt-manager</code>) utility and create a new VM named <code>c1worker1</code>, with at least 8 GiB memory, 2 vCPUS, and 100 GB of disk, booting from the ISO image you downloaded in the previous step.</p>
+</li>
+<li>
+<p>Be sure you check <strong>Customize configuration before install</strong> on Step 5 of 5.</p>
+</li>
+<li>
+<p>Select the NIC of the new VM and set its MAC address to the one you got from a previous step, and click <strong>Begin Installation</strong>.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Approve the VM.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.</p>
+</li>
+<li>
+<p>Click <strong>Approve host</strong> twice to make the host available for joining hosted clusters. The host status should change to "Available".</p>
+</li>
+<li>
+<p>You could add more hosts using the same discovery ISO, and give each node a different MAC address from the pool preconfigured in libvirt&#8217;s default network, but we will experiment with other methods for adding hosts to the inventory of your infrastructure environment.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Prepare to add a host using PXE.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>You should be in the list of hosts of your infrastructure environment. Click <strong>Add hosts</strong> and select <strong>With iPXE</strong> to get a script which provides the initial RAM disk and kernel commands required to network boot a host from the Assisted Installer service.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you use the "Command to download the iPXE script file" you must add the <code>--no-check-certificate</code> option to your <code>wget</code> command.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Copy the URLs of the initial RAM disk (<code>initrd.img</code>), kernel (<code>vmlinuz</code>), and root file system (<code>rootfs.img</code>) files, from the iPXE script, and download them. If using <code>wget</code> you would create commands <em>similar</em> to the following:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># wget -O initrd.img 'https://assisted-image-service-multicluster-engine.apps.hub.mylab.com/images/34ced53f-84b3-47ec-ae1f-8f6809f47e6c/pxe-initrd?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiIzNGNlZDUzZi04NGIzLTQ3ZWMtYWUxZi04ZjY4MDlmNDdlNmMifQ.3ZJF_HL3OsGjImxOwcmXCzVs_ITQzZN2bhPDpNLTaHcxv7OiUMHM7cxmfOZ_KZ8QQu7vj_-Ng00OXBgUhWAieQ&amp;arch=x86_64&amp;version=4.18' --no-check-certificate
+# wget -O vmlinuz 'https://assisted-image-service-multicluster-engine.apps.hub.mylab.com/boot-artifacts/kernel?arch=x86_64&amp;version=4.18' --no-check-certificate
+# wget -O rootfs.img 'https://assisted-image-service-multicluster-engine.apps.hub.mylab.com/boot-artifacts/rootfs?arch=x86_64&amp;version=4.18' --no-check-certificate</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Configure a PXE server.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Copy the initial RAM disk, kernel, and root file system files to the helper VM and open an SSH connection to it.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># scp -i ~/.ssh/lab_rsa initrd.img vmlinuz rootfs.img 192.168.122.21:~
+# ssh -i ~/.ssh/lab_rsa 192.168.122.21</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>On the helper VM, copy the initial RAM disk and kernel files to the TFTP server images directory, and copy the root file system  file to the BOOTP server directory.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># cp initrd.img vmlinuz  /var/lib/tftpboot/images/
+# cp rootfs.img /var/www/html/bootp/</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Inspect the PXE configuration on the helper VM. It was already configured to server those files by the playbook from a previous activity.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># cat /var/lib/tftpboot/pxelinux.cfg/default
+default vesamenu.c32
+prompt 0
+timeout 60
+
+display boot.msg
+
+label linux
+  menu label CoreOS Hosted Cluster PXE
+  menu default
+  initrd images/initrd.img
+  kernel images/vmlinuz coreos.live.rootfs_url=http://192.168.122.21:8080/bootp/rootfs.img random.trust_cpu=on rd.luks.options=discard ignition.firstboot ignition.platform.id=metal console=tty1 console=ttyS1,115200n8 coreos.inst.persistent-kargs="console=tty1 console=ttyS1,115200n8"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>You can now close your SSH connection to the helper VM.</p>
+</li>
+<li>
+<p>On your bare metal host (your EC2 instance), inspect the libvirt default network settings to verify that it configures the helper VM as the BOOTP server for the network.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># virsh net-dumpxml default | grep bootp
+      &lt;bootp file='pxelinux.0' server='192.168.122.21'/&gt;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Get the MAC addresses configured in libvirt&#8217;s default network for the <code>c1worker2</code> host.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># virsh net-dumpxml default | grep c1worker2
+      &lt;host mac='52:54:00:e2:54:42' name='c1worker1.hub.mylab.com' ip='192.168.122.41'/&gt;</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Boot a VM using PXE.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Using the Virtual Machine Manager (<code>virt-manager</code>) utility, create a new VM named <code>c1worker2</code>, selecting <strong>Manual install</strong>. Configure the VM with at least 8GiB memory, 2vCPUS, and 100GB of disk. Be sure you check <strong>Customize configuration before install</strong> on Step 5 of 5.</p>
+</li>
+<li>
+<p>Select the NIC of the new VM and set its MAC address to the one you got from a previous step.</p>
+</li>
+<li>
+<p>Select <strong>Boot Options</strong>, keep the disk as the first boot device and add the NIC as the second boot device in the order, , and click <strong>Begin Installation</strong>.</p>
+<div class="paragraph">
+<p>This way, the VM boots from the NIC when the disk is empty, and boots from disk once CoreOS is installed. If you start with the NIC as first boot options, must manually change the order later, after PXE boot, to boot from disk."</p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Approve the VM.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.</p>
+</li>
+<li>
+<p>Click <strong>Approve host</strong> twice to make the host available for joining hosted clusters.</p>
+</li>
+<li>
+<p>The host status should change to "Available".</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><strong>Optional:</strong> Add hosts using BMC.</p>
+<div class="paragraph">
+<p>If you wish, you can review the optional instructions at the end of this course to configure virtual BMC services and then add a third host using BMC, by emulating a physical machine with IPMI or similar management hardware.</p>
+</div>
+</li>
+</ol>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="../chapter3/index.html">Setup the Hub Cluster</a></span>
+  <span class="next"><a href="../chapter5/index.html">Create and Access a Hosted Cluster</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Chapter 3 :: Hosted Control Planes on a Single BareMetal</title>
-    <link rel="prev" href="../chapter2/section1.html">
-    <link rel="next" href="section1.html">
+    <title>Setup the Hub Cluster :: Hosted Control Planes on a Single BareMetal Node</title>
+    <link rel="prev" href="../chapter2/index.html">
+    <link rel="next" href="../chapter4/index.html">
     <meta name="generator" content="Antora 3.1.3">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <script>var uiRootPath = '../../../_'</script>
@@ -15,7 +15,7 @@
   <nav class="navbar">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
-      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Hosted Control Planes on a Single BareMetal</a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Hosted Control Planes on a Single BareMetal Node</a>
       <button class="navbar-burger" data-target="topbar-nav">
         <span></span>
         <span></span>
@@ -35,7 +35,7 @@
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
-    <h3 class="title"><a href="../index.html">Hosted Control Planes on a Single BareMetal</a></h3>
+    <h3 class="title"><a href="../index.html">Hosted Control Planes on a Single BareMetal Node</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
@@ -54,55 +54,49 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="../chapter1/index.html">Chapter 1</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../chapter1/section1.html">Section 1</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../chapter1/section2.html">Section 2</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../chapter1/section3.html">Section 3</a>
-  </li>
-</ul>
+    <a class="nav-link" href="../chapter0/index.html">Introduction to OpenShift HCP and the PoC Environment</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="../chapter2/index.html">Chapter 2</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../chapter2/section1.html">Section 1</a>
+    <a class="nav-link" href="../chapter1/index.html">Deploy the Bare Metal Node</a>
   </li>
 </ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter2/index.html">Prepare the Bare Metal Node</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item is-current-page" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="index.html">Chapter 3</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section1.html">Section 1</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section2.html">Section 2</a>
-  </li>
-</ul>
+    <a class="nav-link" href="index.html">Setup the Hub Cluster</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+    <a class="nav-link" href="../chapter4/index.html">Add Managed Hosts</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter5/index.html">Create and Access a Hosted Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/index.html">Optional: Configure Virtual BMC Services on the Bare Metal Host</a>
   </li>
 </ul>
   </li>
@@ -111,12 +105,12 @@
 </div>
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
-    <span class="title">Hosted Control Planes on a Single BareMetal</span>
+    <span class="title">Hosted Control Planes on a Single BareMetal Node</span>
     <span class="version">1</span>
   </div>
   <ul class="components">
     <li class="component is-current">
-      <a class="title" href="../index.html">Hosted Control Planes on a Single BareMetal</a>
+      <a class="title" href="../index.html">Hosted Control Planes on a Single BareMetal Node</a>
       <ul class="versions">
         <li class="version is-current is-latest">
           <a href="../index.html">1</a>
@@ -134,8 +128,8 @@
   <a href="../index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
-    <li><a href="../index.html">Hosted Control Planes on a Single BareMetal</a></li>
-    <li><a href="index.html">Chapter 3</a></li>
+    <li><a href="../index.html">Hosted Control Planes on a Single BareMetal Node</a></li>
+    <li><a href="index.html">Setup the Hub Cluster</a></li>
   </ul>
 </nav>
 </div>
@@ -144,23 +138,212 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Chapter 3</h1>
+<h1 class="page">Setup the Hub Cluster</h1>
 <div class="paragraph">
-<p>In this section, we cover&#8230;&#8203; FIXME</p>
+<p>This lab shows how to provision a hub cluster with ACM and other required operators, by using provided Ansible playbooks and the OpenShift web console.</p>
 </div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>Add or remove section entries in the <code>antora.yaml</code> file as needed.</p>
+<p>Update <code>/etc/resolv.conf</code> to set the helper vm as the primary DNS server. Keep the AWS DNS server as a secondary option.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># vi /etc/resolv.conf
+nameserver 192.168.122.21
+nameserver 10.0.0.2</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+That change is NOT persistent, it&#8217;s lost if you stop and restart your demo environment or its EC2 instance.
+</td>
+</tr>
+</table>
+</div>
 </li>
 <li>
-<p>Ensure you create or delete the corresponding directory for the chapter accordingly.</p>
+<p>Run the Ansible playbook to set up the hub cluster and ACM.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>The playbook may take over 50 min to complete. If your SSH client may disconnect due to inactivity, it&#8217;s recommended that you start a tmux session, to prevent your shell from being terminated and taking the Ansible runner with it.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># tmux</code></pre>
+</div>
+</div>
 </li>
-</ul>
+<li>
+<p>Run the playbook.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># ansible-playbook -i inventory/hosts setup_hub_cluster.yaml --ask-vault-pass</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>If your playbook fails close to its end, you may have a healthy cluster and manually follow the playbook&#8217;s source code to complete its complete tasks manually, for example:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">...
+TASK [setup-hub-acm : Lets wait for 300 seconds for Operators to be ACTIVE] **********************************************************************************
+ok: [localhost]
+
+TASK [setup-hub-acm : Setup MultiClusterHub Resource] ********************************************************************************************************
+fatal: [localhost]: FAILED! =&gt; {"changed": true, "cmd": "oc apply -f \"/root/hcp-on-bm/roles/setup-hub-acm/files/acm/04-multicluster-hub.yaml\"\n", "delta": "
+0:00:30.167446", "end": "2025-06-16 14:55:20.295256", "msg": "non-zero return code", "rc": 1, "start": "2025-06-16 14:54:50.127810", "stderr": "E0616 14:55:20
+.289510   73369 memcache.go:265] \"Unhandled Error\" err=\"couldn't get current server API group list: Get \\\"https://api.hub.mylab.com:6443/api?timeout=32s\
+\\": dial tcp 192.168.122.39:6443: i/o timeout\"\nerror: unable to recognize \"/root/hcp-on-bm/roles/setup-hub-acm/files/acm/04-multicluster-hub.yaml\": Get \
+"https://api.hub.mylab.com:6443/api?timeout=32s\": dial tcp 192.168.122.39:6443: i/o timeout", "stderr_lines": ["E0616 14:55:20.289510   73369 memcache.go:265
+] \"Unhandled Error\" err=\"couldn't get current server API group list: Get \\\"https://api.hub.mylab.com:6443/api?timeout=32s\\\": dial tcp 192.168.122.39:64
+43: i/o timeout\"", "error: unable to recognize \"/root/hcp-on-bm/roles/setup-hub-acm/files/acm/04-multicluster-hub.yaml\": Get \"https://api.hub.mylab.com:64
+43/api?timeout=32s\": dial tcp 192.168.122.39:6443: i/o timeout"], "stdout": "", "stdout_lines": []}
+
+PLAY RECAP ***************************************************************************************************************************************************
+localhost                  : ok=38   changed=26   unreachable=0    failed=1    skipped=0    rescued=0    ignored=0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Connect to the cluster and assess it is healthy. If it is, review the tasks that are pending after the failed task.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># less roles/setup-hub-acm/tasks/main.yml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Perform the pending tasks manually.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc create -f roles/setup-hub-acm/files/acm/04-multicluster-hub.yaml
+# oc create -f roles/setup-hub-acm/files/lvm-storage/04-lvm-cluster.yaml
+# oc create -f roles/setup-hub-acm/files/metal-lb/04-metalLB.yaml
+# oc create -f roles/setup-hub-acm/files/metal-lb/05-ip-pool.yaml
+# oc create -f roles/setup-hub-acm/files/metal-lb/06-L2Advertisement.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>If your playbook fails and you are unsure about the viability of completing tasks manually, you may may destroy your libvirt VMs and restart, for example:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">...
+TASK [setup-hub-cluster : Approve all pendign CSR for Worker nodes] ******************************************************************************************
+changed: [localhost]
+
+TASK [setup-hub-cluster : Waiting for cluster Bootstrap to finish] *******************************************************************************************
+
+fatal: [localhost]: FAILED! =&gt; {"changed": true, "cmd": "openshift-install --dir=/var/lib/libvirt/images/hub_install  wait-for bootstrap-complete --log-level=info\n", "delta": "0:20:00.092716", "end": "2025-06-17 18:51:56.411394", "msg": "non-zero return code", "rc": 5, "start": "2025-06-17 18:31:56.318678", "stderr": "level=info msg=Waiting up to 20m0s (until 6:51PM UTC) for the Kubernetes API at https://api.hub.mylab.com:6443...\nlevel=error msg=Attempted to gather ClusterOperator status after wait failure: listing ClusterOperator objects: Get \"https://api.hub.mylab.com:6443/apis/config.openshift.io/v1/clusteroperators\": dial tcp: lookup api.hub.mylab.com on 10.0.0.2:53: no such host\nlevel=info msg=Use the following commands to gather logs from the cluster\nlevel=info msg=openshift-install gather bootstrap --help\nlevel=error msg=Bootstrap failed to complete: Get \"https://api.hub.mylab.com:6443/version\": dial tcp: lookup api.hub.mylab.com on 10.0.0.2:53: no such host\nlevel=error msg=Failed waiting for Kubernetes API. This error usually happens when there is a problem on the bootstrap host that prevents creating a temporary control plane.", "stderr_lines": ["level=info msg=Waiting up to 20m0s (until 6:51PM UTC) for the Kubernetes API at https://api.hub.mylab.com:6443...", "level=error msg=Attempted to gather ClusterOperator status after wait failure: listing ClusterOperator objects: Get \"https://api.hub.mylab.com:6443/apis/config.openshift.io/v1/clusteroperators\": dial tcp: lookup api.hub.mylab.com on 10.0.0.2:53: no such host", "level=info msg=Use the following commands to gather logs from the cluster", "level=info msg=openshift-install gather bootstrap --help", "level=error msg=Bootstrap failed to complete: Get \"https://api.hub.mylab.com:6443/version\": dial tcp: lookup api.hub.mylab.com on 10.0.0.2:53: no such host", "level=error msg=Failed waiting for Kubernetes API. This error usually happens when there is a problem on the bootstrap host that prevents creating a temporary control plane."], "stdout": "", "stdout_lines": []}
+
+PLAY RECAP ***************************************************************************************************************************************************
+localhost                  : ok=30   changed=20   unreachable=0    failed=1    skipped=0    rescued=0    ignored=0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Run the clean up playbook.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># ansible-playbook -i inventory/hosts cleanup_hub.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Try again creating the hub cluster.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Most times, there would be no need to destroying your AWS open environment and recreating it from scratch, if you experience a failure running the playbook.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>There are two clean-up playbooks:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>cleanup-hub.yaml</code></dt>
+<dd>
+<p>Destroys only the VMs that belong to the hub cluster.</p>
+</dd>
+<dt class="hdlist1"><code>cleanup.yaml</code></dt>
+<dd>
+<p>Destroys all VMs, including the helper VM. If you use this one, you must return to the previous lab to run the playbook which configures the bare metal host and its helper VM.</p>
+</dd>
+</dl>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Create a read-only copy of the kubeconfig file of the hub cluster, and use it to validate that the hub cluster is healthy.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># cp /var/lib/libvirt/images/hub_install/auth/kubeconfig ~
+# chmod a-w ~/kubeconfig
+# export KUBECONFIG=~/kubeconfig
+# oc adm wait-for-stable-cluster
+[ terminate with Ctrl+C when it reports stable for a few sec ]
+# oc get node
+# oc get co</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Get the console URL.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ oc whoami --show-console</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Get the kubeadmin password</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ cat /var/lib/libvirt/images/hub_install/auth/kubeadmin-password ; echo</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Using either a VNC viewer, or Waypipe (which you configured in a previous lab), launch a web browser and login to the OpenShift console using the kubeadmin user and password.</p>
+</li>
+<li>
+<p>Validate that MetalLB, LVM Storage, and ACM operators are installed and configured.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s4-fig-1.jpg" alt="s4 fig 1">
+</div>
+</div>
+</li>
+<li>
+<p>Validate the LVM Cluster is running.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s4-fig-2.jpg" alt="s4 fig 2">
+</div>
+</div>
+</li>
+<li>
+<p>Within the MetalLB operator validate that MetalLB, L2Advertisement and IPAddressPool resources are created.</p>
+</li>
+</ol>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="../chapter2/section1.html">Section 1</a></span>
-  <span class="next"><a href="section1.html">Section 1</a></span>
+  <span class="prev"><a href="../chapter2/index.html">Prepare the Bare Metal Node</a></span>
+  <span class="next"><a href="../chapter4/index.html">Add Managed Hosts</a></span>
 </nav>
 </article>
   </div>
