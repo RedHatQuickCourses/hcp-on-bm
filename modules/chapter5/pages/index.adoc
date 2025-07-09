@@ -1,0 +1,176 @@
+= Create and Access a Hosted Cluster
+
+////
+Video segments: hosted-cluster.mp4
+extracted from
+https://drive.google.com/file/d/1x8WS_DQjKyOW_o3T7_WM9xXAe4rLgMWt/view?usp=sharing
+
+37:05::
+Create a hosted cluster using a load balancer for API access
+
+41:24::
+Explore the hosted cluster control plane resources.
+
+42:45::
+Access a hosted cluster.
+
+43:25::
+Expore the Konnectity services.
+
+45:07::
+Deploy a test application on the hosted cluster.
+
+45:45::
+End of demo. Closing words.
+////
+
+This lab shows how to create and access a hosted cluster using worker nodes available from an ACM infrastructure environment.
+
+1. Create a hosted cluster using a load balancer for API access.
+
+.. Find a domain name to use as the name of your cluster. The helper VM is preconfigured with two domains for use by hosted cluster, which you can find by searching for forwarder domains.
++
+[source,subs="verbatim,quotes"]
+--
+# virsh net-dumpxml default | grep forwarder
+    <forwarder domain='hub.mylab.com' addr='192.168.122.21'/>
+    <forwarder domain='hcp-cluster1.mylab.com' addr='192.168.122.21'/>
+    <forwarder domain='hcp-cluster2.mylab.com' addr='192.168.122.21'/>
+    <forwarder domain='122.168.192.in-addr.arpa' addr='192.168.122.21'/>
+--
+
+.. On the ACM web console (the *All Clusters* perspective of the OpenShift web console), navigate to *Infrastructure > Clusters* and click *Create Cluster*.
+
+2. Fill in the *Cluster Details* page of the Create cluster assistant as follows:
+
+.. Choose *Host inventory* for the infrastructure and them *Hosted* for the control plane type.
+
+.. Type `hcp-cluster1` as the name of the cluster. Remember that it must be a name aligned with your DNS settings.
+
+.. Type `mylab.com` as the base domain name of the cluster. Again, this must be aligned with your DNS settings.
+
+.. Select a 4.16 version of OpenShift for your hosted cluster.
++
+NOTE: It is expected to work with later versions of OpenShift, but this lab was tested with 4.16.
+
+.. Paste a valid OpenShift pull secret, such as the one you used for the playbooks in a previous lab.
+
+.. Leave "Infrastructure provide credential" and "Cluster set" empty.
+
+.. Click *Next*
+
+3. Fill in the *Node pools* page of the Create cluster assistant as follows:
+
+.. Type `2` as the number of hosts of your hosted cluster.
+
+.. Leave all other fields on their default values.
+
+.. Click *Next*
+
+4. Fill in the *Networking* page of the Create cluster assistant as follows:
+
+.. Select *Load Balancer* as the API publishing strategy. It uses the MetalLB deployment on the hub cluster to provide load balancers for API and ingress/route access to the hosted cluster.
+
+.. Paste the contents of the `~/.ssh/lab_rsa.pub` SSH key.
+
+.. Click *Next*
+
+5. Fill in the *Review* page of the Create cluster assistant as follows:
+
+.. Set the *YAML* toggle to *On*
+
+.. Find the `service: APIServer` field and edit as follows, to specify the host name of its load balancer.
++
+[source,subs="verbatim,quotes"]
+--
+...
+  services:
+  - service: APIServer
+    servicePublishingStrategy:
+      type: LoadBalancer
+      LoadBalancer:
+        hostname: api.hcp-cluster1.mylab.com
+  - service: OAuthServer
+...
+--
+
+.. click *Create*.
++
+// WARNING: got error: secret ssh-key (didn't copy the name) already exists. Did I click "create" twice?
+
+6. If your web console does not switch automatically to the `hcp-cluster1` details page, find it at *Infrastructure > Clusters* and monitor, on the *Overview* tab, the progress of deploying its hosted control plane services and its node pool.
+
+.. You can also monitor from the CLI, checking the services on the namespace named after the hosted cluster name.
++
+[source,subs="verbatim,quotes"]
+--
+# oc get service -n hcp-cluster1-hcp-cluster1
+--
++
+You may also notice resources such as PVCs for the etcd database and routes for authentication and other services.
++
+// WARNING: find the resource that represents the hosted cluster, to get its "ready" status from the CLI.
+
+.. Be patient, it may take over 20 min to finish hosted cluster creation. During that time, control plane services may display a degraded status.
++
+//NOTE: After a while, I still have some conditions:
+//+
+//... ExternalDNSReachable: External DNS is not configured
+//+
+//... Degraded: openshift-route-controller-manager deployment has 1 unavailable replicas
+//+
+//But the overview declares the cluster as Ready, and it seems all works fine.
+
+7. Access the hosted cluster using a web browser.
+
+.. On the overview tab of details page for the `hcp-cluster1` cluster, scroll down to find the *Details* panel. Note its status field. if it is ready, click the Console URL link to open a new browser tab with the web console of the hosted cluster.
+
+.. Also Notice, bellow the Console URL link, the *Reveal credentials* icon that provides the kubeadmin password for the hosted cluster.
+
+.. On the console of the hosted cluster, navigate to *Compute > Nodes* and see that the cluster has two nodes: `c1worker1` and `c1worker2`, which you provisioned before. Other than the fact there are no master nodes, it looks like any other OpenShift cluster.
+
+8. Access the hosted cluster using the CLI.
+
+.. On the console of the hub cluster, see the *Details* panel of overview tab of details page for the `hcp-cluster1` cluster, you can find the API URL for the CLI.
+
+.. Remember that the kubeconfig file for the hub cluster was set read-only, to prevent accidental corruption, so create a new kubeconfig file for the hosted cluster.
++
+[source,subs="verbatim,quotes"]
+--
+# export KUBECONFIG=~/kubeconfig-hcp-cluster1
+# oc login --insecure-skip-tls-verify -u kubeadmin https://192.168.122.60:6443
+# oc get nodes
+# oc get co
+--
+
+.. Alternatively, you can download a kubeconfig file by clicking *Download kubeconfig* on the details page of your hosted cluster. That kubeconfig uses a client certificate, similar to the installation kubeconfig of OpenShift clusters created by the `openshift-installer` tool.
+
+.. You can set the KUBECONFIG environment variable to different files, depending on the cluster you want to connect. This may be simpler than using `oc config` commands to maintain and switch between different contexts.
+
+9. Using your preferred method (web console or CLI) inspect the `kube-system` namespace to see the `konnectivity-agent` and `kube-api-server-proxy` pods that connect hosted cluster nodes to their control plane on the hub cluster. 
+
+10. From now on, you can use the hosted cluster as a regular OpenShift cluster: deploy applications, install operators, configure authentication, and perform other day-2 tasks.
+
+.. Create a new project and deploy a "hello, world" application on the hosted cluster.
++
+[source,subs="verbatim,quotes"]
+--
+# oc new-project test
+# oc new-app --name hello --image docker.io/openshift/hello-openshift
+# oc expose svc hello
+--
+
+.. Wait until the hello pods are ready and running.
++
+[source,subs="verbatim,quotes"]
+--
+# oc get svc,pod
+--
+
+.. Access the hello, world app using the ingress controller from the hosted cluster.
++
+[source,subs="verbatim,quotes"]
+--
+# curl hello-test.apps.hcp-cluster1.mylab.com
+--
+

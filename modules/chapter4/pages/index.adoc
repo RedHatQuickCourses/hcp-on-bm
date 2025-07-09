@@ -1,0 +1,194 @@
+= Add Managed Hosts
+
+////
+Video segments: add-hosts.mp4
+extracted from
+https://drive.google.com/file/d/1x8WS_DQjKyOW_o3T7_WM9xXAe4rLgMWt/view?usp=sharing
+
+20:54::
+Configure host inventory in ACM
+
+23:11::
+Create infrastruture environments in ACM
+
+24:26::
+Add nodes overview
+
+25:17::
+Add a note using a Discovery ISO
+
+27:30::
+Add a node using PXE
+
+31:07::
+////
+
+This lab shows how to configure an infrastructure environment, using ACM, and add bare metal hosts to it, using either a Discovery ISO or PXE boot.
+
+
+////
+NOTE: Looks like the definition of image storage was incorrect at 21:55 -- it's not (or not just) the CoreOS images to boot nodes, but the internal registry of each hosted cluster, right?
+////
+
+1. Configure the host inventory in ACM.
+
+.. In the *All Clusters* view of the OpenShift web console, enter *Infrastructure > Host Inventory* and click *Configure host inventory settings* at the top right.
+
+.. Accept the default values and click *Configure*.
+
+.. Wait a bit, the page takes some moments to refresh and show that the configuration process has started.
++
+IMPORTANT: You may get warnings that it's taking too long and you might need to troubleshoot. They should be safe to ignore. It may take over 20 min to complete.
+
+.. Make sure you got a working host inventory before proceeding to the next step. The page should display a green message: "Host inventory configured successfully."
+
+.. If you prefer to monitor configuration of the host inventory from the CLI instead of from the web console.
++
+[source,subs="verbatim,quotes"]
+--
+# oc get deployment -n multicluster-engine assisted-service
+# oc get pod -n multicluster-engine -l app=assisted-service
+--
++
+You may see that the Assisted Service pod restart a few times until it can initialize itself successfully.
+
+2. Create an infrastructure environment in ACM.
+
+.. On the *Host inventory* page, click *Create infrastructure environment*
+
+.. Fill in the form with a name and a location.
+
+.. Paste the contents of your OpenShift installation pull secret into the *Pull secret* field.
+
+.. Paste your public SSH key a *SSH public key* field. Use the `~/.ssh/lab_rsa.pub` file created by the bare metal host configuration playbook.
+
+.. Click *Create*
+
+3. Prepare to add a host using a discovery ISO
+
+.. On the Host inventory page, enter the infrastructure environment you just created. You may already be there, from the previous step.
+
+.. Click on *Add hosts* and select *With Discovery ISO* to start downloading an ISO disk image. When the download is complete, copy the file to `/var/lib/libvirt/images/`.
++
+NOTE: If you copy the `wget` command from the web console, add `--no-check-certificate` option to it.
+
+.. Get the MAC addresses configured in libvirt's default network for the `c1worker1` host. 
++
+[source,subs="verbatim,quotes"]
+--
+# virsh net-dumpxml default | grep c1worker1
+      <host mac='52:54:00:e2:54:41' name='c1worker1.hub.mylab.com' ip='192.168.122.41'/>
+--
++
+WARNING: If you do not use one of the MAC address set in libvirt, your VM will fail to get an IP address and other required network settings like DNS name server addresses, and will fail to boot and connect to the Assisted Installer services on the hub cluster. 
+
+4. Boot a VM from the discovery ISO.
+
+.. Start the Virtual Machine Manager (`virt-manager`) utility and create a new VM named `c1worker1`, with at least 8 GiB memory, 2 vCPUS, and 100 GB of disk, booting from the ISO image you downloaded in the previous step.
+
+.. Be sure you check *Customize configuration before install* on Step 5 of 5.
++
+// WARNING: craft a virt-install command? See hcp-on-bm/setup_hosted_cluster.yaml
+
+.. Select the NIC of the new VM and set its MAC address to the one you got from a previous step, and click *Begin Installation*.
+
+5. Approve the VM.
+
+.. After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.
+
+.. Click *Approve host* twice to make the host available for joining hosted clusters. The host status should change to "Available".
+
+.. You could add more hosts using the same discovery ISO, and give each node a different MAC address from the pool preconfigured in libvirt's default network, but we will experiment with other methods for adding hosts to the inventory of your infrastructure environment.
+
+6. Prepare to add a host using PXE.
+
+.. You should be in the list of hosts of your infrastructure environment. Click *Add hosts* and select *With iPXE* to get a script which provides the initial RAM disk and kernel commands required to network boot a host from the Assisted Installer service.
++
+NOTE: If you use the "Command to download the iPXE script file" you must add the `--no-check-certificate` option to your `wget` command.
+
+.. Copy the URLs of the initial RAM disk (`initrd.img`), kernel (`vmlinuz`), and root file system (`rootfs.img`) files, from the iPXE script, and download them. If using `wget` you would create commands _similar_ to the following:
++
+[source,subs="verbatim,quotes"]
+--
+# wget -O initrd.img 'https://assisted-image-service-multicluster-engine.apps.hub.mylab.com/images/34ced53f-84b3-47ec-ae1f-8f6809f47e6c/pxe-initrd?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiIzNGNlZDUzZi04NGIzLTQ3ZWMtYWUxZi04ZjY4MDlmNDdlNmMifQ.3ZJF_HL3OsGjImxOwcmXCzVs_ITQzZN2bhPDpNLTaHcxv7OiUMHM7cxmfOZ_KZ8QQu7vj_-Ng00OXBgUhWAieQ&arch=x86_64&version=4.18' --no-check-certificate
+# wget -O vmlinuz 'https://assisted-image-service-multicluster-engine.apps.hub.mylab.com/boot-artifacts/kernel?arch=x86_64&version=4.18' --no-check-certificate
+# wget -O rootfs.img 'https://assisted-image-service-multicluster-engine.apps.hub.mylab.com/boot-artifacts/rootfs?arch=x86_64&version=4.18' --no-check-certificate
+--
+
+7. Configure a PXE server.
+
+.. Copy the initial RAM disk, kernel, and root file system files to the helper VM and open an SSH connection to it.
++
+[source,subs="verbatim,quotes"]
+--
+# scp -i ~/.ssh/lab_rsa initrd.img vmlinuz rootfs.img 192.168.122.21:~
+# ssh -i ~/.ssh/lab_rsa 192.168.122.21
+--
+
+.. On the helper VM, copy the initial RAM disk and kernel files to the TFTP server images directory, and copy the root file system  file to the BOOTP server directory. 
++
+[source,subs="verbatim,quotes"]
+--
+# cp initrd.img vmlinuz  /var/lib/tftpboot/images/
+# cp rootfs.img /var/www/html/bootp/
+--
+
+.. Inspect the PXE configuration on the helper VM. It was already configured to server those files by the playbook from a previous activity.
++
+[source,subs="verbatim,quotes"]
+--
+# cat /var/lib/tftpboot/pxelinux.cfg/default
+default vesamenu.c32
+prompt 0
+timeout 60
+
+display boot.msg
+
+label linux
+  menu label CoreOS Hosted Cluster PXE
+  menu default
+  initrd images/initrd.img
+  kernel images/vmlinuz coreos.live.rootfs_url=http://192.168.122.21:8080/bootp/rootfs.img random.trust_cpu=on rd.luks.options=discard ignition.firstboot ignition.platform.id=metal console=tty1 console=ttyS1,115200n8 coreos.inst.persistent-kargs="console=tty1 console=ttyS1,115200n8"
+--
+
+.. You can now close your SSH connection to the helper VM.
+
+.. On your bare metal host (your EC2 instance), inspect the libvirt default network settings to verify that it configures the helper VM as the BOOTP server for the network.
++
+[source,subs="verbatim,quotes"]
+--
+# virsh net-dumpxml default | grep bootp
+      <bootp file='pxelinux.0' server='192.168.122.21'/>
+--
+
+.. Get the MAC addresses configured in libvirt's default network for the `c1worker2` host.
++
+[source,subs="verbatim,quotes"]
+--
+# virsh net-dumpxml default | grep c1worker2
+      <host mac='52:54:00:e2:54:42' name='c1worker1.hub.mylab.com' ip='192.168.122.41'/>
+--
+
+8. Boot a VM using PXE.
+
+.. Using the Virtual Machine Manager (`virt-manager`) utility, create a new VM named `c1worker2`, selecting *Manual install*. Configure the VM with at least 8GiB memory, 2vCPUS, and 100GB of disk. Be sure you check *Customize configuration before install* on Step 5 of 5.
++
+// WARNING: craft a virt-install command? See hcp-on-bm/setup_hosted_cluster.yaml
+
+.. Select the NIC of the new VM and set its MAC address to the one you got from a previous step.
+
+.. Select *Boot Options*, keep the disk as the first boot device and add the NIC as the second boot device in the order, , and click *Begin Installation*.
++
+This way, the VM boots from the NIC when the disk is empty, and boots from disk once CoreOS is installed. If you start with the NIC as first boot options, must manually change the order later, after PXE boot, to boot from disk."
+
+9. Approve the VM.
+
+.. After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.
+
+.. Click *Approve host* twice to make the host available for joining hosted clusters.
+
+.. The host status should change to "Available".
+
+10. *Optional:* Add hosts using BMC.
++
+If you wish, you can review the optional instructions at the end of this course to configure virtual BMC services and then add a third host using BMC, by emulating a physical machine with IPMI or similar management hardware.

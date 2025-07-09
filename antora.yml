@@ -1,10 +1,13 @@
 name: hcp-on-bm
-title: Hosted Control Planes on a Single BareMetal
+title: Hosted Control Planes on a Single BareMetal Node
 version: 1
 nav:
 - modules/ROOT/nav.adoc
 - modules/LABENV/nav.adoc
+- modules/chapter0/nav.adoc
 - modules/chapter1/nav.adoc
 - modules/chapter2/nav.adoc
 - modules/chapter3/nav.adoc
+- modules/chapter4/nav.adoc
+- modules/chapter5/nav.adoc
 - modules/appendix/nav.adoc

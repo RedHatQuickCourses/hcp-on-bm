@@ -2,26 +2,51 @@
 
 == Instructions to Launch Your Lab on the Red Hat Demo Platform (RHDP)
 
-. **Log in** to the xref:#RHDP-Portal-Links[RHDP portal]
-. **Search** for the catalog entry: **FIXME Lab Catalog Name**.
-. **Click** on the catalog entry in the search results.
-. On the catalog page, **click** the **Order** button.
-. **Fill out** the required details in the order form.
-. **Review the warning** at the bottom of the form and **check the box** labeled: +
+1. Log in to the xref:#RHDP-Portal-Links[RHDP portal]
+
+2. Search for the catalog entry: **AWS Blank Open Environment**.
+
+3. Click on the catalog entry in the search results.
++
+image::s1-fig-1.jpg[]
+
+4. On the catalog page, click the **Order** button.
++
+image::s1-fig-2.jpg[]
+
+5. Fill out the required details in the order form.
+
+.. Select "Practice/Enablement" in the Activity Section.
+
+.. Select “Learning about the product” in the Purpose section.
+
+6. Review the warning at the bottom of the form and check the box labeled: +
    *“I confirm that I understand the above warnings.”*
-. **Click** the **Order** button to place your lab order.
 
-=== Important Notes:
+7. Click the **Order** button to start creation of your lab.
+
+8. Wait till the status is Running.
+
+9. Click on the link shown at Web Console Access.
+
+10. Login to the web console using the user name and password given at “Web Console Credentials”. The account number will be automatically populated at the AWS console login screen.
++
+image::s1-fig-4.jpg[]
+
+== Important Notes:
+
 - This lab may take approximately **FIXME minutes** to become ready.
-- You will receive an **email with access details** once your lab environment is ready.
-- You can also **retrieve lab access** directly from the RHDP portal.
+- You will receive an email with access details once your lab environment is ready.
+- You can also retrieve lab access credentials directly from the RHDP portal.
 
-=== How to Access Your Lab via the RHDP Portal:
-. On the RHDP portal, **click** on the **Services** option in the left-hand menu.
-. **Select your lab** from the listings on the right-hand side of the page to view access details.
+== How to Access Your Lab via the RHDP Portal:
+
+. On the RHDP portal, click on the **Services** option in the left-hand menu.
+
+. Select your lab from the listings on the right-hand side of the page to view access details.
 
 [[RHDP-Portal-Links]]
-=== RHDP Portal Links
+== RHDP Portal Links
 - RedHat associates: https://demo.redhat.com/[https://demo.redhat.com/,window=_blank]
 - RedHat partners: https://partner.demo.redhat.com/[https://partner.demo.redhat.com/,window=_blank]
 

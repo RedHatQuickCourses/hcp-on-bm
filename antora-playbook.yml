@@ -1,5 +1,5 @@
 site:
-  title: Hosted Control Planes on a Single BareMetal
+  title: Hosted Control Planes on a Single BareMetal Node
   start_page: hcp-on-bm::index.adoc
 
 content:
