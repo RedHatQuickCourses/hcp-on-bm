@@ -12,6 +12,11 @@ Introduction to Hosted Control Planes (HCP) and typical deployment architectures
 Planning PoC/Tests, Justification for using a single physical machine, lab architecture.
 
 12:10::
+
+Sample command to extract the video segment, without re-encoding:
+$ ffmpeg -i rh1-otg17a.mp4 -ss 00:37:04.300 -to 00:45:41.800 -c copy hosted-cluster.mp4
+
+Using ffprobe, I was able to confirm that the original mp4 file uses the H.264 codec supported by the HTML5 standard.
 ////
 
 This section introduces the essential concepts and terminology of OpenShift Hosted Control Planes (HCP) and describes the proof-of-concept (PoC) environment that you will deploy in the activities of this course.
@@ -19,16 +24,42 @@ This section introduces the essential concepts and terminology of OpenShift Host
 _Watch the following video and, optionally, read the introduction section._
 
 ////
+// This is the URL and iframe as provided by kaltrua.
+// Works (sometimes) after login to Red Hat media space in a different tab
+
 .Introduction segment from the Red Hat One 2025 session – Maximizing ROI with Hosted Control Planes: Strategies for Scalable Environments
 ++++
 <iframe id="kmsembed-1_79vnk220" width="768" height="432" src="https://videos.learning.redhat.com/embed/secure/iframe/entryId/1_79vnk220/uiConfId/44630491/st/0" class="kmsembed" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" referrerPolicy="no-referrer-when-downgrade" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="hcp-on-bm-intro"></iframe>
 ++++
 ////
 
+// Here using the URL from Caithlyn
+// Unauthorized domain error
+
 .Introduction segment from the Red Hat One 2025 session – Maximizing ROI with Hosted Control Planes: Strategies for Scalable Environments
 ++++
-<iframe id="kmsembed-1_79vnk220" width="768" height="432" src=" https://cdnapisec.kaltura.com/p/2300461/sp/230046100/embedIframeJs/uiconf_id/45633731/partner_id/2300461?iframeembed=true&playerId=kaltura_player_1595514787&entry_id=1_79vnk220" class="kmsembed" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" referrerPolicy="no-referrer-when-downgrade" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="hcp-on-bm-intro"></iframe>
+<iframe id="kmsembed-1_79vnk220" width="768" height="432" src="https://cdnapisec.kaltura.com/p/2300461/sp/230046100/embedIframeJs/uiconf_id/45633731/partner_id/2300461?iframeembed=true&playerId=kaltura_player_1595514787&entry_id=1_79vnk220" class="kmsembed" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" referrerPolicy="no-referrer-when-downgrade" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="hcp-on-bm-intro"></iframe>
 ++++
+
+// If I cannot get an embedded video working, the work around us using external links url[text^] and state that employees only can access the video on Red Hat media space.
+// Partners would have no access, or I create PTP offerings for them on Seertech (that's too much work)
+
+////
+// Karlos had a slight different iframe... would it make any difference?
+++++
+<iframe
+  src="https://videos.learning.redhat.com/embed/secure/iframe/entryId/1_5f535ph6/uiConfId/44630491/st/0"
+  width="768"
+  height="432px"
+  frameborder="0"
+  allowfullscreen
+  webkitallowfullscreen
+  mozallowfullscreen
+  allow="clipboard-write"
+  muted>
+</iframe>
+++++
+////
 
 == What are Hosted Control Planes?
 
