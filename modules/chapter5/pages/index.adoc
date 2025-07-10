@@ -26,7 +26,13 @@ End of demo. Closing words.
 
 This lab shows how to create and access a hosted cluster using worker nodes available from an ACM infrastructure environment.
 
-1. Create a hosted cluster using a load balancer for API access.
+1. Review the architecture of the proof-of-concept for HCP on bare metal nodes.
++
+image::diagram-hosted-cluster.svg[]
++
+Now you will add the hosted hosted cluster.
+
+2. Create a hosted cluster using a load balancer for API access.
 
 .. Find a domain name to use as the name of your cluster. The helper VM is preconfigured with two domains for use by hosted cluster, which you can find by searching for forwarder domains.
 +
@@ -41,7 +47,7 @@ This lab shows how to create and access a hosted cluster using worker nodes avai
 
 .. On the ACM web console (the *All Clusters* perspective of the OpenShift web console), navigate to *Infrastructure > Clusters* and click *Create Cluster*.
 
-2. Fill in the *Cluster Details* page of the Create cluster assistant as follows:
+3. Fill in the *Cluster Details* page of the Create cluster assistant as follows:
 
 .. Choose *Host inventory* for the infrastructure and them *Hosted* for the control plane type.
 
@@ -59,7 +65,7 @@ NOTE: It is expected to work with later versions of OpenShift, but this lab was 
 
 .. Click *Next*
 
-3. Fill in the *Node pools* page of the Create cluster assistant as follows:
+4. Fill in the *Node pools* page of the Create cluster assistant as follows:
 
 .. Type `2` as the number of hosts of your hosted cluster.
 
@@ -67,7 +73,7 @@ NOTE: It is expected to work with later versions of OpenShift, but this lab was 
 
 .. Click *Next*
 
-4. Fill in the *Networking* page of the Create cluster assistant as follows:
+5. Fill in the *Networking* page of the Create cluster assistant as follows:
 
 .. Select *Load Balancer* as the API publishing strategy. It uses the MetalLB deployment on the hub cluster to provide load balancers for API and ingress/route access to the hosted cluster.
 
@@ -75,7 +81,7 @@ NOTE: It is expected to work with later versions of OpenShift, but this lab was 
 
 .. Click *Next*
 
-5. Fill in the *Review* page of the Create cluster assistant as follows:
+6. Fill in the *Review* page of the Create cluster assistant as follows:
 
 .. Set the *YAML* toggle to *On*
 
@@ -98,7 +104,7 @@ NOTE: It is expected to work with later versions of OpenShift, but this lab was 
 +
 // WARNING: got error: secret ssh-key (didn't copy the name) already exists. Did I click "create" twice?
 
-6. If your web console does not switch automatically to the `hcp-cluster1` details page, find it at *Infrastructure > Clusters* and monitor, on the *Overview* tab, the progress of deploying its hosted control plane services and its node pool.
+7. If your web console does not switch automatically to the `hcp-cluster1` details page, find it at *Infrastructure > Clusters* and monitor, on the *Overview* tab, the progress of deploying its hosted control plane services and its node pool.
 
 .. You can also monitor from the CLI, checking the services on the namespace named after the hosted cluster name.
 +
@@ -121,7 +127,7 @@ You may also notice resources such as PVCs for the etcd database and routes for 
 //+
 //But the overview declares the cluster as Ready, and it seems all works fine.
 
-7. Access the hosted cluster using a web browser.
+8. Access the hosted cluster using a web browser.
 
 .. On the overview tab of details page for the `hcp-cluster1` cluster, scroll down to find the *Details* panel. Note its status field. if it is ready, click the Console URL link to open a new browser tab with the web console of the hosted cluster.
 
@@ -129,7 +135,7 @@ You may also notice resources such as PVCs for the etcd database and routes for 
 
 .. On the console of the hosted cluster, navigate to *Compute > Nodes* and see that the cluster has two nodes: `c1worker1` and `c1worker2`, which you provisioned before. Other than the fact there are no master nodes, it looks like any other OpenShift cluster.
 
-8. Access the hosted cluster using the CLI.
+9. Access the hosted cluster using the CLI.
 
 .. On the console of the hub cluster, see the *Details* panel of overview tab of details page for the `hcp-cluster1` cluster, you can find the API URL for the CLI.
 
@@ -147,9 +153,9 @@ You may also notice resources such as PVCs for the etcd database and routes for 
 
 .. You can set the KUBECONFIG environment variable to different files, depending on the cluster you want to connect. This may be simpler than using `oc config` commands to maintain and switch between different contexts.
 
-9. Using your preferred method (web console or CLI) inspect the `kube-system` namespace to see the `konnectivity-agent` and `kube-api-server-proxy` pods that connect hosted cluster nodes to their control plane on the hub cluster. 
+10. Using your preferred method (web console or CLI) inspect the `kube-system` namespace to see the `konnectivity-agent` and `kube-api-server-proxy` pods that connect hosted cluster nodes to their control plane on the hub cluster. 
 
-10. From now on, you can use the hosted cluster as a regular OpenShift cluster: deploy applications, install operators, configure authentication, and perform other day-2 tasks.
+11. From now on, you can use the hosted cluster as a regular OpenShift cluster: deploy applications, install operators, configure authentication, and perform other day-2 tasks.
 
 .. Create a new project and deploy a "hello, world" application on the hosted cluster.
 +
@@ -173,4 +179,3 @@ You may also notice resources such as PVCs for the etcd database and routes for 
 --
 # curl hello-test.apps.hcp-cluster1.mylab.com
 --
-

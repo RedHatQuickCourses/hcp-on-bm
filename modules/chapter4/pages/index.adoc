@@ -23,14 +23,19 @@ Add a node using PXE
 31:07::
 ////
 
-This lab shows how to configure an infrastructure environment, using ACM, and add bare metal hosts to it, using either a Discovery ISO or PXE boot.
-
-
 ////
 NOTE: Looks like the definition of image storage was incorrect at 21:55 -- it's not (or not just) the CoreOS images to boot nodes, but the internal registry of each hosted cluster, right?
 ////
 
-1. Configure the host inventory in ACM.
+This lab shows how to configure an infrastructure environment, using ACM, and add bare metal hosts to it, using either a Discovery ISO or PXE boot.
+
+1. Review the architecture of the proof-of-concept for HCP on bare metal nodes.
++
+image::diagram-add-hosts.svg[]
++
+Now you will add the managed hosts what will become worker nodes of a hosted cluster.
+
+2. Configure the host inventory in ACM.
 
 .. In the *All Clusters* view of the OpenShift web console, enter *Infrastructure > Host Inventory* and click *Configure host inventory settings* at the top right.
 
@@ -52,7 +57,7 @@ IMPORTANT: You may get warnings that it's taking too long and you might need to 
 +
 You may see that the Assisted Service pod restart a few times until it can initialize itself successfully.
 
-2. Create an infrastructure environment in ACM.
+3. Create an infrastructure environment in ACM.
 
 .. On the *Host inventory* page, click *Create infrastructure environment*
 
@@ -64,7 +69,7 @@ You may see that the Assisted Service pod restart a few times until it can initi
 
 .. Click *Create*
 
-3. Prepare to add a host using a discovery ISO
+4. Prepare to add a host using a discovery ISO
 
 .. On the Host inventory page, enter the infrastructure environment you just created. You may already be there, from the previous step.
 
@@ -82,7 +87,7 @@ NOTE: If you copy the `wget` command from the web console, add `--no-check-certi
 +
 WARNING: If you do not use one of the MAC address set in libvirt, your VM will fail to get an IP address and other required network settings like DNS name server addresses, and will fail to boot and connect to the Assisted Installer services on the hub cluster. 
 
-4. Boot a VM from the discovery ISO.
+5. Boot a VM from the discovery ISO.
 
 .. Start the Virtual Machine Manager (`virt-manager`) utility and create a new VM named `c1worker1`, with at least 8 GiB memory, 2 vCPUS, and 100 GB of disk, booting from the ISO image you downloaded in the previous step.
 
@@ -92,7 +97,7 @@ WARNING: If you do not use one of the MAC address set in libvirt, your VM will f
 
 .. Select the NIC of the new VM and set its MAC address to the one you got from a previous step, and click *Begin Installation*.
 
-5. Approve the VM.
+6. Approve the VM.
 
 .. After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.
 
@@ -100,7 +105,7 @@ WARNING: If you do not use one of the MAC address set in libvirt, your VM will f
 
 .. You could add more hosts using the same discovery ISO, and give each node a different MAC address from the pool preconfigured in libvirt's default network, but we will experiment with other methods for adding hosts to the inventory of your infrastructure environment.
 
-6. Prepare to add a host using PXE.
+7. Prepare to add a host using PXE.
 
 .. You should be in the list of hosts of your infrastructure environment. Click *Add hosts* and select *With iPXE* to get a script which provides the initial RAM disk and kernel commands required to network boot a host from the Assisted Installer service.
 +
@@ -115,7 +120,7 @@ NOTE: If you use the "Command to download the iPXE script file" you must add the
 # wget -O rootfs.img 'https://assisted-image-service-multicluster-engine.apps.hub.mylab.com/boot-artifacts/rootfs?arch=x86_64&version=4.18' --no-check-certificate
 --
 
-7. Configure a PXE server.
+8. Configure a PXE server.
 
 .. Copy the initial RAM disk, kernel, and root file system files to the helper VM and open an SSH connection to it.
 +
@@ -169,7 +174,7 @@ label linux
       <host mac='52:54:00:e2:54:42' name='c1worker1.hub.mylab.com' ip='192.168.122.41'/>
 --
 
-8. Boot a VM using PXE.
+9. Boot a VM using PXE.
 
 .. Using the Virtual Machine Manager (`virt-manager`) utility, create a new VM named `c1worker2`, selecting *Manual install*. Configure the VM with at least 8GiB memory, 2vCPUS, and 100GB of disk. Be sure you check *Customize configuration before install* on Step 5 of 5.
 +
@@ -181,7 +186,7 @@ label linux
 +
 This way, the VM boots from the NIC when the disk is empty, and boots from disk once CoreOS is installed. If you start with the NIC as first boot options, must manually change the order later, after PXE boot, to boot from disk."
 
-9. Approve the VM.
+10. Approve the VM.
 
 .. After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.
 
@@ -189,6 +194,6 @@ This way, the VM boots from the NIC when the disk is empty, and boots from disk 
 
 .. The host status should change to "Available".
 
-10. *Optional:* Add hosts using BMC.
+11. *Optional:* Add hosts using BMC.
 +
 If you wish, you can review the optional instructions at the end of this course to configure virtual BMC services and then add a third host using BMC, by emulating a physical machine with IPMI or similar management hardware.

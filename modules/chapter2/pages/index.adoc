@@ -13,13 +13,11 @@ Prepare the bare metal node.
 
 This lab shows how configure the bare metal host with virtual networking and a helper services VM, by using an Ansible playbook provided on a git repository. It also configures the bare metal host for graphical access, so you can run a web browser and virt-manager on the following labs.
 
-1. Review the architecture of the proof-of-concept for HCP on bare metal nodes .
+1. Review the architecture of the proof-of-concept for HCP on bare metal nodes.
 +
-image::s3-fig-1.png[]
+image::diagram-bm-host.svg[]
 +
 For now, you will configure just the libvirt network and the helper services VM.
-+
-NOTE: There is only one helper VM, which runs all of the DNS, HAProxy, and BOOTP daemons.
 
 2. Once the instance is up and running, SSH to the node using the private key downloaded in the previous lab. 
 +

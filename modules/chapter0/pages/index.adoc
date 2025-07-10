@@ -74,7 +74,7 @@ You see, a text-book deployment of HCP requires 6 servers for the hub/host clust
 
 To work around availability of servers, and still perform a successful PoC, you can use RHEL virtualization, based on KVM and libvirt, to emulate multiple bare metal servers on a single physical server, or on a smaller number of servers that would be required to provide dedicated servers for a hub/host cluster + dedicated servers for worker nodes/data plane nodes.
 
-image::fig-5.png[title="PoC environment for HCP using a single server and libvirt VMs"]
+image::diagram-full.svg[title="PoC environment for HCP using a single server and libvirt VMs"]
 
 By following the activities in this course, you will first use a set of provided Ansible playbooks to:
 
