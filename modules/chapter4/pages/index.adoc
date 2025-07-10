@@ -121,6 +121,18 @@ image::fig-5-b.jpeg[]
 +
 image::fig-5-c.jpeg[]
 
+.. Alternatively, create and boot a VM using the following commands:
++
+[source,subs="verbatim,quotes"]
+--
+# qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/c1worker1.qcow2 120G
+# virt-install --name c1worker1 \
+--ram 8500 --vcpus 4 --os-variant rhel9.5 --cdrom /var/lib/libvirt/images/discovery.iso \
+--disk path=/var/lib/libvirt/images/c1worker1.qcow2,device=disk,bus=virtio,format=qcow2 \
+--network network:default,mac=52:54:00:e2:54:41 \
+--noautoconsole --vnc --cpu host-passthrough
+--
+
 6. Approve the VM.
 
 .. After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.
@@ -230,6 +242,19 @@ image::fig-9-c.jpeg[]
 +
 This way, the VM boots from the NIC when the disk is empty, and boots from disk once CoreOS is installed. If you start with the NIC as first boot options, must manually change the order later, after PXE boot, to boot from disk.
 
+.. Alternatively, create and boot a VM using the following commands:
++
+[source,subs="verbatim,quotes"]
+--
+# qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/c1worker2.qcow2 120G
+# virt-install --name c1worker2 \
+--ram 8192 --vcpus 4 --os-variant rhel9.5 \
+--disk path=/var/lib/libvirt/images/c1worker2.qcow2,device=disk,bus=virtio,format=qcow2 \
+--network network:default,mac=52:54:00:e2:54:42 \
+--noautoconsole --vnc --cpu host-passthrough \
+--boot hd,network
+--
+
 10. Approve the VM.
 
 .. After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.
@@ -239,7 +264,3 @@ This way, the VM boots from the NIC when the disk is empty, and boots from disk 
 image::fig-10-b.jpeg[]
 
 .. The host status should change to "Available".
-
-11. *Optional:* Add hosts using BMC.
-+
-If you wish, you can review the optional instructions at the end of this course to configure virtual BMC services and then add a third host using BMC, by emulating a physical machine with IPMI or similar management hardware.
