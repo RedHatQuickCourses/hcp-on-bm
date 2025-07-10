@@ -139,7 +139,10 @@
 <article class="doc">
 <h1 class="page">Optional: Configure Virtual BMC Services on the Bare Metal Host</h1>
 <div class="paragraph">
-<p>This lab shows how to configure the bare metal host to provide a virtual Baseboard Management Controller (vBMC), which enables managing libvirt VMs as if they were bare metal machines with IPMI controllers or similar management hardware, and then how to add such hosts to the ACM inventory using BMC, so you can use managed servers as part of a hosted cluster.</p>
+<p>This lab shows how to configure the bare metal host to provide a virtual Baseboard Management Controller (vBMC) and how to add such hosts to the ACM inventory using BMC, so that you can demonstrate the usage of managed servers as part of a hosted cluster.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="https://docs.openstack.org/virtualbmc/latest/" target="_blank" rel="noopener">virtualbmc</a> open source software enables managing libvirt VMs as if they were bare metal machines with IPMI controllers or similar management hardware. It enables testing of IPMI clients, such as the <code>ipmitool</code> command, and services such as <a href="https://github.com/openstack/ironic">OpenStack Ironic</a> and the <a href="https://github.com/openshift/cluster-baremetal-operator">OpenShift Cluster Bare Metal operator</a>.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
