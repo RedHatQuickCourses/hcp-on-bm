@@ -1,4 +1,4 @@
-= Build from Here
+= Closing Words
 
 ////
 Video segments: closing-words.mp4
@@ -11,11 +11,15 @@ End of demo. Closing words.
 
 This section explores possibilities for expanding the PoC environment created by this course.
 
-_Watch the following video and, optionally, read the closing section._
+_Watch the following https://videos.learning.redhat.com/media/hcp-on-bm-closing-words/1_4eihw75o[video^] and then read the closing section._
 
+////
 .Closing words segment from the Red Hat One 2025 session – Maximizing ROI with Hosted Control Planes: Strategies for Scalable Environments
 ++++
 <iframe id="kmsembed-1_4eihw75o" width="768" height="432" src="https://videos.learning.redhat.com/embed/secure/iframe/entryId/1_4eihw75o/uiConfId/44630491/st/0" class="kmsembed" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" referrerPolicy="no-referrer-when-downgrade" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="hcp-on-bm-closing-words"></iframe>
 ++++
+////
 
-You can use the environment described here, and expand on the Ansible playbooks, to test more sophisticated scenarios. If you do so, please offer pull requests to the original Git repository at https://github.com/v2pkthakur/hcp-on-bm.
+We hope you find this content useful and it enables you to learn about and demonstrate OpenShift Hosted Control Planes.
+
+You can use the environment described here, and expand on the provided Ansible playbooks, to try more sophisticated scenarios. If you do so, please offer pull requests to the original Git repository at https://github.com/v2pkthakur/hcp-on-bm.

@@ -21,7 +21,9 @@ Using ffprobe, I was able to confirm that the original mp4 file uses the H.264 c
 
 This section introduces the essential concepts and terminology of OpenShift Hosted Control Planes (HCP) and describes the proof-of-concept (PoC) environment that you will deploy in the activities of this course.
 
-_Watch the following video and, optionally, read the introduction section._
+_Watch the following https://videos.learning.redhat.com/media/hcp-on-bm-intro/1_79vnk220[video^] and then read the introduction section._
+
+WARNING: Red Hat media space videos are available only to Red Hat employees.
 
 ////
 // This is the URL and iframe as provided by kaltrua.
@@ -33,6 +35,7 @@ _Watch the following video and, optionally, read the introduction section._
 ++++
 ////
 
+////
 // Here using the URL from Caithlyn
 // Unauthorized domain error
 
@@ -40,9 +43,7 @@ _Watch the following video and, optionally, read the introduction section._
 ++++
 <iframe id="kmsembed-1_79vnk220" width="768" height="432" src="https://cdnapisec.kaltura.com/p/2300461/sp/230046100/embedIframeJs/uiconf_id/45633731/partner_id/2300461?iframeembed=true&playerId=kaltura_player_1595514787&entry_id=1_79vnk220" class="kmsembed" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" referrerPolicy="no-referrer-when-downgrade" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="hcp-on-bm-intro"></iframe>
 ++++
-
-// If I cannot get an embedded video working, the work around us using external links url[text^] and state that employees only can access the video on Red Hat media space.
-// Partners would have no access, or I create PTP offerings for them on Seertech (that's too much work)
+////
 
 ////
 // Karlos had a slight different iframe... would it make any difference?
