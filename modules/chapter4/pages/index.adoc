@@ -206,7 +206,7 @@ label linux
 
 9. Boot a VM using PXE.
 
-.. Using the Virtual Machine Manager (`virt-manager`) utility, create a new VM named `c1worker2`, selecting *Manual install*. Configure the VM with at least 8GiB memory, 2vCPUS, and 100GB of disk. Be sure you check *Customize configuration before install* on Step 5 of 5.
+.. Using the Virtual Machine Manager (`virt-manager`) utility, create a new VM named `c1worker2`, selecting *Manual install*. Configure the VM with at least 8GiB memory, 4vCPUS, and 100GB of disk. Be sure you check *Customize configuration before install* on Step 5 of 5.
 +
 image::fig-9-a-1.jpeg[]
 +

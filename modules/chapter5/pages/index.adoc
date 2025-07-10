@@ -46,10 +46,18 @@ Now you will add the hosted hosted cluster.
 --
 
 .. On the ACM web console (the *All Clusters* perspective of the OpenShift web console), navigate to *Infrastructure > Clusters* and click *Create Cluster*.
++
+image::fig-2-b.jpeg[]
 
-3. Fill in the *Cluster Details* page of the Create cluster assistant as follows:
+.. Choose *Host inventory* for the infrastructure and then *Hosted* for the control plane type.
++
+image::fig-2-c-1.jpeg[]
++
+image::fig-2-c-2.jpeg[]
 
-.. Choose *Host inventory* for the infrastructure and them *Hosted* for the control plane type.
+3. Fill in the *Cluster Details* page of the create cluster assistant as follows:
++
+image::fig-3.jpeg[]
 
 .. Type `hcp-cluster1` as the name of the cluster. Remember that it must be a name aligned with your DNS settings.
 
@@ -66,6 +74,8 @@ NOTE: It is expected to work with later versions of OpenShift, but this lab was 
 .. Click *Next*
 
 4. Fill in the *Node pools* page of the Create cluster assistant as follows:
++
+image::fig-4.jpeg[]
 
 .. Type `2` as the number of hosts of your hosted cluster.
 
@@ -74,6 +84,8 @@ NOTE: It is expected to work with later versions of OpenShift, but this lab was 
 .. Click *Next*
 
 5. Fill in the *Networking* page of the Create cluster assistant as follows:
++
+image::fig-5.jpeg[]
 
 .. Select *Load Balancer* as the API publishing strategy. It uses the MetalLB deployment on the hub cluster to provide load balancers for API and ingress/route access to the hosted cluster.
 
@@ -82,6 +94,8 @@ NOTE: It is expected to work with later versions of OpenShift, but this lab was 
 .. Click *Next*
 
 6. Fill in the *Review* page of the Create cluster assistant as follows:
++
+image::fig-6.jpeg[]
 
 .. Set the *YAML* toggle to *On*
 
@@ -110,7 +124,7 @@ NOTE: It is expected to work with later versions of OpenShift, but this lab was 
 +
 [source,subs="verbatim,quotes"]
 --
-# oc get service -n hcp-cluster1-hcp-cluster1
+# oc get service -n hcp-cluster1
 --
 +
 You may also notice resources such as PVCs for the etcd database and routes for authentication and other services.
