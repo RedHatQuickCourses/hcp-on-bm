@@ -18,6 +18,8 @@ This lab shows how to configure the bare metal host to provide a virtual Baseboa
 
 _Watch the following https://videos.learning.redhat.com/media/hcp-on-bm-add-hosts-bmc/1_gyapthnx[video^] and then follow the instructions in this section to perform the lab._
 
+WARNING: Red Hat media space videos are available only to Red Hat employees.
+
 ////
 .Add hosts using BMC segment from the Red Hat One 2025 session – Maximizing ROI with Hosted Control Planes: Strategies for Scalable Environments
 ++++
