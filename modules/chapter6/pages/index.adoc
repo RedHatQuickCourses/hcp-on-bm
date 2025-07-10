@@ -11,7 +11,7 @@ End of demo. Closing words.
 
 This section explores possibilities for expanding the PoC environment created by this course.
 
-_Watch the following https://videos.learning.redhat.com/media/hcp-on-bm-closing-words/1_4eihw75o[video^] and then read the closing section._
+_Watch the https://videos.learning.redhat.com/media/hcp-on-bm-closing-words/1_4eihw75o[video^] and then read the closing section._
 
 WARNING: Red Hat media space videos are available only to Red Hat employees.
 

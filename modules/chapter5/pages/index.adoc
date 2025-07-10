@@ -26,7 +26,7 @@ End of demo. Closing words.
 
 This lab shows how to create and access a hosted cluster using worker nodes available from an ACM infrastructure environment.
 
-_Watch the following https://videos.learning.redhat.com/media/hcp-on-bm-hosted-cluster/1_ufciaghw[video^] and then follow the instructions in this section to perform the lab._
+_Watch the https://videos.learning.redhat.com/media/hcp-on-bm-hosted-cluster/1_ufciaghw[video^] and then follow the instructions in this section to perform the lab._
 
 WARNING: Red Hat media space videos are available only to Red Hat employees.
 

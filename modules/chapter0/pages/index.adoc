@@ -21,7 +21,7 @@ Using ffprobe, I was able to confirm that the original mp4 file uses the H.264 c
 
 This section introduces the essential concepts and terminology of OpenShift Hosted Control Planes (HCP) and describes the proof-of-concept (PoC) environment that you will deploy in the activities of this course.
 
-_Watch the following https://videos.learning.redhat.com/media/hcp-on-bm-intro/1_79vnk220[video^] and then read the introduction section._
+_Watch the https://videos.learning.redhat.com/media/hcp-on-bm-intro/1_79vnk220[video^] and then read the introduction section._
 
 WARNING: Red Hat media space videos are available only to Red Hat employees.
 

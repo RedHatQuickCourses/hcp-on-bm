@@ -29,7 +29,7 @@ NOTE: Looks like the definition of image storage was incorrect at 21:55 -- it's 
 
 This lab shows how to configure an infrastructure environment, using ACM, and add bare metal hosts to it, using either a Discovery ISO or PXE boot.
 
-_Watch the following https://videos.learning.redhat.com/media/hcp-on-bm-add-hosts/1_zr4kmp6f[video^] and then follow the instructions in this section to perform the lab._
+_Watch the https://videos.learning.redhat.com/media/hcp-on-bm-add-hosts/1_zr4kmp6f[video^] and then follow the instructions in this section to perform the lab._
 
 WARNING: Red Hat media space videos are available only to Red Hat employees.
 
