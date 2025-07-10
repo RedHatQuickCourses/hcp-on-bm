@@ -141,6 +141,8 @@ You may also notice resources such as PVCs for the etcd database and routes for 
 //+
 //But the overview declares the cluster as Ready, and it seems all works fine.
 
+.. It may happen that some of your VMs does not reboot, but just shuts down, when it gets added to a hosted cluster. When it happens, cluster creation keeps waiting for the node and does not complete. If it happens for you, just use virt-manager or the `virsh` command to start the VM and let cluster creation proceed.
+
 8. Access the hosted cluster using a web browser.
 
 .. On the overview tab of details page for the `hcp-cluster1` cluster, scroll down to find the *Details* panel. Note its status field. if it is ready, click the Console URL link to open a new browser tab with the web console of the hosted cluster.

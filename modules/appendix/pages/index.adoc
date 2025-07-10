@@ -67,38 +67,52 @@ Description = vbmc service
 +
 [source,subs="verbatim,quotes"]
 --
-systemctl daemon-reload
-systemctl enable vbmcd.service
-systemctl start vbmcd.service
-systemctl status vbmcd.service
+# systemctl daemon-reload
+# systemctl enable vbmcd.service
+# systemctl start vbmcd.service
+# systemctl status vbmcd.service
 --
 
-5. Add an ip address for vBMC to listen. It requires a unique IP address for each VM.
+5. Create, but DO NOT boot, a VM to be managed by vBMC. Its settings should be similar to a VM that would boot using PXE.
 +
 [source,subs="verbatim,quotes"]
 --
-ip addr add 192.168.122.71/32 dev virbr0
+# qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/c1worker3.qcow2 120G
+# virt-install --name c1worker3 \
+--ram 8192 --vcpus 4 --os-variant rhel9.5 \
+--disk path=/var/lib/libvirt/images/c1worker3.qcow2,device=disk,bus=virtio,format=qcow2 \
+--network network:default,mac=52:54:00:e2:54:43 \
+--noautoconsole --vnc --cpu host-passthrough \
+--boot hd,network --print-xml > c1worker3.xml
+# virsh define c1worker3.xml
 --
 
-6. Associate the IP address with an _existing_ VM, for example a third host named `c1worker3`
+6. Add an ip address for vBMC to listen. It requires a unique IP address for each VM.
++
+[source,subs="verbatim,quotes"]
+--
+# ip addr add 192.168.122.71/32 dev virbr0
+--
+
+7. Associate the IP address with an your VM.
 +
 [source,subs="verbatim,quotes"]
 --
 # /usr/local/bin/vbmc add c1worker3 --address 192.168.122.71 --username admin --password redhat
 --
 
-7. Start the vbmc for that VM.
+8. Start the vbmc for that VM.
 +
 [source,subs="verbatim,quotes"]
 --
-# vbmc start c1worker3
+# /usr/local/bin/vbmc start c1worker3
 --
 
-8. Make sure that service is running for that vm. 
+9. Make sure that service is running for that vm. 
 +
 [source,subs="verbatim,quotes"]
 --
-# vbmc list
+# /usr/local/bin/vbmc list
 +-------------+---------+----------------+------+
 | Domain name | Status  | Address        | Port |
 +-------------+---------+----------------+------+
@@ -106,7 +120,7 @@ ip addr add 192.168.122.71/32 dev virbr0
 +-------------+---------+----------------+------+
 --
 
-9. You may have to manually reboot the BMC managed node after correcting the boot order to boot from disk manually.
+10. You may have to manually reboot the BMC managed node after correcting the boot order to boot from disk manually.
 
 ////
 
