@@ -36,6 +36,8 @@ image::diagram-add-hosts.svg[]
 Now you will add the managed hosts what will become worker nodes of a hosted cluster.
 
 2. Configure the host inventory in ACM.
++
+image::fig-2.jpeg[]
 
 .. In the *All Clusters* view of the OpenShift web console, enter *Infrastructure > Host Inventory* and click *Configure host inventory settings* at the top right.
 
@@ -46,6 +48,8 @@ Now you will add the managed hosts what will become worker nodes of a hosted clu
 IMPORTANT: You may get warnings that it's taking too long and you might need to troubleshoot. They should be safe to ignore. It may take over 20 min to complete.
 
 .. Make sure you got a working host inventory before proceeding to the next step. The page should display a green message: "Host inventory configured successfully."
++
+image::fig-2-d.jpeg[]
 
 .. If you prefer to monitor configuration of the host inventory from the CLI instead of from the web console.
 +
@@ -58,6 +62,8 @@ IMPORTANT: You may get warnings that it's taking too long and you might need to 
 You may see that the Assisted Service pod restart a few times until it can initialize itself successfully.
 
 3. Create an infrastructure environment in ACM.
++
+image::fig-3.jpeg[]
 
 .. On the *Host inventory* page, click *Create infrastructure environment*
 
@@ -66,6 +72,8 @@ You may see that the Assisted Service pod restart a few times until it can initi
 .. Paste the contents of your OpenShift installation pull secret into the *Pull secret* field.
 
 .. Paste your public SSH key a *SSH public key* field. Use the `~/.ssh/lab_rsa.pub` file created by the bare metal host configuration playbook.
++
+image::fig-3-d.jpeg[]
 
 .. Click *Create*
 
@@ -75,7 +83,11 @@ You may see that the Assisted Service pod restart a few times until it can initi
 
 .. Click on *Add hosts* and select *With Discovery ISO* to start downloading an ISO disk image. When the download is complete, copy the file to `/var/lib/libvirt/images/`.
 +
+image::fig-4-b-1.jpeg[]
++
 NOTE: If you copy the `wget` command from the web console, add `--no-check-certificate` option to it.
++
+image::fig-4-b-2.jpeg[]
 
 .. Get the MAC addresses configured in libvirt's default network for the `c1worker1` host. 
 +
@@ -89,19 +101,33 @@ WARNING: If you do not use one of the MAC address set in libvirt, your VM will f
 
 5. Boot a VM from the discovery ISO.
 
-.. Start the Virtual Machine Manager (`virt-manager`) utility and create a new VM named `c1worker1`, with at least 8 GiB memory, 2 vCPUS, and 100 GB of disk, booting from the ISO image you downloaded in the previous step.
+.. Start the Virtual Machine Manager (`virt-manager`) utility and create a new VM named `c1worker1`, with at least 8 GiB memory, 4 vCPUS, and 128 GB of disk, booting from the ISO image you downloaded in the previous step.
++
+image::fig-5-a-1.jpeg[]
++
+image::fig-5-a-2.jpeg[]
++
+image::fig-5-a-3.jpeg[]
++
+image::fig-5-a-4.jpeg[]
 
 .. Be sure you check *Customize configuration before install* on Step 5 of 5.
++
+image::fig-5-b.jpeg[]
 +
 // WARNING: craft a virt-install command? See hcp-on-bm/setup_hosted_cluster.yaml
 
 .. Select the NIC of the new VM and set its MAC address to the one you got from a previous step, and click *Begin Installation*.
++
+image::fig-5-c.jpeg[]
 
 6. Approve the VM.
 
 .. After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.
 
 .. Click *Approve host* twice to make the host available for joining hosted clusters. The host status should change to "Available".
++
+image::fig-6-b.jpeg[]
 
 .. You could add more hosts using the same discovery ISO, and give each node a different MAC address from the pool preconfigured in libvirt's default network, but we will experiment with other methods for adding hosts to the inventory of your infrastructure environment.
 
@@ -109,7 +135,11 @@ WARNING: If you do not use one of the MAC address set in libvirt, your VM will f
 
 .. You should be in the list of hosts of your infrastructure environment. Click *Add hosts* and select *With iPXE* to get a script which provides the initial RAM disk and kernel commands required to network boot a host from the Assisted Installer service.
 +
+image::fig-7-a.jpeg[]
++
 NOTE: If you use the "Command to download the iPXE script file" you must add the `--no-check-certificate` option to your `wget` command.
++
+image::fig-7-a-1.jpeg[]
 
 .. Copy the URLs of the initial RAM disk (`initrd.img`), kernel (`vmlinuz`), and root file system (`rootfs.img`) files, from the iPXE script, and download them. If using `wget` you would create commands _similar_ to the following:
 +
@@ -178,19 +208,35 @@ label linux
 
 .. Using the Virtual Machine Manager (`virt-manager`) utility, create a new VM named `c1worker2`, selecting *Manual install*. Configure the VM with at least 8GiB memory, 2vCPUS, and 100GB of disk. Be sure you check *Customize configuration before install* on Step 5 of 5.
 +
+image::fig-9-a-1.jpeg[]
++
+image::fig-9-a-2.jpeg[]
++
+image::fig-9-a-3.jpeg[]
++
+image::fig-9-a-4.jpeg[]
++
+image::fig-9-a-5.jpeg[]
++
 // WARNING: craft a virt-install command? See hcp-on-bm/setup_hosted_cluster.yaml
 
 .. Select the NIC of the new VM and set its MAC address to the one you got from a previous step.
++
+image::fig-9-b.jpeg[]
 
 .. Select *Boot Options*, keep the disk as the first boot device and add the NIC as the second boot device in the order, , and click *Begin Installation*.
 +
-This way, the VM boots from the NIC when the disk is empty, and boots from disk once CoreOS is installed. If you start with the NIC as first boot options, must manually change the order later, after PXE boot, to boot from disk."
+image::fig-9-c.jpeg[]
++
+This way, the VM boots from the NIC when the disk is empty, and boots from disk once CoreOS is installed. If you start with the NIC as first boot options, must manually change the order later, after PXE boot, to boot from disk.
 
 10. Approve the VM.
 
 .. After the VM installation finishes and it reboots, it should appear on the Host inventory of the hub cluster.
 
 .. Click *Approve host* twice to make the host available for joining hosted clusters.
++
+image::fig-10-b.jpeg[]
 
 .. The host status should change to "Available".
 
