@@ -67,12 +67,12 @@ NOTE: We are NOT providing instructions for installing and configuring VNC viewe
 --
 # dnf install -y tigervnc tigervnc-server
 # echo ":99=vncuser" >> /etc/tigervnc/vncserver.users
-# systemctl enable vncserver@:99 --now
 # useradd vncuser
 # su - vncuser
 $ vncpasswd   # set a strong password
 Would you like to enter a view-only password (y/n)? n
 $ exit
+# systemctl enable vncserver@:99 --now
 --
 
 .. Connect to the public ip of the bare metal node on port 5999, using a VNC viewer, to get its graphical console and open a web browser.

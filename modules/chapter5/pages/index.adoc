@@ -94,7 +94,7 @@ NOTE: It is expected to work with later versions of OpenShift, but this lab was 
   - service: APIServer
     servicePublishingStrategy:
       type: LoadBalancer
-      LoadBalancer:
+      loadBalancer:
         hostname: api.hcp-cluster1.mylab.com
   - service: OAuthServer
 ...
