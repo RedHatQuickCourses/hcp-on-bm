@@ -14,7 +14,9 @@ Add a node using BMC and a YAML file
 37:05::
 ////
 
-This lab shows how to configure the bare metal host to provide a virtual Baseboard Management Controller (vBMC), which enables managing libvirt VMs as if they were bare metal machines with IPMI controllers or similar management hardware, and then how to add such hosts to the ACM inventory using BMC, so you can use managed servers as part of a hosted cluster.
+This lab shows how to configure the bare metal host to provide a virtual Baseboard Management Controller (vBMC) and how to add such hosts to the ACM inventory using BMC, so that you can demonstrate the usage of managed servers as part of a hosted cluster.
+
+The https://docs.openstack.org/virtualbmc/latest/[virtualbmc^] open source software enables managing libvirt VMs as if they were bare metal machines with IPMI controllers or similar management hardware. It enables testing of IPMI clients, such as the `ipmitool` command, and services such as https://github.com/openstack/ironic[OpenStack Ironic] and the https://github.com/openshift/cluster-baremetal-operator[OpenShift Cluster Bare Metal operator].
 
 1. Install vBMC, if not already installed by the playbooks from the previous lab.
 +
