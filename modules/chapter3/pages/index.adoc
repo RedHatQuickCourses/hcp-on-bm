@@ -24,7 +24,14 @@ _Watch the following video and then follow the instructions in this section to p
 
 WARNING: Red Hat One videos are available only to Red Hat employees. If you have issues watching the video embedded in this page, watch it directly on the https://videos.learning.redhat.com/media/hcp-on-bm-intro/1_8pyq0hy3[Red Hat media space^].
 
-1. Update `/etc/resolv.conf` to set the helper vm as the primary DNS server. Keep the AWS DNS server as a secondary option.
+1. Review the architecture of the proof-of-concept for HCP on bare metal nodes.
++
+image::diagram-hub-cluster.svg[]
++
+Now you will add the hub cluster.
+
+2. Update `/etc/resolv.conf` to set the helper vm as the primary DNS server. Keep the AWS DNS server as a secondary option.
+>>>>>>> main
 +
 [source,subs="verbatim,quotes"]
 --
@@ -35,7 +42,7 @@ nameserver 10.0.0.2
 +
 WARNING: That change is NOT persistent, it's lost if you stop and restart your demo environment or its EC2 instance.
 
-2. Run the Ansible playbook to set up the hub cluster and ACM.
+3. Run the Ansible playbook to set up the hub cluster and ACM.
 
 .. The playbook may take over 50 min to complete. If your SSH client may disconnect due to inactivity, it's recommended that you start a tmux session, to prevent your shell from being terminated and taking the Ansible runner with it.
 +
@@ -126,7 +133,7 @@ Destroys only the VMs that belong to the hub cluster.
 `cleanup.yaml`::
 Destroys all VMs, including the helper VM. If you use this one, you must return to the previous lab to run the playbook which configures the bare metal host and its helper VM.
 
-3. Create a read-only copy of the kubeconfig file of the hub cluster, and use it to validate that the hub cluster is healthy.
+4. Create a read-only copy of the kubeconfig file of the hub cluster, and use it to validate that the hub cluster is healthy.
 +
 [source,subs="verbatim,quotes"]
 --
@@ -139,21 +146,15 @@ Destroys all VMs, including the helper VM. If you use this one, you must return 
 # oc get co
 --
 
-4. Get the console URL.
+5. Get the console URL and the kubeadmin password.
 +
 [source,subs="verbatim,quotes"]
 --
 $ oc whoami --show-console
---
-
-5. Get the kubeadmin password
-+
-[source,subs="verbatim,quotes"]
---
 $ cat /var/lib/libvirt/images/hub_install/auth/kubeadmin-password ; echo
 --
 
-6. Using either a VNC viewer, or Waypipe (which you configured in a previous lab), launch a web browser and login to the OpenShift console using the kubeadmin user and password.
+6. Using either a VNC viewer, or Waypipe (which you configured in the previous lab), launch a web browser and login to the OpenShift console using the kubeadmin user and password.
 
 7. Validate that MetalLB, LVM Storage, and ACM operators are installed and configured.
 +
