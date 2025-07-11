@@ -148,10 +148,10 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This training provides a comprehensive guide to deploying OpenShift Hosted Control Planes (HCP) on a single bare-metal host, leveraging KVM for virtualization.</p>
+<p>This training provides a comprehensive guide to deploying OpenShift Hosted Control Planes (HCP) on a single bare metal host, leveraging KVM for virtualization.</p>
 </div>
 <div class="paragraph">
-<p>You will learn how to set up a proof of concept environment to explore HCP capabilities, with help of provided Ansible playbooks.</p>
+<p>You will learn how to set up a proof-of-concept environment to explore HCP capabilities, with the help of provided Ansible playbooks.</p>
 </div>
 </div>
 </div>
@@ -167,16 +167,16 @@
 <p>Understand the architecture and benefits of Hosted Control Planes (HCP).</p>
 </li>
 <li>
-<p>Prepare a bare-metal instance on AWS for HCP deployment.</p>
+<p>Prepare a bare metal instance on AWS for HCP deployment.</p>
 </li>
 <li>
-<p>Set remote access to graphical applications in the bare-metal host.</p>
+<p>Set remote access to graphical applications in the bare metal host.</p>
 </li>
 <li>
-<p>Execute Ansible playbooks to set up the bare-metal host with a helper VM and a virtual network.</p>
+<p>Execute Ansible playbooks to set up the bare metal host with a helper virtual machine (VM) and a virtual network.</p>
 </li>
 <li>
-<p>Execute Ansible playbooks to set up the ACM hub cluster and required operators.</p>
+<p>Execute Ansible playbooks to set up the Advanced Cluster Management (ACM) hub cluster and required operators.</p>
 </li>
 <li>
 <p>Verify the installation and configuration of MetalLB, LVM Storage, and ACM operators.</p>
@@ -201,7 +201,7 @@
 <h2 id="_audience"><a class="anchor" href="#_audience"></a>Audience</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This training is intended for Information Technology (IT) professionals, including system administrators, cloud engineers, and architects, who are interested in deploying and managing OpenShift Hosted Control Planes on bare-metal infrastructure.</p>
+<p>This training is intended for information technology (IT) professionals, including system administrators, cloud engineers, and architects, who are interested in deploying and managing OpenShift Hosted Control Planes on bare-metal infrastructure.</p>
 </div>
 </div>
 </div>
@@ -236,16 +236,16 @@
 <h2 id="_virtual_lab_environment_for_hands_on_activities"><a class="anchor" href="#_virtual_lab_environment_for_hands_on_activities"></a>Virtual Lab Environment for Hands-on Activities</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The hands-on activities in this training utilizes a single AWS bare-metal instance (EC2 <code>c5.metal</code>) acting as the bare-metal host, running Red Hat Enterprise Linux.</p>
+<p>The hands-on activities in this training utilizes a single AWS bare metal instance (EC2 <code>c5.metal</code>) acting as the bare metal host, running Red Hat Enterprise Linux.</p>
 </div>
 <div class="paragraph">
-<p>On this instance, multiple virtual machines will be deployed using KVM to simulate a collection of bare-metal servers, providing a test environment for deploying and configuring OpenShift Hosted Control Planes.</p>
+<p>On this instance, multiple virtual machines will be deployed using KVM to simulate a collection of bare metal servers, providing a test environment for deploying and configuring OpenShift Hosted Control Planes.</p>
 </div>
 <div class="paragraph">
-<p>This setup allows for the creation of an OpenShift Hub cluster with master and worker nodes, and also multiple OpenShift hosted cluster with their own worker nodes, all virtualized on the single AWS bare-metal instance.</p>
+<p>This setup allows for the creation of an OpenShift Hub cluster with master and worker nodes, and also multiple OpenShift hosted cluster with their own worker nodes, all virtualized on the single AWS bare metal instance.</p>
 </div>
 <div class="paragraph">
-<p>Helper services, including BOOTP, DNS, and HAProxy, will also be deployed on a helper VM within this environment. Ansible Core will be used for automation, originating from the RHEL9 bare-metal instance.</p>
+<p>Helper services, including BOOTP, DNS, and HAProxy, will also be deployed on a helper VM within this environment. Ansible Core will be used for automation, originating from the RHEL9 bare metal instance.</p>
 </div>
 <div class="paragraph">
 <p>The overall network for these virtual machines will operate on the default libvirt network, with DHCP set up to configuring devices based on predefined MAC addresses.</p>
@@ -259,13 +259,22 @@
 <h2 id="_video_content"><a class="anchor" href="#_video_content"></a>Video Content</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The videos in this course are segments of the <em>Maximizing ROI with Hosted Control Planes: Strategies for Scalable Environments</em> session from <strong>Red Hat One 2025</strong>. These videos are available only to Red Hat employess connected to the corporate VPN.</p>
+<p>The videos in this course are segments of the <em>Maximizing ROI with Hosted Control Planes: Strategies for Scalable Environments</em> session from <strong>Red Hat One 2025</strong>. These videos are available only to Red Hat employees connected to the corporate VPN.</p>
 </div>
 <div class="paragraph">
 <p>If you do not have access to the videos, you can still perform all activities by following only the step-by-step written instructions.</p>
 </div>
-<div class="paragraph">
-<p>Beware that you web browser settings, such as ad blockers and privacy protection, can interfere with playing embedded videos from the Red Hat media center. To work around potential issues, for every video we provide a directly link to its media center page.</p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Web browser settings, such as ad blockers and privacy protection, can interfere with playing embedded videos from the Red Hat media center. To work around potential issues, for every video we provide a directly link to its media center page.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
