@@ -33,7 +33,6 @@ _Watch the following video and then follow the instructions in this section to p
 <iframe id="kmsembed-1_79vnk220" width="768" height="432" src="https://cdnapisec.kaltura.com/p/2300461/sp/230046100/embedIframeJs/uiconf_id/45633731/partner_id/2300461?iframeembed=true&playerId=kaltura_player_1595514787&entry_id=1_rtsirpp6" class="kmsembed" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" referrerPolicy="no-referrer-when-downgrade" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="hcp-on-bm-intro"></iframe>
 ++++
 
-
 1. Review the architecture of the proof-of-concept for HCP on bare metal nodes .
 +
 image::s3-fig-1.png[]
