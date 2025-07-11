@@ -145,6 +145,17 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
+<p>Review the architecture of the proof-of-concept for HCP on bare metal nodes.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/diagram-hub-cluster.svg" alt="diagram hub cluster">
+</div>
+</div>
+<div class="paragraph">
+<p>Now you will add the hub cluster.</p>
+</div>
+</li>
+<li>
 <p>Update <code>/etc/resolv.conf</code> to set the helper vm as the primary DNS server. Keep the AWS DNS server as a secondary option.</p>
 <div class="listingblock">
 <div class="content">
@@ -302,23 +313,16 @@ Most times, there would be no need to destroying your AWS open environment and r
 </div>
 </li>
 <li>
-<p>Get the console URL.</p>
+<p>Get the console URL and the kubeadmin password.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">$ oc whoami --show-console</code></pre>
+<pre class="highlightjs highlight"><code class="language-none hljs">$ oc whoami --show-console
+$ cat /var/lib/libvirt/images/hub_install/auth/kubeadmin-password ; echo</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Get the kubeadmin password</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">$ cat /var/lib/libvirt/images/hub_install/auth/kubeadmin-password ; echo</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Using either a VNC viewer, or Waypipe (which you configured in a previous lab), launch a web browser and login to the OpenShift console using the kubeadmin user and password.</p>
+<p>Using either a VNC viewer, or Waypipe (which you configured in the previous lab), launch a web browser and login to the OpenShift console using the kubeadmin user and password.</p>
 </li>
 <li>
 <p>Validate that MetalLB, LVM Storage, and ACM operators are installed and configured.</p>

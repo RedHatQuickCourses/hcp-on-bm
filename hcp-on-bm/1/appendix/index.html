@@ -139,7 +139,10 @@
 <article class="doc">
 <h1 class="page">Optional: Configure Virtual BMC Services on the Bare Metal Host</h1>
 <div class="paragraph">
-<p>This lab shows how to configure the bare metal host to provide a virtual Baseboard Management Controller (vBMC), which enables managing libvirt VMs as if they were bare metal machines with IPMI controllers or similar management hardware.</p>
+<p>This lab shows how to configure the bare metal host to provide a virtual Baseboard Management Controller (vBMC) and how to add such hosts to the ACM inventory using BMC, so that you can demonstrate the usage of managed servers as part of a hosted cluster.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="https://docs.openstack.org/virtualbmc/latest/" target="_blank" rel="noopener">virtualbmc</a> open source software enables managing libvirt VMs as if they were bare metal machines with IPMI controllers or similar management hardware. It enables testing of IPMI clients, such as the <code>ipmitool</code> command, and services such as <a href="https://github.com/openstack/ironic">OpenStack Ironic</a> and the <a href="https://github.com/openshift/cluster-baremetal-operator">OpenShift Cluster Bare Metal operator</a>.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -197,23 +200,100 @@ Description = vbmc service</code></pre>
 <p>Enable the service unit.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">systemctl daemon-reload
-systemctl enable vbmcd.service
-systemctl start vbmcd.service
-systemctl status vbmcd.service</code></pre>
+<pre class="highlightjs highlight"><code class="language-none hljs"># systemctl daemon-reload
+# systemctl enable vbmcd.service
+# systemctl start vbmcd.service
+# systemctl status vbmcd.service</code></pre>
 </div>
+</div>
+</li>
+<li>
+<p>Create, but DO NOT boot, a VM to be managed by vBMC. Its settings should be similar to a VM that would boot using PXE.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Using the Virtual Machine Manager (<code>virt-manager</code>) utility, create a new VM named <code>c1worker3</code>, selecting <strong>Manual install</strong>. Configure the VM with at least 8GiB memory, 4vCPUS, and 128GB of disk. Be sure you check <strong>Customize configuration before install</strong> on Step 5 of 5.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-5-1.jpg" alt="fig 5 1">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-5-2.jpg" alt="fig 5 2">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-5-3.jpg" alt="fig 5 3">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-5-4.jpg" alt="fig 5 4">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-5-5.jpg" alt="fig 5 5">
+</div>
+</div>
+</li>
+<li>
+<p>Set the NIC of the VM to a MAC address configured on the libvirt default network.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-5-6.jpg" alt="fig 5 6">
+</div>
+</div>
+</li>
+<li>
+<p>Select <strong>Boot Options</strong>, keep the disk as the first boot device and add the NIC as the second boot device in the order. Then click <strong>Begin Installation</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-5-7.jpg" alt="fig 5 7">
+</div>
+</div>
+<div class="paragraph">
+<p>This way, the VM boots from the NIC when the disk is empty, and boots from disk once CoreOS is installed. If you start with the NIC as first boot options, you must manually change the order later, after PXE boot, to boot from disk.</p>
+</div>
+</li>
+<li>
+<p>DO NOT let your new VM boot. Right after creating it, <strong>Virtual Machine &gt; Shutdown &gt; Force off</strong> to stop your VM. It  will later be started by BMC.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-5-8.jpg" alt="fig 5 8">
+</div>
+</div>
+</li>
+<li>
+<p>Alternatively, use the following commands to create the VM.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/c1worker3.qcow2 120G
+# virt-install --name c1worker3 \
+--ram 8192 --vcpus 4 --os-variant rhel9.5 \
+--disk path=/var/lib/libvirt/images/c1worker3.qcow2,device=disk,bus=virtio,format=qcow2 \
+--network network:default,mac=52:54:00:e2:54:43 \
+--noautoconsole --vnc --cpu host-passthrough \
+--boot hd,network --print-xml &gt; c1worker3.xml
+# virsh define c1worker3.xml</code></pre>
+</div>
+</div>
+</li>
+</ol>
 </div>
 </li>
 <li>
 <p>Add an ip address for vBMC to listen. It requires a unique IP address for each VM.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">ip addr add 192.168.122.71/32 dev virbr0</code></pre>
+<pre class="highlightjs highlight"><code class="language-none hljs"># ip addr add 192.168.122.71/32 dev virbr0</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Associate the IP address with an <em>existing</em> VM, for example a third host named <code>c1worker3</code></p>
+<p>Associate the IP address with an your VM.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs"># /usr/local/bin/vbmc add c1worker3 --address 192.168.122.71 --username admin --password redhat</code></pre>
@@ -224,7 +304,7 @@ systemctl status vbmcd.service</code></pre>
 <p>Start the vbmc for that VM.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs"># vbmc start c1worker3</code></pre>
+<pre class="highlightjs highlight"><code class="language-none hljs"># /usr/local/bin/vbmc start c1worker3</code></pre>
 </div>
 </div>
 </li>
@@ -232,7 +312,7 @@ systemctl status vbmcd.service</code></pre>
 <p>Make sure that service is running for that vm.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs"># vbmc list
+<pre class="highlightjs highlight"><code class="language-none hljs"># /usr/local/bin/vbmc list
 +-------------+---------+----------------+------+
 | Domain name | Status  | Address        | Port |
 +-------------+---------+----------------+------+
@@ -243,6 +323,54 @@ systemctl status vbmcd.service</code></pre>
 </li>
 <li>
 <p>You may have to manually reboot the BMC managed node after correcting the boot order to boot from disk manually.</p>
+</li>
+<li>
+<p>Create a provisioning resource using the following manifest.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">apiVersion: metal3.io/v1alpha1
+kind: Provisioning
+metadata:
+  name: provisioning-configuration
+spec:
+  provisioningNetwork: "Disabled"
+  watchAllNamespaces: true</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add a host using BMC.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Navigate to <strong>Infrastructure &gt; Host Inventory</strong>, click on <strong>Add hosts</strong> and select <strong>With BMC form</strong> to configure BMC.</p>
+</li>
+<li>
+<p>Fill in Name, Hostname, Baseboard Management Controller Address, Boot NIC MAC Address, username and password. Click <strong>Create</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-12.jpg" alt="fig 12">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Wait as vBMC boots the node and ACM adds it to the host inventory.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>The node first will transition to "Registering" then to “Provisioning”.</p>
+</li>
+<li>
+<p>The node will get automatically started by vbmc, boot to pxe and will become automatically available in host inventory. There is no need to approve a node created via vbmc.</p>
+</li>
+<li>
+<p>The node is now ready to be added to any new cluster or to scale out existing clusters.</p>
+</li>
+</ol>
+</div>
 </li>
 </ol>
 </div>
