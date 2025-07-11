@@ -14,7 +14,9 @@ Add a node using BMC and a YAML file
 37:05::
 ////
 
-This lab shows how to configure the bare metal host to provide a virtual Baseboard Management Controller (vBMC), which enables managing libvirt VMs as if they were bare metal machines with IPMI controllers or similar management hardware.
+This lab shows how to configure the bare metal host to provide a virtual Baseboard Management Controller (vBMC) and how to add such hosts to the ACM inventory using BMC, so that you can demonstrate the usage of managed servers as part of a hosted cluster.
+
+The https://docs.openstack.org/virtualbmc/latest/[virtualbmc^] open source software enables managing libvirt VMs as if they were bare metal machines with IPMI controllers or similar management hardware. It enables testing of IPMI clients, such as the `ipmitool` command, and services such as https://github.com/openstack/ironic[OpenStack Ironic] and the https://github.com/openshift/cluster-baremetal-operator[OpenShift Cluster Bare Metal operator].
 
 1. Install vBMC, if not already installed by the playbooks from the previous lab.
 +
@@ -67,38 +69,80 @@ Description = vbmc service
 +
 [source,subs="verbatim,quotes"]
 --
-systemctl daemon-reload
-systemctl enable vbmcd.service
-systemctl start vbmcd.service
-systemctl status vbmcd.service
+# systemctl daemon-reload
+# systemctl enable vbmcd.service
+# systemctl start vbmcd.service
+# systemctl status vbmcd.service
 --
 
-5. Add an ip address for vBMC to listen. It requires a unique IP address for each VM.
+5. Create, but DO NOT boot, a VM to be managed by vBMC. Its settings should be similar to a VM that would boot using PXE.
+
+..  Using the Virtual Machine Manager (`virt-manager`) utility, create a new VM named `c1worker3`, selecting *Manual install*. Configure the VM with at least 8GiB memory, 4vCPUS, and 128GB of disk. Be sure you check *Customize configuration before install* on Step 5 of 5.
++
+image::fig-5-1.jpg[]
++
+image::fig-5-2.jpg[]
++
+image::fig-5-3.jpg[]
++
+image::fig-5-4.jpg[]
++
+image::fig-5-5.jpg[]
+
+.. Set the NIC of the VM to a MAC address configured on the libvirt default network.
++
+image::fig-5-6.jpg[]
+
+.. Select *Boot Options*, keep the disk as the first boot device and add the NIC as the second boot device in the order. Then click *Begin Installation*.
++
+image::fig-5-7.jpg[]
++
+This way, the VM boots from the NIC when the disk is empty, and boots from disk once CoreOS is installed. If you start with the NIC as first boot options, you must manually change the order later, after PXE boot, to boot from disk.
+
+.. DO NOT let your new VM boot. Right after creating it, *Virtual Machine > Shutdown > Force off* to stop your VM. It  will later be started by BMC.
++
+image::fig-5-8.jpg[]
+
+.. Alternatively, use the following commands to create the VM.
 +
 [source,subs="verbatim,quotes"]
 --
-ip addr add 192.168.122.71/32 dev virbr0
+# qemu-img create -f qcow2 -o preallocation=metadata /var/lib/libvirt/images/c1worker3.qcow2 120G
+# virt-install --name c1worker3 \
+--ram 8192 --vcpus 4 --os-variant rhel9.5 \
+--disk path=/var/lib/libvirt/images/c1worker3.qcow2,device=disk,bus=virtio,format=qcow2 \
+--network network:default,mac=52:54:00:e2:54:43 \
+--noautoconsole --vnc --cpu host-passthrough \
+--boot hd,network --print-xml > c1worker3.xml
+# virsh define c1worker3.xml
 --
 
-6. Associate the IP address with an _existing_ VM, for example a third host named `c1worker3`
+6. Add an ip address for vBMC to listen. It requires a unique IP address for each VM.
++
+[source,subs="verbatim,quotes"]
+--
+# ip addr add 192.168.122.71/32 dev virbr0
+--
+
+7. Associate the IP address with an your VM.
 +
 [source,subs="verbatim,quotes"]
 --
 # /usr/local/bin/vbmc add c1worker3 --address 192.168.122.71 --username admin --password redhat
 --
 
-7. Start the vbmc for that VM.
+8. Start the vbmc for that VM.
 +
 [source,subs="verbatim,quotes"]
 --
-# vbmc start c1worker3
+# /usr/local/bin/vbmc start c1worker3
 --
 
-8. Make sure that service is running for that vm. 
+9. Make sure that service is running for that vm. 
 +
 [source,subs="verbatim,quotes"]
 --
-# vbmc list
+# /usr/local/bin/vbmc list
 +-------------+---------+----------------+------+
 | Domain name | Status  | Address        | Port |
 +-------------+---------+----------------+------+
@@ -106,39 +150,33 @@ ip addr add 192.168.122.71/32 dev virbr0
 +-------------+---------+----------------+------+
 --
 
-9. You may have to manually reboot the BMC managed node after correcting the boot order to boot from disk manually.
+10. You may have to manually reboot the BMC managed node after correcting the boot order to boot from disk manually.
 
-////
-
-
-5. [SKIP] Add a host using BMC.
-
-.. The BMC service was already on the bare metal host by the first playbook. [ true? ]
-+
-WARNING: I'm not sure the vnet## devices on the bm host are the virtual BMC interfaces, and I do not have the vbmc command in the bm host, though the playbook does 'pip install virtualbmc'.
-+
-According to https://pypi.org/project/virtualbmc/ I should use the ipmitool command, it doesn't mention a vmbc command like in the video.
-+
-According to https://www.informaticar.net/how-to-install-virtualbmc-on-red-hat/ there are a number of manual steps to perform after that pip command -- and I see nothing in the playbooks.
-
-.. Add the local binaries to the command path, so you can run the binaries from virtualbmc
+11. Create a provisioning resource using the following manifest.
 +
 [source,subs="verbatim,quotes"]
 --
-# export PATH=$PATH:/usr/local/bin
+apiVersion: metal3.io/v1alpha1
+kind: Provisioning
+metadata:
+  name: provisioning-configuration
+spec:
+  provisioningNetwork: "Disabled"
+  watchAllNamespaces: true
 --
 
-.. Looks like there's missing setup to configure and start the BMC server. :-(
+12. Add a host using BMC. 
+
+.. Navigate to *Infrastructure > Host Inventory*, click on *Add hosts* and select *With BMC form* to configure BMC.
+
+.. Fill in Name, Hostname, Baseboard Management Controller Address, Boot NIC MAC Address, username and password. Click *Create*.
 +
-[source,subs="verbatim,quotes"]
---
-# vbmc list
-2025-06-18 20:24:10,103 122161 ERROR VirtualBMC [-] Failed to connect to the vbmcd server on port 50891, error: Server response timed out
-Failed to connect to the vbmcd server on port 50891, error: Server response timed out
---
+image::fig-12.jpg[]
 
-6. [SKIP] Add a host using BMC and an YAML file.
-+
-WARNING: Not actually testing, just recording notes, because I cannot complete the previous step.
+13. Wait as vBMC boots the node and ACM adds it to the host inventory.
 
-////
+.. The node first will transition to "Registering" then to “Provisioning”.
+
+.. The node will get automatically started by vbmc, boot to pxe and will become automatically available in host inventory. There is no need to approve a node created via vbmc.
+
+.. The node is now ready to be added to any new cluster or to scale out existing clusters.
