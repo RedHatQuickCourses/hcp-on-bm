@@ -1,19 +1,19 @@
 = About This Quick Course
 :navtitle: Home
 
-This training provides a comprehensive guide to deploying OpenShift Hosted Control Planes (HCP) on a single bare-metal host, leveraging KVM for virtualization.
+This training provides a comprehensive guide to deploying OpenShift Hosted Control Planes (HCP) on a single bare metal host, leveraging KVM for virtualization.
 
-You will learn how to set up a proof of concept environment to explore HCP capabilities, with help of provided Ansible playbooks.
+You will learn how to set up a proof-of-concept environment to explore HCP capabilities, with the help of provided Ansible playbooks.
 
 == Learning Objectives
 
 By the end of this training, you will be able to:
 
 * Understand the architecture and benefits of Hosted Control Planes (HCP).
-* Prepare a bare-metal instance on AWS for HCP deployment.
-* Set remote access to graphical applications in the bare-metal host.
-* Execute Ansible playbooks to set up the bare-metal host with a helper VM and a virtual network.
-* Execute Ansible playbooks to set up the ACM hub cluster and required operators.
+* Prepare a bare metal instance on AWS for HCP deployment.
+* Set remote access to graphical applications in the bare metal host.
+* Execute Ansible playbooks to set up the bare metal host with a helper virtual machine (VM) and a virtual network.
+* Execute Ansible playbooks to set up the Advanced Cluster Management (ACM) hub cluster and required operators.
 * Verify the installation and configuration of MetalLB, LVM Storage, and ACM operators.
 //* Install and configure Virtual BMC (optional).
 * Configure an infrastructure environment for the hosted cluster.
@@ -23,7 +23,7 @@ By the end of this training, you will be able to:
 
 == Audience
 
-This training is intended for Information Technology (IT) professionals, including system administrators, cloud engineers, and architects, who are interested in deploying and managing OpenShift Hosted Control Planes on bare-metal infrastructure.
+This training is intended for information technology (IT) professionals, including system administrators, cloud engineers, and architects, who are interested in deploying and managing OpenShift Hosted Control Planes on bare-metal infrastructure.
 
 == Prerequisites
 
@@ -37,13 +37,13 @@ To successfully complete this training, you should have:
 
 == Virtual Lab Environment for Hands-on Activities
 
-The hands-on activities in this training utilizes a single AWS bare-metal instance (EC2 `c5.metal`) acting as the bare-metal host, running Red Hat Enterprise Linux.
+The hands-on activities in this training utilizes a single AWS bare metal instance (EC2 `c5.metal`) acting as the bare metal host, running Red Hat Enterprise Linux.
 
-On this instance, multiple virtual machines will be deployed using KVM to simulate a collection of bare-metal servers, providing a test environment for deploying and configuring OpenShift Hosted Control Planes.
+On this instance, multiple virtual machines will be deployed using KVM to simulate a collection of bare metal servers, providing a test environment for deploying and configuring OpenShift Hosted Control Planes.
 
-This setup allows for the creation of an OpenShift Hub cluster with master and worker nodes, and also multiple OpenShift hosted cluster with their own worker nodes, all virtualized on the single AWS bare-metal instance. 
+This setup allows for the creation of an OpenShift Hub cluster with master and worker nodes, and also multiple OpenShift hosted cluster with their own worker nodes, all virtualized on the single AWS bare metal instance. 
 
-Helper services, including BOOTP, DNS, and HAProxy, will also be deployed on a helper VM within this environment. Ansible Core will be used for automation, originating from the RHEL9 bare-metal instance.
+Helper services, including BOOTP, DNS, and HAProxy, will also be deployed on a helper VM within this environment. Ansible Core will be used for automation, originating from the RHEL9 bare metal instance.
 
 The overall network for these virtual machines will operate on the default libvirt network, with DHCP set up to configuring devices based on predefined MAC addresses.
 
@@ -51,11 +51,11 @@ It should be possible to adapt the instructions here, and reuse the provided Ans
 
 == Video Content
 
-The videos in this course are segments of the _Maximizing ROI with Hosted Control Planes: Strategies for Scalable Environments_ session from *Red Hat One 2025*. These videos are available only to Red Hat employess connected to the corporate VPN.
+The videos in this course are segments of the _Maximizing ROI with Hosted Control Planes: Strategies for Scalable Environments_ session from *Red Hat One 2025*. These videos are available only to Red Hat employees connected to the corporate VPN.
 
 If you do not have access to the videos, you can still perform all activities by following only the step-by-step written instructions.
 
-Beware that you web browser settings, such as ad blockers and privacy protection, can interfere with playing embedded videos from the Red Hat media center. To work around potential issues, for every video we provide a directly link to its media center page.
+WARNING: Web browser settings, such as ad blockers and privacy protection, can interfere with playing embedded videos from the Red Hat media center. To work around potential issues, for every video we provide a directly link to its media center page.
 
 == Authors
 
