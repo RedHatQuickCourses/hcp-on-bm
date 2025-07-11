@@ -49,12 +49,18 @@ The overall network for these virtual machines will operate on the default libvi
 
 It should be possible to adapt the instructions here, and reuse the provided Ansible playbooks as they are, to replicate a similar environment in a physical machine, if you have access to one that provides sufficient capacity: at least 64 CPU cores, 128 GB RAM, and 750 GB of disk space.
 
+== Video Content
+
+The videos in this course are segments of the _Maximizing ROI with Hosted Control Planes: Strategies for Scalable Environments_ session from *Red Hat One 2025*. These videos are available only to Red Hat employess connected to the corporate VPN.
+
+If you do not have access to the videos, you can still perform all activities by following only the step-by-step written instructions.
+
+Beware that you web browser settings, such as ad blockers and privacy protection, can interfere with playing embedded videos from the Red Hat media center. To work around potential issues, for every video we provide a directly link to its media center page.
+
 == Authors
 
-* Ami Desai, Senior Cloud Consultant
-* Praveen Thakur, Tech Sales Architect
-* Sadique Puthen, Tech Sales Architect
+* *Ami Desai*, Senior Cloud Consultant
+* *Praveen Thakur*, Tech Sales Architect
+* *Sadique Puthen*, Tech Sales Architect
 
-== Editor
-
-* Fernando Lozano, Principal Content Architect
+_Editor: Fernando Lozano, Principal Content Architect_

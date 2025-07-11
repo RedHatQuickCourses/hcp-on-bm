@@ -29,6 +29,14 @@ NOTE: Looks like the definition of image storage was incorrect at 21:55 -- it's 
 
 This lab shows how to configure an infrastructure environment, using ACM, and add bare metal hosts to it, using either a Discovery ISO or PXE boot.
 
+_Watch the following video and then follow the instructions in this section to perform the lab._
+
+++++
+<iframe id="kmsembed-1_zr4kmp6f" width="768" height="432" src="https://videos.learning.redhat.com/embed/secure/iframe/entryId/1_zr4kmp6f/uiConfId/44630491/st/0" class="kmsembed" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" referrerPolicy="no-referrer-when-downgrade" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="hcp-on-bm-add-hosts"></iframe>
+++++
+
+WARNING: Red Hat One videos are available only to Red Hat employees. If you have issues watching the video embedded in this page, watch it directly on the https://videos.learning.redhat.com/media/hcp-on-bm-intro/1_zr4kmp6f[Red Hat media space^].
+
 1. Review the architecture of the proof-of-concept for HCP on bare metal nodes.
 +
 image::diagram-add-hosts.svg[]
