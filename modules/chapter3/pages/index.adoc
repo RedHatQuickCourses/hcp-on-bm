@@ -16,6 +16,20 @@ Recap of previous steps
 
 This lab shows how to provision a hub cluster with ACM and other required operators, by using provided Ansible playbooks and the OpenShift web console.
 
+_Watch the following video and then follow the instructions in this section to perform the lab._
+
+////
+// New URL from Scott Frost sfrost@redhat.com
+// http://www.kaltura.com/tiny/q7ntv 
+// resolves to
+//https://www.kaltura.com/index.php/extwidget/preview/partner_id/2300461/uiconf_id/52003522/entry_id/1_8pyq0hy3/embed/dynamic
+////
+
+.Provision hub cluster segment from the Red Hat One 2025 session – Maximizing ROI with Hosted Control Planes: Strategies for Scalable Environments
+++++
+<iframe id="kmsembed-1_8pyq0hy3" width="768" height="432" src="https://videos.learning.redhat.com/embed/secure/iframe/entryId/1_8pyq0hy3/uiConfId/44630491/st/0" class="kmsembed" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" referrerPolicy="no-referrer-when-downgrade" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="hcp-on-bm-hub-cluster"></iframe>
+++++
+
 1. Update `/etc/resolv.conf` to set the helper vm as the primary DNS server. Keep the AWS DNS server as a secondary option.
 +
 [source,subs="verbatim,quotes"]
