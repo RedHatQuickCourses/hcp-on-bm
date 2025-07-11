@@ -1,5 +1,5 @@
 name: hcp-on-bm
-title: Hosted Control Planes on a Single BareMetal Node
+title: Hosted Control Planes on a Single Bare Metal Node
 version: 1
 nav:
 - modules/ROOT/nav.adoc
