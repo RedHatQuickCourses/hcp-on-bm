@@ -38,7 +38,7 @@ WARNING: Red Hat One videos are available only to Red Hat employees. If you have
 +
 image::diagram-hosted-cluster.svg[]
 +
-Now you will add the hosted hosted cluster.
+Now you will add the hosted cluster.
 
 2. Create a hosted cluster using a load balancer for API access.
 
