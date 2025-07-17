@@ -25,6 +25,12 @@ _Watch the https://videos.learning.redhat.com/media/hcp-on-bm-intro/1_79vnk220[v
 
 WARNING: Red Hat media space videos are available only to Red Hat employees.
 
+// Jim Meegan sent me that
+
+++++
+<iframe type="text/javascript" src='https://cdnapisec.kaltura.com/p/2032581/embedPlaykitJs/uiconf_id/49478072?iframeembed=true&entry_id=1_c8kboedg' style="width: 768px; height: 432px" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" frameborder="0"></iframe>
+++++
+
 ////
 // This is the URL and iframe as provided by kaltrua.
 // Works (sometimes) after login to Red Hat media space in a different tab
