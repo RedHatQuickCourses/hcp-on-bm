@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Create and Access a Hosted Cluster :: Hosted Control Planes on a Single Bare Metal Node</title>
+    <link rel="prev" href="../chapter4/index.html">
+    <link rel="next" href="../chapter6/index.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Hosted Control Planes on a Single Bare Metal Node</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/hcp-on-bm/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="hcp-on-bm" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Hosted Control Planes on a Single Bare Metal Node</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter0/index.html">Introduction to OpenShift HCP and the PoC Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter1/index.html">Deploy the Bare Metal Node</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter2/index.html">Prepare the Bare Metal Node</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter3/index.html">Setup the Hub Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter4/index.html">Add Managed Hosts</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="index.html">Create and Access a Hosted Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter6/index.html">Closing Words</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/index.html">Optional: Configure Virtual BMC Services on the Bare Metal Host</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Hosted Control Planes on a Single Bare Metal Node</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Hosted Control Planes on a Single Bare Metal Node</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Hosted Control Planes on a Single Bare Metal Node</a></li>
+    <li><a href="index.html">Create and Access a Hosted Cluster</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Create and Access a Hosted Cluster</h1>
+<div class="paragraph">
+<p>This lab shows how to create and access a hosted cluster using worker nodes available from an ACM infrastructure environment.</p>
+</div>
+<div class="paragraph">
+<p><em>Watch the following video and then follow the instructions in this section to perform the lab.</em></p>
+</div>
+<iframe id="kmsembed-1_ufciaghw" width="768" height="432" src="https://videos.learning.redhat.com/embed/secure/iframe/entryId/1_ufciaghw/uiConfId/44630491/st/0" class="kmsembed" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" referrerPolicy="no-referrer-when-downgrade" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="hcp-on-bm-hosted-cluster"></iframe>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Red Hat One videos are available only to Red Hat employees. If you have issues watching the video embedded in this page, watch it directly on the <a href="https://videos.learning.redhat.com/media/hcp-on-bm-intro/1_ufciaghw" target="_blank" rel="noopener">Red Hat media space</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Review the architecture of the proof-of-concept for HCP on bare metal nodes.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/diagram-hosted-cluster.svg" alt="diagram hosted cluster">
+</div>
+</div>
+<div class="paragraph">
+<p>Now you will add the hosted cluster.</p>
+</div>
+</li>
+<li>
+<p>Create a hosted cluster using a load balancer for API access.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Find a domain name to use as the name of your cluster. The helper VM is preconfigured with two domains for use by hosted cluster, which you can find by searching for forwarder domains.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># virsh net-dumpxml default | grep forwarder
+    &lt;forwarder domain='hub.mylab.com' addr='192.168.122.21'/&gt;
+    &lt;forwarder domain='hcp-cluster1.mylab.com' addr='192.168.122.21'/&gt;
+    &lt;forwarder domain='hcp-cluster2.mylab.com' addr='192.168.122.21'/&gt;
+    &lt;forwarder domain='122.168.192.in-addr.arpa' addr='192.168.122.21'/&gt;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>On the ACM web console (the <strong>All Clusters</strong> perspective of the OpenShift web console), navigate to <strong>Infrastructure &gt; Clusters</strong> and click <strong>Create Cluster</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-2-b.jpeg" alt="fig 2 b">
+</div>
+</div>
+</li>
+<li>
+<p>Choose <strong>Host inventory</strong> for the infrastructure and then <strong>Hosted</strong> for the control plane type.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-2-c-1.jpeg" alt="fig 2 c 1">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-2-c-2.jpeg" alt="fig 2 c 2">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Fill in the <strong>Cluster Details</strong> page of the create cluster assistant as follows:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-3.jpeg" alt="fig 3">
+</div>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Type <code>hcp-cluster1</code> as the name of the cluster. Remember that it must be a name aligned with your DNS settings.</p>
+</li>
+<li>
+<p>Type <code>mylab.com</code> as the base domain name of the cluster. Again, this must be aligned with your DNS settings.</p>
+</li>
+<li>
+<p>Select a 4.16 version of OpenShift for your hosted cluster.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is expected to work with later versions of OpenShift, but this lab was tested with 4.16.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Paste a valid OpenShift pull secret, such as the one you used for the playbooks in a previous lab.</p>
+</li>
+<li>
+<p>Leave "Infrastructure provide credential" and "Cluster set" empty.</p>
+</li>
+<li>
+<p>Click <strong>Next</strong></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Fill in the <strong>Node pools</strong> page of the Create cluster assistant as follows:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-4.jpeg" alt="fig 4">
+</div>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Type <code>2</code> as the number of hosts of your hosted cluster.</p>
+</li>
+<li>
+<p>Leave all other fields on their default values.</p>
+</li>
+<li>
+<p>Click <strong>Next</strong></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Fill in the <strong>Networking</strong> page of the Create cluster assistant as follows:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-5.jpeg" alt="fig 5">
+</div>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Select <strong>Load Balancer</strong> as the API publishing strategy. It uses the MetalLB deployment on the hub cluster to provide load balancers for API and ingress/route access to the hosted cluster.</p>
+</li>
+<li>
+<p>Paste the contents of the <code>~/.ssh/lab_rsa.pub</code> SSH key.</p>
+</li>
+<li>
+<p>Click <strong>Next</strong></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Fill in the <strong>Review</strong> page of the Create cluster assistant as follows:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-6.jpeg" alt="fig 6">
+</div>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Set the <strong>YAML</strong> toggle to <strong>On</strong></p>
+</li>
+<li>
+<p>Find the <code>service: APIServer</code> field and edit as follows, to specify the host name of its load balancer.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">...
+  services:
+  - service: APIServer
+    servicePublishingStrategy:
+      type: LoadBalancer
+      loadBalancer:
+        hostname: api.hcp-cluster1.mylab.com
+  - service: OAuthServer
+...</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>click <strong>Create</strong>.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>If your web console does not switch automatically to the <code>hcp-cluster1</code> details page, find it at <strong>Infrastructure &gt; Clusters</strong> and monitor, on the <strong>Overview</strong> tab, the progress of deploying its hosted control plane services and its node pool.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>You can also monitor from the CLI, checking the services on the namespace named after the hosted cluster name.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get service -n hcp-cluster1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You may also notice resources such as PVCs for the etcd database and routes for authentication and other services.</p>
+</div>
+</li>
+<li>
+<p>Be patient, it may take over 20 min to finish hosted cluster creation. During that time, control plane services may display a degraded status.</p>
+</li>
+<li>
+<p>It may happen that some of your VMs does not reboot, but just shuts down, when it gets added to a hosted cluster. When it happens, cluster creation keeps waiting for the node and does not complete. If it happens for you, just use virt-manager or the <code>virsh</code> command to start the VM and let cluster creation proceed.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Access the hosted cluster using a web browser.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>On the overview tab of details page for the <code>hcp-cluster1</code> cluster, scroll down to find the <strong>Details</strong> panel. Note its status field. if it is ready, click the Console URL link to open a new browser tab with the web console of the hosted cluster.</p>
+</li>
+<li>
+<p>Also Notice, bellow the Console URL link, the <strong>Reveal credentials</strong> icon that provides the kubeadmin password for the hosted cluster.</p>
+</li>
+<li>
+<p>On the console of the hosted cluster, navigate to <strong>Compute &gt; Nodes</strong> and see that the cluster has two nodes: <code>c1worker1</code> and <code>c1worker2</code>, which you provisioned before. Other than the fact there are no master nodes, it looks like any other OpenShift cluster.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Access the hosted cluster using the CLI.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>On the console of the hub cluster, see the <strong>Details</strong> panel of overview tab of details page for the <code>hcp-cluster1</code> cluster, you can find the API URL for the CLI.</p>
+</li>
+<li>
+<p>Remember that the kubeconfig file for the hub cluster was set read-only, to prevent accidental corruption, so create a new kubeconfig file for the hosted cluster.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># export KUBECONFIG=~/kubeconfig-hcp-cluster1
+# oc login --insecure-skip-tls-verify -u kubeadmin https://192.168.122.60:6443
+# oc get nodes
+# oc get co</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Alternatively, you can download a kubeconfig file by clicking <strong>Download kubeconfig</strong> on the details page of your hosted cluster. That kubeconfig uses a client certificate, similar to the installation kubeconfig of OpenShift clusters created by the <code>openshift-installer</code> tool.</p>
+</li>
+<li>
+<p>You can set the KUBECONFIG environment variable to different files, depending on the cluster you want to connect. This may be simpler than using <code>oc config</code> commands to maintain and switch between different contexts.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Using your preferred method (web console or CLI) inspect the <code>kube-system</code> namespace to see the <code>konnectivity-agent</code> and <code>kube-api-server-proxy</code> pods that connect hosted cluster nodes to their control plane on the hub cluster.</p>
+</li>
+<li>
+<p>From now on, you can use the hosted cluster as a regular OpenShift cluster: deploy applications, install operators, configure authentication, and perform other day-2 tasks.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Create a new project and deploy a "hello, world" application on the hosted cluster.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc new-project test
+# oc new-app --name hello --image docker.io/openshift/hello-openshift
+# oc expose svc hello</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Wait until the hello pods are ready and running.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get svc,pod</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Access the hello, world app using the ingress controller from the hosted cluster.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># curl hello-test.apps.hcp-cluster1.mylab.com</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="../chapter4/index.html">Add Managed Hosts</a></span>
+  <span class="next"><a href="../chapter6/index.html">Closing Words</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
