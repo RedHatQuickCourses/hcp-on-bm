@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Explore the Deployment :: Hosted Control Planes on a Single Bare Metal Node</title>
+    <link rel="prev" href="../chapter5/index.html">
+    <link rel="next" href="../chapter6/index.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Hosted Control Planes on a Single Bare Metal Node</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/hcp-on-bm/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="hcp-on-bm" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Hosted Control Planes on a Single Bare Metal Node</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter0/index.html">Introduction to OpenShift HCP and the PoC Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter1/index.html">Deploy the Bare Metal Node</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter2/index.html">Prepare the Bare Metal Node</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter3/index.html">Setup the Hub Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter4/index.html">Add Managed Hosts</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter5/index.html">Create and Access a Hosted Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="index.html">Explore the Deployment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../chapter6/index.html">Closing Words</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/index.html">Optional: Configure Virtual BMC Services on the Bare Metal Host</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Hosted Control Planes on a Single Bare Metal Node</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Hosted Control Planes on a Single Bare Metal Node</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Hosted Control Planes on a Single Bare Metal Node</a></li>
+    <li><a href="index.html">Explore the Deployment</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Explore the Deployment</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This lab explores the building blocks of the hosted cluster using the cluster deployed and how everything works under the hood.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_explore_the_control_plane"><a class="anchor" href="#_explore_the_control_plane"></a>Explore The Control Plane</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>For each infrastructure environment there is a namespace with the same name, in this example it is <code>hcpbm</code>.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>An agent resource represents each discovered node.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get agent -n hcpbm
+NAME                                   CLUSTER   APPROVED   ROLE          STAGE
+442b5079-f849-461a-af7d-0e74f584a9eb             true       auto-assign
+686107da-eef0-4ab5-a2ee-37bd8196760b             true       auto-assign</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>View the raw resource to get more details about each agent.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get agent -n hcpbm 442b5079-f849-461a-af7d-0e74f584a9eb -o yaml
+apiVersion: agent-install.openshift.io/v1beta1
+kind: Agent
+...</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>For each hosted cluster, there are be three namespaces using <em>cluster name</em> in as part of its name. For example, if the cluster name is <code>hcp-cluster1</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get ns | grep cluster1
+hcp-cluster1                                       Active   66s
+hcp-cluster1-hcp-cluster1                          Active   57s
+klusterlet-hcp-cluster1                            Active   55s</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Inspect the <code>hcp-cluster1</code> namespace.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>It holds the hosted cluster resource that shows high level details of the cluster. As usual, there is more information on the raw resource, such as its cluster configuration details, than you see on the default output of <code>oc get</code>.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get hostedcluster -n hcp-cluster1
+NAME           VERSION   KUBECONFIG                      PROGRESS   AVAILABLE   PROGRESSING   MESSAGE
+hcp-cluster1             hcp-cluster1-admin-kubeconfig   Partial    False       False         Waiting for Kube APIServer deployment to become available</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Inspect the <code>spec.etcd</code> field of a hosted cluster resource.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get hostedcluster -n hcp-cluster1 -o yaml
+...
+    etcd:
+      managed:
+        storage:
+          persistentVolume:
+            size: 8Gi
+          type: PersistentVolume
+      managementType: Managed
+...</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Most of the details filled in the web UI during the hosted cluster creation can be found here.</p>
+</li>
+<li>
+<p>This namespace also holds all the secrets associated with the hosted cluster. For example, its pull secret, ssh key, kubeadmin user password and also its installation kubeconfig file.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get secret -n hcp-cluster1
+NAME                                                      TYPE                                  DATA   AGE
+hcp-cluster1-admin-kubeconfig                             Opaque                                1      142m
+hcp-cluster1-import                                       Opaque                                6      144m
+hcp-cluster1-kubeadmin-password                           Opaque                                1      141m
+open-cluster-management-compliance-history-api-recorder   kubernetes.io/service-account-token   4      144m
+pullsecret-cluster-hcp-cluster1                           kubernetes.io/dockerconfigjson        1      144m
+sshkey-cluster-hcp-cluster1                               Opaque                                1      144m</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Inspect the node pool resource in this namespace.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get nodepool -n hcp-cluster1
+NAMESPACE      NAME                      CLUSTER        DESIRED NODES   CURRENT NODES   AUTOSCALING   AUTOREPAIR   VERSION   UPDATINGVERSION   UPDATINGCONFIG   MESSAGE
+hcp-cluster1   nodepool-hcp-cluster1-1   hcp-cluster1   2               2               False         False        4.16.43   False             False
+# oc get nodepool nodepool-hcp-cluster1-1 -n hcp-cluster1 -o yaml
+...</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>The <code><em>clustername</em>-<em>clustername</em></code> namespace holds all the resources required for the hosted cluster. In this case, the namespace is <code>hcp-cluster1-hcp-cluster1</code>.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>List pods that run on this namespace and take care of various control plane functions of the hosted cluster.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">#  oc get po -n hcp-cluster1-hcp-cluster1
+NAME                                                  READY   STATUS    RESTARTS       AGE
+capi-provider-5745984c97-8pxxd                        1/1     Running   1 (3m6s ago)   11m
+catalog-operator-6c9c8575f5-r846n                     2/2     Running   0              7m37s
+...
+packageserver-77d56b97c5-zjng6                        2/2     Running   0              7m36s
+redhat-marketplace-catalog-c446c5f89-7sc5w            1/1     Running   0              7m24s
+redhat-operators-catalog-65c8c964bc-8pqnf             1/1     Running   0              7m24s</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Inspect the hosted cluster&#8217;s Etcd pods.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">#  oc get po -n hcp-cluster1-hcp-cluster1| grep etcd
+etcd-0                                                4/4     Running   0               11m
+etcd-1                                                4/4     Running   0               11m
+etcd-2                                                4/4     Running   0               11m</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Inspect the dynamically provisioned PVCs for Etcd, backed by the LVM storage operator.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get pvc -n hcp-cluster1-hcp-cluster1
+NAME          STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+data-etcd-0   Bound    pvc-8e6967a1-b398-4794-b777-7d27dc680b8c   8Gi        RWO            lvms-vg1       &lt;unset&gt;                 12m
+data-etcd-1   Bound    pvc-86cc384a-71d6-4443-9ec2-9b74dcc254cd   8Gi        RWO            lvms-vg1       &lt;unset&gt;                 12m
+data-etcd-2   Bound    pvc-1831e4af-b73f-4d3e-96bd-625b445ebc78   8Gi        RWO            lvms-vg1       &lt;unset&gt;                 12m
+# oc get pv | grep etcd
+pvc-1831e4af-b73f-4d3e-96bd-625b445ebc78   8Gi        RWO            Delete           Bound    hcp-cluster1-hcp-cluster1/data-etcd-2                             lvms-vg1       &lt;unset&gt;                          14m
+pvc-86cc384a-71d6-4443-9ec2-9b74dcc254cd   8Gi        RWO            Delete           Bound    hcp-cluster1-hcp-cluster1/data-etcd-1                             lvms-vg1       &lt;unset&gt;                          14m
+pvc-8e6967a1-b398-4794-b777-7d27dc680b8c   8Gi        RWO            Delete           Bound    hcp-cluster1-hcp-cluster1/data-etcd-0                             lvms-vg1       &lt;unset&gt;                          14m</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>There are routes for OAuth, konnectivity, and ignition of the hosted cluster on the host cluster.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get route -n hcp-cluster1-hcp-cluster1
+NAME                  HOST/PORT                                                          PATH   SERVICES                PORT    TERMINATION        WILDCARD
+ignition-server       ignition-server-hcp-cluster1-hcp-cluster1.apps.hub.mylab.com              ignition-server-proxy   &lt;all&gt;   passthrough/None   None
+konnectivity-server   konnectivity-server-hcp-cluster1-hcp-cluster1.apps.hub.mylab.com          konnectivity-server     &lt;all&gt;   passthrough/None   None
+oauth                 oauth-hcp-cluster1-hcp-cluster1.apps.hub.mylab.com                        oauth-openshift         &lt;all&gt;   passthrough/None   None</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Inspect the services associated with each route.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get route -n hcp-cluster1-hcp-cluster1 oauth
+NAME    HOST/PORT                                            PATH   SERVICES          PORT    TERMINATION        WILDCARD
+oauth   oauth-hcp-cluster1-hcp-cluster1.apps.hub.mylab.com          oauth-openshift   &lt;all&gt;   passthrough/None   None
+# oc get route oauth -n hcp-cluster1-hcp-cluster1 -o yaml
+...
+spec:
+  host: oauth-hcp-cluster1-hcp-cluster1.apps.hub.mylab.com
+  tls:
+    insecureEdgeTerminationPolicy: None
+    termination: passthrough
+  to:
+    kind: Service
+    name: oauth-openshift
+    weight: 100
+  wildcardPolicy: None
+# oc get svc oauth-openshift -n hcp-cluster1-hcp-cluster1 -o yaml
+...
+  selector:
+    app: oauth-openshift
+    hypershift.openshift.io/control-plane-component: oauth-openshift</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>The route refers to pods , named <code>oauth-openshift</code>, running on the hosted cluster namespace. So any attempt to access the OAuth route hits these pods in the hosted cluster namespace.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get po -n hcp-cluster1-hcp-cluster1 -l app=oauth-openshift
+NAME                               READY   STATUS    RESTARTS   AGE
+oauth-openshift-6fc8bbc966-422rl   4/4     Running   0          64m
+oauth-openshift-6fc8bbc966-84mrv   4/4     Running   0          64m
+oauth-openshift-6fc8bbc966-xnxkw   4/4     Running   0          64m</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Inspect the Konnectivity route and Ignition route in a similar manner.</p>
+</li>
+<li>
+<p>Inspect the agent cluster resource in this namespace</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get agentcluster -n hcp-cluster1-hcp-cluster1
+NAME           AGE
+hcp-cluster1   146m
+
+# oc get agentcluster -n hcp-cluster1-hcp-cluster1 -o yaml
+apiVersion: v1
+items:
+- apiVersion: capi-provider.agent-install.openshift.io/v1beta1
+...</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_explore_api_access_to_a_hosted_cluster"><a class="anchor" href="#_explore_api_access_to_a_hosted_cluster"></a>Explore API Access to a Hosted Cluster</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The following shows how API access reaches hosted clusters, that is, its Kubernetes API pods running in their host cluster, with the help of the MetalLB operator, which enables load balancer services on a bare metal or platform-agnostic OpenShift cluster.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/fig-1.jpeg" alt="fig 1">
+</div>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>DNS resolves <code>api.hcp-cluster1.mylab.com</code> to 192.168.122.60.</p>
+</li>
+<li>
+<p>The MetalLB range is configured to 192.168.122.60 - 192.168.122.69. We know MetalLB assigns IP addresses to services sequentially, for example the first IP address for the first cluster, and second IP address for the second cluster. That is why we configure the API hostname for <code>hcp-cluster1</code> to 192.168.122.60 and for <code>hcp-cluster2</code> to 192.168.122.61.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get ipaddresspool -n metallb-system
+NAME          AUTO ASSIGN   AVOID BUGGY IPS   ADDRESSES
+hcp-ip-pool   true          true              ["192.168.122.60-192.168.122.69"]</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+There is NOT a better way to predict IP address allocation, at this time. Improvements, such as integration DNS services and annotations to set a fixed IP address on a hosted cluster resource, are still work-in-progress.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>MeatlLB attaches that IP address on one of the master nodes on the host cluster. You can verify this via the <code>arping</code> command. Look at the MAC address assigned to that IP address, and compare it with the MAC address of your control plane nodes.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># arping 192.168.122.60 -I virbr0
+ARPING 192.168.122.60 from 192.168.122.1 virbr0
+Unicast reply from 192.168.122.60 [52:54:00:E2:54:32]  6.625ms</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>The host assigns the IP address 192.168.122.60 to a load balancer service, which listens on port 6443, and connects to the <code>kube-apiserver</code> pods of the hosted cluster runs.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get svc -n hcp-cluster1-hcp-cluster1 kube-apiserver
+NAME             TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)          AGE
+kube-apiserver   LoadBalancer   172.30.168.59   192.168.122.60   6443:30447/TCP   105m
+# oc get svc -n hcp-cluster1-hcp-cluster1 kube-apiserver -o yaml
+...
+ selector:
+    app: kube-apiserver
+    hypershift.openshift.io/control-plane-component: kube-apiserver
+# oc get po -n hcp-cluster1-hcp-cluster1 -l app=kube-apiserver
+NAME                              READY   STATUS    RESTARTS   AGE
+kube-apiserver-69794fffb6-4mgrp   4/4     Running   0          108m
+kube-apiserver-69794fffb6-5wbpm   4/4     Running   0          108m
+kube-apiserver-69794fffb6-dwl2x   4/4     Running   0          108m</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_explore_a_hosted_cluster"><a class="anchor" href="#_explore_a_hosted_cluster"></a>Explore a Hosted Cluster</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Login to the hosted cluster API to explore some details. You can get its kubeadmin user password and web console URL from web console of its host cluster, as demonstrated on the previous lab.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc login https://api.hcp-cluster1.mylab.com:6443 -u kubeadmin</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Explore the pods running on the <code>kube-system</code> namespace in the hosted cluster.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get po -n kube-system
+NAME                             READY   STATUS    RESTARTS   AGE
+konnectivity-agent-25r69         1/1     Running   0          111m
+konnectivity-agent-drmg7         1/1     Running   0          111m
+kube-apiserver-proxy-c1worker1   1/1     Running   0          109m
+kube-apiserver-proxy-c1worker2   1/1     Running   0          109m</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice the lack of typical control plane pods, such as Etcd and API server, which run on the host cluster.</p>
+</div>
+</li>
+<li>
+<p>Each worker node runs a <code>konnectivity</code> pod and <code>kube-apiserver-proxy</code> pod.</p>
+</li>
+<li>
+<p>Each Konnectivity pod runs a Konnectivity proxy agent that opens a tunnel from its worker node to the control plane on its host cluster. This enables bidirectional communication between each worker node and its control plane.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc project kube-system
+Now using project "kube-system" on server "https://api.hcp-cluster1.mylab.com:6443".
+
+# oc rsh konnectivity-agent-25r69
+...
+sh-5.1$ ps aux | grep konnectivity
+1000           1  0.1  0.2 1763736 24344 ?       Ssl  05:05   0:09 /usr/bin/proxy-agent --logtostderr=true --ca-cert /etc/konnectivity/ca/ca.crt --agent-cert /etc/konnectivity/agent/tls.crt --agent-key /etc/konnectivity/agent/tls.key --proxy-server-host konnectivity-server-hcp-cluster1-hcp-cluster1.apps.hub.mylab.com --proxy-server-port 443 --health-server-port 2041 --agent-identifiers=default-route=true --keepalive-time 30s --probe-interval 5s --sync-interval 5s --sync-interval-cap 30s --v 3</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Note the URL on the <code>--proxy-server-host</code> option in the output above, which is <code>konnectivity-server-hcp-cluster1-hcp-cluster1.apps.hub.mylab.com</code>. This URL targets a route running on the host cluster and forwards requests to the Konnectivity pods running on host/hub cluster.</p>
+</li>
+<li>
+<p>The <code>kube-apiserver-proxy</code> pods enables other pods on the same worker node to access the hosted cluster API, without explicitly addressing their host/hub cluster. Only this pod needs connectivity to the host cluster.</p>
+<div class="paragraph">
+<p>Other pods can submit Kubernetes API requests via this pod, preserving local cluster connectivity through cluster IP services between pods and the Kuberenetes API of their own cluster.</p>
+</div>
+</li>
+<li>
+<p>This pod runs HAproxy to forward API requests from ip 172.20.0.1:6443, which is an in-cluster private IP address, to the remote API server running on the host/hub cluster, which is <code>api.hcp-cluster1.mylab.com</code>.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc rsh kube-apiserver-proxy-c1worker1
+...
+sh-5.1$ ps aux | grep ha
+1001           1  0.1  0.1 240048 13260 ?        Ssl  05:04   0:11 haproxy -f /usr/local/etc/haproxy
+sh-5.1$ cat /usr/local/etc/haproxy/haproxy.cfg
+global
+  maxconn 7000
+  log stdout local0
+  log stdout local1 notice
+defaults
+  mode tcp
+  timeout client 10m
+  timeout server 10m
+  timeout connect 10s
+  timeout client-fin 5s
+  timeout server-fin 5s
+  timeout queue 5s
+  retries 3
+frontend local_apiserver
+  bind 172.20.0.1:6443
+  log global
+  mode tcp
+  option tcplog
+  default_backend remote_apiserver
+backend remote_apiserver
+  mode tcp
+  log global
+  option httpchk GET /version
+  option log-health-checks
+  default-server inter 10s fall 3 rise 3
+  server controlplane api.hcp-cluster1.mylab.com:6443</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_explore_ingress_for_hosted_clusters"><a class="anchor" href="#_explore_ingress_for_hosted_clusters"></a>Explore Ingress for Hosted Clusters</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The ingress pods run on the hosted cluster worker nodes, alongside user workloads, and are routed directly to those pods by an external load balancer. Ingress for the application running on a hosted cluster does NOT pass through its host cluster.</p>
+</li>
+<li>
+<p>See that <code>console-openshift-console.apps.hcp-cluster1.mylab.com</code> resolves to 192.168.122.49.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># nslookup console-openshift-console.apps.hcp-cluster1.mylab.com
+Server:		192.168.122.21
+Address:	192.168.122.21#53
+Name:	console-openshift-console.apps.hcp-cluster1.mylab.com
+Address: 192.168.122.49</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Inspect the <code>/etc/haproxy/haproxy.cfg</code> file, on the helper VM, to see that anything that comes to 443 port of 192.168.122.49 is sent to one of the worker nodes for the hosted cluster.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">#------------------- HCP-Cluster1 APPS - HTTPS  ----------------------------#
+frontend hcp_cluster1_apps_https
+    bind  192.168.122.49:443
+    use_backend hcp_cluster1_apps_https_backend
+    mode tcp
+backend hcp_cluster1_apps_https_backend
+    balance roundrobin
+    mode tcp
+    server worker1 192.168.122.41:443 check
+    server worker2 192.168.122.42:443 check
+    server worker3 192.168.122.43:443 check</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that you must configure both the libvirt default network on the bare metal host and HAproxy on the helper VM of your PoC environment to match the number of hosted clusters you intend to create. This is not really different than any other bare metal deployment of OpenShift.</p>
+</div>
+</li>
+<li>
+<p>The ingress pods run on worker nodes of their own hosted clusters, just like with regular OpenShift clusters: infrastructure workloads run on worker nodes, and optionally on segregated infrastructure nodes, but not on control plane nodes.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"># oc get po -n openshift-ingress
+NAME                              READY   STATUS    RESTARTS   AGE
+router-default-569b6445f5-fvd2g   1/1     Running   0          121m
+router-default-569b6445f5-vz8ss   1/1     Running   0          121m</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Notice that, though the OpenShift web console is exposed through the ingress of its own hosted cluster, and its console pods also run on its own hosted cluster worker nodes, end users still require access to the ingress of its host cluster. The OpenShift Authentication operator and its OAuth pods are control plane services, which run on the host cluster, and are exposed by the host cluster ingress. The redirection to OAuth fails if end users do not have access to the ingress of the host cluster.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="../chapter5/index.html">Create and Access a Hosted Cluster</a></span>
+  <span class="next"><a href="../chapter6/index.html">Closing Words</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
