@@ -16,13 +16,15 @@ Recap of previous steps
 
 This lab shows how to provision a hub cluster with ACM and other required operators, by using provided Ansible playbooks and the OpenShift web console.
 
-_Watch the following video and then follow the instructions in this section to perform the lab._
+_Watch the optional video and then follow the instructions in this section to perform the lab._
+
+WARNING: If you have issues watching the video embedded in this page, watch it directly on the https://videos.learning.redhat.com/media/hcp-on-bm-intro/1_8pyq0hy3[Red Hat media space^], which requires the Red Hat VPN and an employee log in.
 
 ++++
-<iframe id="kmsembed-1_8pyq0hy3" width="768" height="432" src="https://videos.learning.redhat.com/embed/secure/iframe/entryId/1_8pyq0hy3/uiConfId/44630491/st/0" class="kmsembed" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" referrerPolicy="no-referrer-when-downgrade" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="hcp-on-bm-hub-cluster"></iframe>
+<iframe type="text/javascript" src='https://cdnapisec.kaltura.com/p/2032581/embedPlaykitJs/uiconf_id/49478072?iframeembed=true&entry_id=1_7j3a11pq' style="width: 768px; height: 432px" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" frameborder="0"></iframe>
 ++++
 
-WARNING: Red Hat One videos are available only to Red Hat employees. If you have issues watching the video embedded in this page, watch it directly on the https://videos.learning.redhat.com/media/hcp-on-bm-intro/1_8pyq0hy3[Red Hat media space^].
+//Red Hat media space and ROL use different instances of Kaltura. The iframe uses the ROL instance.
 
 1. Review the architecture of the proof-of-concept for HCP on bare metal nodes.
 +
